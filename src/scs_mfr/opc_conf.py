@@ -109,7 +109,7 @@ if __name__ == '__main__':
         sample_period = cmd.sample_period if cmd.sample_period else conf.sample_period
 
         if conf is None:
-            conf = OPCConf(None, 10, True, False, None, None)
+            conf = OPCConf(None, 10, True, False, None)
 
         restart_on_zeroes = cmd.restart_on_zeroes if cmd.restart_on_zeroes is not None else conf.restart_on_zeroes
         power_saving = cmd.power_saving if cmd.power_saving is not None else conf.power_saving
