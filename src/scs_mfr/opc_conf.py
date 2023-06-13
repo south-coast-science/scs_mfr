@@ -7,8 +7,7 @@ Created on 13 Jul 2016
 
 DESCRIPTION
 The opc_conf utility is used to specify whether an Alphasense optical particle counter (OPC) is present and if so,
-which model is attached. An option is also available to override the host's default SPI bus and SPI chip select
-lines for the OPC.
+which model is attached. An option is also available to override the host's default SPI device file path for the OPC.
 
 The specification also includes the number of seconds between readings by the OPC monitor sub-process. The maximum
 time between readings is 10 seconds, the minimum five. A 10-second period provides the highest precision, but sampling
