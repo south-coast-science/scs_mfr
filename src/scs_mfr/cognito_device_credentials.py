@@ -44,8 +44,6 @@ from scs_core.client.http_exception import HTTPException, HTTPConflictException
 from scs_core.data.json import JSONify
 
 from scs_core.sys.logging import Logging
-from scs_core.sys.shared_secret import SharedSecret
-from scs_core.sys.system_id import SystemID
 
 from scs_host.sys.host import Host
 
@@ -56,7 +54,6 @@ from scs_mfr.cmd.cmd_cognito_device_credentials import CmdCognitoDeviceCredentia
 
 if __name__ == '__main__':
 
-    auth = None
     logger = None
 
     try:
@@ -72,22 +69,9 @@ if __name__ == '__main__':
 
 
         # ------------------------------------------------------------------------------------------------------------
-        # auth...
+        # authentication...
 
-        system_id = SystemID.load(Host)
-
-        if not system_id:
-            logger.error("SystemID not available.")
-            exit(1)
-
-        shared_secret = SharedSecret.load(Host)
-
-        if not shared_secret:
-            logger.error("SharedSecret not available.")
-            exit(1)
-
-        credentials = CognitoDeviceCredentials(system_id.message_tag(), shared_secret.key)
-        logger.info(credentials)
+        credentials = CognitoDeviceCredentials.load_credentials_for_device(Host)
 
 
         # ------------------------------------------------------------------------------------------------------------
@@ -127,5 +111,5 @@ if __name__ == '__main__':
         exit(1)
 
     except HTTPException as ex:
-        logger.error(ex.data)
+        logger.error(ex.error_report)
         exit(1)

@@ -9,18 +9,14 @@ import optparse
 
 # --------------------------------------------------------------------------------------------------------------------
 
-class CMDAWSDeployment(object):
+class CmdAWSDeployment(object):
     """unix command line handler"""
 
     def __init__(self):
         """
         Constructor
         """
-        self.__parser = optparse.OptionParser(usage="%prog [-k] [-w] [-i INDENT] [-v]", version="%prog 1.0")
-
-        # input...
-        self.__parser.add_option("--stdin-key", "-k", action="store_true", dest="stdin", default=False,
-                                 help="read key from stdin")
+        self.__parser = optparse.OptionParser(usage="%prog [-w] [-i INDENT] [-v]", version="%prog 1.0")
 
         # output...
         self.__parser.add_option("--wait", "-w", action="store_true", dest="wait", default=False,
@@ -36,11 +32,6 @@ class CMDAWSDeployment(object):
 
 
     # ----------------------------------------------------------------------------------------------------------------
-
-    @property
-    def stdin(self):
-        return self.__opts.stdin
-
 
     @property
     def wait(self):
@@ -63,5 +54,5 @@ class CMDAWSDeployment(object):
         self.__parser.print_help(file)
 
     def __str__(self, *args, **kwargs):
-        return "CMDAWSDeployment:{stdin:%s wait:%s indent:%s verbose:%s}" % \
-               (self.stdin, self.wait, self.indent, self.verbose)
+        return "CmdAWSDeployment:{wait:%s indent:%s verbose:%s}" % \
+               (self.wait, self.indent, self.verbose)

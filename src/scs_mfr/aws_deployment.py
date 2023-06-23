@@ -14,7 +14,7 @@ configuration should already be in place - see aws_identity.py and aws_group_set
 The greengrass service must be running for the deployment to complete.
 
 SYNOPSIS
-aws_deployment.py [-k] [-w] [-i INDENT] [-v]
+aws_deployment.py [-w] [-i INDENT] [-v]
 
 EXAMPLES
 ./aws_deployment.py -vw
@@ -32,34 +32,37 @@ scs_mfr/aws_group_setup.py
 scs_mfr/aws_identity.py
 """
 
+import requests
 import sys
 import time
 
 from botocore.exceptions import ClientError, NoCredentialsError
 
-from scs_core.aws.client.access_key import AccessKey
 from scs_core.aws.client.client import Client
 from scs_core.aws.config.aws import AWS
 from scs_core.aws.greengrass.aws_deployer import AWSGroupDeployer
+
+from scs_core.aws.security.access_key_manager import AccessKeyManager
+from scs_core.aws.security.cognito_device import CognitoDeviceCredentials
+from scs_core.aws.security.cognito_login_manager import CognitoLoginManager
 
 from scs_core.data.json import JSONify
 
 from scs_core.sys.logging import Logging
 
-from scs_mfr.cmd.cmd_aws_deployment import CMDAWSDeployment
+from scs_host.sys.host import Host
+
+from scs_mfr.cmd.cmd_aws_deployment import CmdAWSDeployment
 
 
 # --------------------------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
 
-    key = None
-    response = None
-
     # ----------------------------------------------------------------------------------------------------------------
     # cmd...
 
-    cmd = CMDAWSDeployment()
+    cmd = CmdAWSDeployment()
 
     # logging...
     Logging.config('aws_deployment', verbose=cmd.verbose)
@@ -68,18 +71,26 @@ if __name__ == '__main__':
     logger.info(cmd)
 
 
-    # ----------------------------------------------------------------------------------------------------------------
-    # resources...
+    # ------------------------------------------------------------------------------------------------------------
+    # authentication...
 
-    try:
-        key = AccessKey.from_stdin() if cmd.stdin else AccessKey.from_user()
-    except ValueError:
-        logger.error("invalid key.")
+    # credentials...
+    credentials = CognitoDeviceCredentials.load_credentials_for_device(Host)
+
+    # AccessKey...
+    gatekeeper = CognitoLoginManager(requests)
+    auth = gatekeeper.device_login(credentials)
+
+    if not auth.is_ok():
+        logger.error(auth.authentication_status.description)
         exit(1)
 
-    except KeyboardInterrupt:
-        print(file=sys.stderr)
-        exit(0)
+    manager = AccessKeyManager(requests)
+    key = manager.get(auth.id_token)
+
+
+    # ----------------------------------------------------------------------------------------------------------------
+    # resources...
 
     client = Client.construct('greengrass', key)
 

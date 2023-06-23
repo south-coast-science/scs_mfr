@@ -20,7 +20,7 @@ If neither --retrieve or --set flags are used, the aws_group_setup utility repor
 the device, if it exists.
 
 SYNOPSIS
-aws_group_setup.py [{ -r | -s [-a AWS_GROUP_NAME] [-f [-k]] }] [-i INDENT] [-v]
+aws_group_setup.py [{ -r | -s [-a AWS_GROUP_NAME] [-f] }] [-i INDENT] [-v]
 
 EXAMPLES
 ./aws_group_setup.py -s oE.1 -a scs-test-001-group -f
@@ -42,16 +42,20 @@ https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/green
 """
 
 import os
+import requests
 import sys
 
 from botocore.exceptions import ClientError, EndpointConnectionError, NoCredentialsError
 
-from scs_core.aws.client.access_key import AccessKey
 from scs_core.aws.client.client import Client
 from scs_core.aws.config.aws import AWS
 from scs_core.aws.greengrass.aws_group import AWSGroup
 from scs_core.aws.greengrass.aws_group_configuration import AWSGroupConfiguration
 from scs_core.aws.greengrass.gg_errors import ProjectMissingError
+
+from scs_core.aws.security.access_key_manager import AccessKeyManager
+from scs_core.aws.security.cognito_device import CognitoDeviceCredentials
+from scs_core.aws.security.cognito_login_manager import CognitoLoginManager
 
 from scs_core.data.datetime import LocalizedDatetime
 from scs_core.data.json import JSONify
@@ -69,7 +73,6 @@ from scs_mfr.cmd.cmd_aws_group_setup import CmdAWSGroupSetup
 
 if __name__ == '__main__':
 
-    key = None
     client = None
     model_compendium_group = None
 
@@ -104,23 +107,27 @@ if __name__ == '__main__':
 
 
     # ----------------------------------------------------------------------------------------------------------------
-    # resources...
+    # authentication...
 
     # AWSGroupConfiguration...
     conf = AWSGroupConfiguration.load(Host)
 
-    # client...
     if cmd.requires_aws_client():
-        try:
-            key = AccessKey.from_stdin() if cmd.stdin else AccessKey.from_user()
-        except ValueError:
-            logger.error('invalid key.')
+        # credentials...
+        credentials = CognitoDeviceCredentials.load_credentials_for_device(Host)
+
+        # AccessKey...
+        gatekeeper = CognitoLoginManager(requests)
+        auth = gatekeeper.device_login(credentials)
+
+        if not auth.is_ok():
+            logger.error(auth.authentication_status.description)
             exit(1)
 
-        except KeyboardInterrupt:
-            print(file=sys.stderr)
-            exit(0)
+        manager = AccessKeyManager(requests)
+        key = manager.get(auth.id_token)
 
+        # client...
         client = Client.construct('greengrass', key)
 
 

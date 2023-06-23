@@ -16,7 +16,7 @@ class CmdAWSGroupSetup(object):
         """
         Constructor
         """
-        self.__parser = optparse.OptionParser(usage="%prog [{ -r | -s [-a AWS_GROUP_NAME] [-f [-k]] }] "
+        self.__parser = optparse.OptionParser(usage="%prog [{ -r | -s [-a AWS_GROUP_NAME] [-f] }] "
                                                     "[-i INDENT] [-v]", version="%prog 1.0")
 
         # retrieval...
@@ -32,10 +32,6 @@ class CmdAWSGroupSetup(object):
 
         self.__parser.add_option("--force", "-f", action="store_true", dest="force", default=False,
                                  help="force overwrite of existing configuration")
-
-        # input...
-        self.__parser.add_option("--stdin-key", "-k", action="store_true", dest="stdin", default=False,
-                                 help="read key from stdin (--force mode only)")
 
         # output...
         self.__parser.add_option("--indent", "-i", action="store", dest="indent", type=int,
@@ -56,7 +52,7 @@ class CmdAWSGroupSetup(object):
         if not self.set and (self.aws_group_name is not None or self.force):
             return False
 
-        if not self.set and self.stdin and not self.force:
+        if not self.set and not self.force:
             return False
 
         return True
@@ -89,11 +85,6 @@ class CmdAWSGroupSetup(object):
 
 
     @property
-    def stdin(self):
-        return self.__opts.stdin
-
-
-    @property
     def indent(self):
         return self.__opts.indent
 
@@ -110,5 +101,5 @@ class CmdAWSGroupSetup(object):
 
 
     def __str__(self, *args, **kwargs):
-        return "CmdAWSGroupSetup:{retrieve:%s, set:%s, aws_group_name:%s, force:%s, stdin:%s indent:%s verbose:%s}" % \
-               (self.retrieve, self.set, self.aws_group_name, self.force, self.stdin, self.indent, self.verbose)
+        return "CmdAWSGroupSetup:{retrieve:%s, set:%s, aws_group_name:%s, force:%s, indent:%s verbose:%s}" % \
+               (self.retrieve, self.set, self.aws_group_name, self.force, self.indent, self.verbose)

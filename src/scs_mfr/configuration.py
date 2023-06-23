@@ -25,7 +25,7 @@ DOCUMENT EXAMPLE
 {
     "rec": "2023-02-28T12:25:24Z",
     "tag": "scs-bgx-431",
-    "ver": 1.2,
+    "ver": 1.3,
     "val": {
         "hostname": "scs-bbe-431",
         "os": {
@@ -236,9 +236,6 @@ DOCUMENT EXAMPLE
                 "interval": 60.0,
                 "tally": 1
             }
-        },
-        "shared-secret": {
-            "key": "0jZoQDiSJJ1Rl"
         },
         "sht-conf": {
             "int": "0x45",
