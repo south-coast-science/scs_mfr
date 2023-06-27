@@ -79,7 +79,7 @@ if __name__ == '__main__':
 
         if cmd.assert_device:
             if not CognitoDeviceIdentity.is_valid_invoice_number(cmd.invoice_number):
-                logger.error("'%s' is not a valid invoice number.")
+                logger.error("'%s' is not a valid invoice number." % cmd.invoice_number)
                 exit(2)
 
             creator = CognitoDeviceCreator(requests)
