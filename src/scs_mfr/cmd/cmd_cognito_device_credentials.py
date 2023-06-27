@@ -16,11 +16,11 @@ class CmdCognitoDeviceCredentials(object):
         """
         Constructor
         """
-        self.__parser = optparse.OptionParser(usage="%prog [{ -a | -t }] [-v]", version="%prog 1.0")
+        self.__parser = optparse.OptionParser(usage="%prog [{ -a INVOICE | -t }] [-v]", version="%prog 1.0")
 
         # functions...
-        self.__parser.add_option("--assert", "-a", action="store_true", dest="assert_device", default=False,
-                                 help="assert the credentials as a Cognito device")
+        self.__parser.add_option("--assert", "-a", type="string", action="store", dest="assert_device",
+                                 help="assert the credentials as a Cognito device for INVOICE")
 
         self.__parser.add_option("--test", "-t", action="store_true", dest="test", default=False,
                                  help="test the credentials")
@@ -36,6 +36,11 @@ class CmdCognitoDeviceCredentials(object):
 
     @property
     def assert_device(self):
+        return self.__opts.assert_device is not None
+
+
+    @property
+    def invoice_number(self):
         return self.__opts.assert_device
 
 
@@ -57,4 +62,4 @@ class CmdCognitoDeviceCredentials(object):
 
     def __str__(self, *args, **kwargs):
         return "CmdCognitoDeviceCredentials:{assert:%s, test:%s, verbose:%s}" %  \
-            (self.assert_device, self.test, self.verbose)
+            (self.__opts.assert_device, self.test, self.verbose)
