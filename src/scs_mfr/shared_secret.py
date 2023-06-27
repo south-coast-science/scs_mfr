@@ -47,6 +47,8 @@ from scs_mfr.cmd.cmd_shared_secret import CmdSharedSecret
 
 if __name__ == '__main__':
 
+    auth = None
+
     # ----------------------------------------------------------------------------------------------------------------
     # cmd...
 
@@ -88,7 +90,7 @@ if __name__ == '__main__':
             logger.info(device)
 
         else:
-            logger.error("WARNING: existing credentials are invalid so the device password cannot be updated.")
+            logger.error("WARNING: existing credentials are invalid, so the Cognito record cannot be updated.")
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -97,6 +99,8 @@ if __name__ == '__main__':
     if cmd.generate:
         secret = SharedSecret(SharedSecret.generate())
         secret.save(Host)
+
+        # TODO: update cognito identity
 
     if cmd.delete and secret is not None:
         secret.delete(Host)

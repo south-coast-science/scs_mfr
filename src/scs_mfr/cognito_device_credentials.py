@@ -34,7 +34,7 @@ scs_mfr/system_id
 import requests
 import sys
 
-from scs_core.aws.security.cognito_device import CognitoDeviceCredentials
+from scs_core.aws.security.cognito_device import CognitoDeviceCredentials, CognitoDeviceIdentity
 from scs_core.aws.security.cognito_device_creator import CognitoDeviceCreator
 from scs_core.aws.security.cognito_device_finder import CognitoDeviceIntrospector
 from scs_core.aws.security.cognito_login_manager import CognitoLoginManager
@@ -78,7 +78,12 @@ if __name__ == '__main__':
         # run...
 
         if cmd.assert_device:
+            if not CognitoDeviceIdentity.is_valid_invoice_number(cmd.invoice_number):
+                logger.error("'%s' is not a valid invoice number.")
+                exit(2)
+
             creator = CognitoDeviceCreator(requests)
+            identity = CognitoDeviceIdentity(credentials.tag, credentials.password, cmd.invoice_number, None, None)
             report = creator.create(credentials)
 
         elif cmd.test:
