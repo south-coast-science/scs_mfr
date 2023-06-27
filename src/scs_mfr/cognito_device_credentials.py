@@ -86,7 +86,7 @@ if __name__ == '__main__':
 
             creator = CognitoDeviceCreator(requests)
             identity = CognitoDeviceIdentity(credentials.tag, credentials.password, cmd.invoice_number, None, None)
-            report = creator.create(credentials)
+            report = creator.create(identity)
 
         elif cmd.test:
             gatekeeper = CognitoLoginManager(requests)
