@@ -10,21 +10,23 @@ source repo: scs_mfr
 DESCRIPTION
 The cognito_device_credentials utility is used to assert the device in the Cognito devices pool, or test the validity
 of the Cognito identity for the device. The credentials are derived from the device system ID and shared secret.
+Additionally, an invoice number must be provided.
 
 In --assert and --test modes, the utility outputs the Cognito device record. Otherwise, the utility outputs the
 credentials.
 
 SYNOPSIS
-Usage: cognito_device_credentials.py [{ -a | -t }] [-v]
+cognito_device_credentials.py [{ -a INVOICE | -t }] [-v]
 
 EXAMPLES
 ./cognito_device_credentials.py -t
 
 DOCUMENT EXAMPLE - CREDENTIALS
-{"username": "scs-be2-3", "password": "################"}
+{"username": "scs-be2-3", "password": "########"}
 
 DOCUMENT EXAMPLE - DEVICE
-{"username": "scs-be2-3", "created": "2023-04-25T10:05:55Z", "last-updated": "2023-04-25T10:05:55Z"}
+{"username": "scs-be2-3", "invoice": "INV-TEST008", "created": "2023-04-25T10:05:55Z",
+"last-updated": "2023-06-26T13:32:33Z"}
 
 SEE ALSO
 scs_mfr/shared_secret
@@ -34,7 +36,7 @@ scs_mfr/system_id
 import requests
 import sys
 
-from scs_core.aws.security.cognito_device import CognitoDeviceCredentials
+from scs_core.aws.security.cognito_device import CognitoDeviceCredentials, CognitoDeviceIdentity
 from scs_core.aws.security.cognito_device_creator import CognitoDeviceCreator
 from scs_core.aws.security.cognito_device_finder import CognitoDeviceIntrospector
 from scs_core.aws.security.cognito_login_manager import CognitoLoginManager
@@ -78,7 +80,12 @@ if __name__ == '__main__':
         # run...
 
         if cmd.assert_device:
+            if not CognitoDeviceIdentity.is_valid_invoice_number(cmd.invoice_number):
+                logger.error("'%s' is not a valid invoice number." % cmd.invoice_number)
+                exit(2)
+
             creator = CognitoDeviceCreator(requests)
+            identity = CognitoDeviceIdentity(credentials.tag, credentials.password, cmd.invoice_number, None, None)
             report = creator.create(credentials)
 
         elif cmd.test:
