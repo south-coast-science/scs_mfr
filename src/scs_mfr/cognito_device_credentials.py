@@ -10,21 +10,23 @@ source repo: scs_mfr
 DESCRIPTION
 The cognito_device_credentials utility is used to assert the device in the Cognito devices pool, or test the validity
 of the Cognito identity for the device. The credentials are derived from the device system ID and shared secret.
+Additionally, an invoice number must be provided.
 
 In --assert and --test modes, the utility outputs the Cognito device record. Otherwise, the utility outputs the
 credentials.
 
 SYNOPSIS
-Usage: cognito_device_credentials.py [{ -a | -t }] [-v]
+cognito_device_credentials.py [{ -a INVOICE | -t }] [-v]
 
 EXAMPLES
 ./cognito_device_credentials.py -t
 
 DOCUMENT EXAMPLE - CREDENTIALS
-{"username": "scs-be2-3", "password": "################"}
+{"username": "scs-be2-3", "password": "########"}
 
 DOCUMENT EXAMPLE - DEVICE
-{"username": "scs-be2-3", "created": "2023-04-25T10:05:55Z", "last-updated": "2023-04-25T10:05:55Z"}
+{"username": "scs-be2-3", "invoice": "INV-TEST008", "created": "2023-04-25T10:05:55Z",
+"last-updated": "2023-06-26T13:32:33Z"}
 
 SEE ALSO
 scs_mfr/shared_secret
