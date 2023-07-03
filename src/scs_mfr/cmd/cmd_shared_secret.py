@@ -19,11 +19,14 @@ class CmdSharedSecret(object):
         """
         Constructor
         """
-        self.__parser = optparse.OptionParser(usage="%prog [{ -g | -d }] [-v]", version="%prog 1.0")
+        self.__parser = optparse.OptionParser(usage="%prog [{ -g [-i] | -d }] [-v]", version="%prog 1.0")
 
         # optional...
         self.__parser.add_option("--generate", "-g", action="store_true", dest="generate", default=False,
                                  help="set shared secret")
+
+        self.__parser.add_option("--ignore-credentials", "-i", action="store_true", dest="ignore_credentials",
+                                 default=False, help="do not attempt to update credentials")
 
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the shared secret")
@@ -40,6 +43,9 @@ class CmdSharedSecret(object):
         if self.generate and self.delete:
             return False
 
+        if self.ignore_credentials and not self.generate:
+            return False
+
         return True
 
 
@@ -48,6 +54,11 @@ class CmdSharedSecret(object):
     @property
     def generate(self):
         return self.__opts.generate
+
+
+    @property
+    def ignore_credentials(self):
+        return self.__opts.ignore_credentials
 
 
     @property
@@ -67,5 +78,5 @@ class CmdSharedSecret(object):
 
 
     def __str__(self, *args, **kwargs):
-        return "CmdSharedSecret:{generate:%s, delete:%s, verbose:%s}" % \
-               (self.generate, self.delete, self.verbose)
+        return "CmdSharedSecret:{generate:%s, ignore_credentials:%s, delete:%s, verbose:%s}" % \
+               (self.generate, self.ignore_credentials, self.delete, self.verbose)
