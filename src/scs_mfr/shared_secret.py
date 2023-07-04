@@ -13,7 +13,7 @@ secret is generated for the first time on a new device, this update should be in
 --ignore-credentials flag.
 
 SYNOPSIS
-Usage: shared_secret.py [{ -g [-i] | -d }] [-v]
+shared_secret.py [{ -g [-i] | -d }] [-v]
 
 EXAMPLES
 ./shared_secret.py -g

@@ -23,7 +23,7 @@ class CmdSharedSecret(object):
 
         # optional...
         self.__parser.add_option("--generate", "-g", action="store_true", dest="generate", default=False,
-                                 help="set shared secret")
+                                 help="set or recreate shared secret")
 
         self.__parser.add_option("--ignore-credentials", "-i", action="store_true", dest="ignore_credentials",
                                  default=False, help="do not attempt to update credentials")
