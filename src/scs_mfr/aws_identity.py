@@ -5,7 +5,7 @@ Created on 09 Oct 2020
 
 @author: Jade Page (jade.page@southcoastscience.com)
 
-source repo: scs_analysis
+source repo: scs_mfr
 
 DESCRIPTION
 The aws_identity script allows the user to change the identity of an already-configured greengrass install,
