@@ -33,13 +33,14 @@ Note that, although support is provided for multiple named configurations, the c
 unnamed (solitary) configurations.
 
 SYNOPSIS
-opc_conf.py [-n NAME] [{ [-m MODEL] [-s SAMPLE_PERIOD] [-z { 0 | 1 }] [-p { 0 | 1 }] [-b BUS] [-a ADDRESS] | -d }] [-v]
+opc_conf.py [-n NAME] [{ [-m MODEL] [-s SAMPLE_PERIOD] [-z { 0 | 1 }] [-p { 0 | 1 }] [-c CUSTOM_DEV_PATH] | -d }] [-v]
 
 EXAMPLES
-./opc_conf.py -m S30 -b 1
+./opc_conf.py -v -n test -m N3 -s 10 -c /dev/spi/by-connector/H3
 
 DOCUMENT EXAMPLE
-{"model": "N3", "sample-period": 10, "restart-on-zeroes": true, "power-saving": false}
+{"model": "N3", "sample-period": 10, "restart-on-zeroes": true, "power-saving": false,
+"custom-dev-path": "/dev/spi/by-connector/H3"}
 
 FILES
 ~/SCS/conf/opc_conf.json
@@ -60,6 +61,7 @@ this is not currently implemented.
 import sys
 
 from scs_core.data.json import JSONify
+from scs_core.sys.logging import Logging
 
 from scs_dfe.particulate.opc_conf import OPCConf
 
@@ -72,8 +74,6 @@ from scs_mfr.cmd.cmd_opc_conf import CmdOPCConf
 
 if __name__ == '__main__':
 
-    incompatibles = []
-
     # ----------------------------------------------------------------------------------------------------------------
     # cmd...
 
@@ -83,9 +83,11 @@ if __name__ == '__main__':
         cmd.print_help(sys.stderr)
         exit(2)
 
-    if cmd.verbose:
-        print("opc_conf: %s" % cmd, file=sys.stderr)
-        sys.stderr.flush()
+    # logging...
+    Logging.config('opc_conf', verbose=cmd.verbose)
+    logger = Logging.getLogger()
+
+    logger.info(cmd)
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -100,8 +102,7 @@ if __name__ == '__main__':
 
     if cmd.set():
         if conf is None and not cmd.is_complete():
-            print("opc_conf: No configuration is stored - you must therefore set the required fields.",
-                  file=sys.stderr)
+            logger.error("opc_conf: No configuration is stored - you must therefore set the required fields.")
             cmd.print_help(sys.stderr)
             exit(2)
 
@@ -113,11 +114,9 @@ if __name__ == '__main__':
 
         restart_on_zeroes = cmd.restart_on_zeroes if cmd.restart_on_zeroes is not None else conf.restart_on_zeroes
         power_saving = cmd.power_saving if cmd.power_saving is not None else conf.power_saving
-        bus = conf.bus if cmd.bus is None else cmd.bus
-        address = conf.address if cmd.address is None else cmd.address
+        custom_dev_path = conf.custom_dev_path if cmd.custom_dev_path is None else cmd.custom_dev_path
 
-        conf = OPCConf(model, sample_period, restart_on_zeroes, power_saving,
-                       bus, address)
+        conf = OPCConf(model, sample_period, restart_on_zeroes, power_saving, custom_dev_path, name=cmd.name)
 
         conf.save(Host)
 

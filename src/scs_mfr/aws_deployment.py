@@ -5,7 +5,7 @@ Created on 11 Jan 2021
 
 @author: Jade Page (jade.page@southcoastscience.com)
 
-source repo: scs_analysis
+source repo: scs_mfr
 
 DESCRIPTION
 The aws_deployment utility is used to invoke a deployment by the AWS cloud to the device. The deployment
