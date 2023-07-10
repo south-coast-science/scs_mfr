@@ -20,35 +20,33 @@ class CmdOPCConf(object):
 
     def __init__(self):
         self.__parser = optparse.OptionParser(usage="%prog [-n NAME] [{ [-m MODEL] [-s SAMPLE_PERIOD] [-z { 0 | 1 }] "
-                                                    "[-p { 0 | 1 }] [-b BUS] [-a ADDRESS] | -d }] [-v]",
+                                                    "[-p { 0 | 1 }] [-c CUSTOM_DEV_PATH] | -d }] [-v]",
                                               version="%prog 1.0")
 
         # identity...
-        self.__parser.add_option("--name", "-n", type="string", nargs=1, action="store", dest="name",
+        self.__parser.add_option("--name", "-n", type="string", action="store", dest="name",
                                  help="the name of the OPC configuration")
 
-        # function...
-        self.__parser.add_option("--model", "-m", type="string", nargs=1, action="store", dest="model",
+        # fields...
+        self.__parser.add_option("--model", "-m", type="string", action="store", dest="model",
                                  help="set MODEL { N2 | N3 | R1 | S30 }")
 
         self.__parser.add_option("--sample-period", "-s", type="int", nargs=1, action="store", dest="sample_period",
                                  help="set SAMPLE_PERIOD")
 
-        self.__parser.add_option("--restart-on-zeroes", "-z", type="int", nargs=1, dest="restart_on_zeroes",
+        self.__parser.add_option("--restart-on-zeroes", "-z", type="int", dest="restart_on_zeroes",
                                  action="store", help="restart on zero readings (default 1)")
 
-        self.__parser.add_option("--power-saving", "-p", type="int", nargs=1, action="store", dest="power_saving",
+        self.__parser.add_option("--power-saving", "-p", type="int", action="store", dest="power_saving",
                                  help="enable power saving mode (default 0)")
 
-        self.__parser.add_option("--bus", "-b", type="int", nargs=1, action="store", dest="bus",
-                                 help="override default host bus")
-
-        self.__parser.add_option("--address", "-a", type="int", nargs=1, action="store", dest="address",
-                                 help="override default host chip select or address")
+        self.__parser.add_option("--custom-dev-path", "-c", type="string", action="store", dest="custom_dev_path",
+                                 help="override default SPI path")
 
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the OPC configuration")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
@@ -85,7 +83,7 @@ class CmdOPCConf(object):
     def set(self):
         return self.model is not None or self.sample_period is not None or \
                self.restart_on_zeroes is not None or self.power_saving is not None \
-               or self.bus is not None or self.address is not None
+               or self.custom_dev_path is not None
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -116,13 +114,8 @@ class CmdOPCConf(object):
 
 
     @property
-    def bus(self):
-        return self.__opts.bus
-
-
-    @property
-    def address(self):
-        return self.__opts.address
+    def custom_dev_path(self):
+        return self.__opts.custom_dev_path
 
 
     @property
@@ -143,6 +136,6 @@ class CmdOPCConf(object):
 
     def __str__(self, *args, **kwargs):
         return "CmdOPCConf:{name:%s, model:%s, sample_period:%s, restart_on_zeroes:%s, power_saving:%s, " \
-               "bus:%s, address:%s, delete:%s, verbose:%s}" % \
+               "custom_dev_path:%s, delete:%s, verbose:%s}" % \
                (self.name, self.model, self.sample_period, self.restart_on_zeroes, self.power_saving,
-                self.bus, self.address, self.delete, self.verbose)
+                self.custom_dev_path, self.delete, self.verbose)

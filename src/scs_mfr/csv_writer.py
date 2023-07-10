@@ -5,7 +5,7 @@ Created on 19 Aug 2016
 
 @author: Bruno Beloff (bruno.beloff@southcoastscience.com)
 
-source repo: scs_analysis
+source repo: scs_mfr
 
 DESCRIPTION
 The csv_writer utility is used to convert from JSON format to comma-separated value (CSV) format.

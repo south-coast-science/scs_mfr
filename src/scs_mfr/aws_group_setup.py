@@ -5,7 +5,7 @@ Created on 21 Sep 2020
 
 @author: Jade Page (jade.page@southcoastscience.com)
 
-source repo: scs_analysis
+source repo: scs_mfr
 
 DESCRIPTION
 The aws_group_setup utility is designed to automate the creation of AWS Greengrass groups using South
