@@ -35,7 +35,6 @@ from scs_dfe.interface.interface_id import InterfaceID
 
 
 # TODO: fix dfe_id.py
-
 # --------------------------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
