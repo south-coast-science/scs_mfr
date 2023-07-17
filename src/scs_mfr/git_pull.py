@@ -46,7 +46,6 @@ from scs_host.sys.host import Host
 from scs_mfr.cmd.cmd_git_pull import CmdGitPull
 
 
-# TODO: why does this not report result when doing a pull?
 # --------------------------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
