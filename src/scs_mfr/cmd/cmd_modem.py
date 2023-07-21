@@ -34,7 +34,6 @@ class CmdModem(object):
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
-        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 
