@@ -6,6 +6,8 @@ Created on 24 Feb 2021
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -18,7 +20,7 @@ class CmdProvisionNewSCS(object):
         """
         self.__parser = optparse.OptionParser(usage="%prog -i INVOICE -p ORG GROUP LOCATION [-u] [-s] "
                                                     "[{ -a AFE | -d DSI DATE }] [-c] [-t TIMEZONE] [-v]",
-                                              version="%prog 1.0")
+                                              version=version())
 
         # required settings...
         self.__parser.add_option("--invoice-number", "-i", type="string", action="store", dest="invoice_number",
@@ -46,10 +48,11 @@ class CmdProvisionNewSCS(object):
         self.__parser.add_option("--timezone", "-t", type="string", action="store", dest="timezone",
                                  help="timezone name")
 
-        # narrative...
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

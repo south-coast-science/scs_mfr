@@ -7,6 +7,7 @@ Created on 13 Jul 2016
 import optparse
 
 from scs_dfe.gps.gps_conf import GPSConf
+from scs_mfr import version
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -20,30 +21,32 @@ class CmdGPSConf(object):
 
     def __init__(self):
         self.__parser = optparse.OptionParser(usage="%prog [{ [-m MODEL] [-i INTERVAL] [-t TALLY] [-f REPORT_FILE] "
-                                                    "[-l { 0 | 1 }] | -d }] [-v]", version="%prog 1.0")
+                                                    "[-l { 0 | 1 }] | -d }] [-v]", version=version())
 
         # optional...
-        self.__parser.add_option("--model", "-m", type="string", nargs=1, action="store", dest="model",
+        self.__parser.add_option("--model", "-m", type="string", action="store", dest="model",
                                  help="set the model (PAM7Q or SAM8Q)")
 
-        self.__parser.add_option("--sample-interval", "-i", type="int", nargs=1, action="store", dest="sample_interval",
+        self.__parser.add_option("--sample-interval", "-i", type="int", action="store", dest="sample_interval",
                                  help="set sampling interval")
 
-        self.__parser.add_option("--tally", "-t", type="int", nargs=1, action="store", dest="tally",
+        self.__parser.add_option("--tally", "-t", type="int", action="store", dest="tally",
                                  help="set the averaging tally")
 
-        self.__parser.add_option("--report-file", "-f", type="string", nargs=1, action="store", dest="report_file",
+        self.__parser.add_option("--report-file", "-f", type="string", action="store", dest="report_file",
                                  help="file to store latest GPS report")
 
-        self.__parser.add_option("--debug", "-l", type="int", nargs=1, action="store", dest="debug",
+        self.__parser.add_option("--debug", "-l", type="int", action="store", dest="debug",
                                  help="set debug logging (default is 0)")
 
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the GPS configuration")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

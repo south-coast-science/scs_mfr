@@ -8,6 +8,8 @@ source repo: scs_mfr
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -19,7 +21,7 @@ class CmdCSVWriter(object):
         Constructor
         """
         self.__parser = optparse.OptionParser(usage="%prog [{ -a | -x | -s }] [-q] [-e] [-v] [FILENAME]",
-                                              version="%prog 1.0")
+                                              version=version())
 
         # functions...
         self.__parser.add_option("--append", "-a", action="store_true", dest="append", default=False,
@@ -41,6 +43,7 @@ class CmdCSVWriter(object):
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

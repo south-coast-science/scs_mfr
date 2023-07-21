@@ -7,6 +7,7 @@ Created on 13 Jul 2016
 import optparse
 
 from scs_dfe.particulate.opc_conf import OPCConf
+from scs_mfr import version
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -21,7 +22,7 @@ class CmdOPCConf(object):
     def __init__(self):
         self.__parser = optparse.OptionParser(usage="%prog [-n NAME] [{ [-m MODEL] [-s SAMPLE_PERIOD] [-z { 0 | 1 }] "
                                                     "[-p { 0 | 1 }] [-c CUSTOM_DEV_PATH] | -d }] [-v]",
-                                              version="%prog 1.0")
+                                              version=version())
 
         # identity...
         self.__parser.add_option("--name", "-n", type="string", action="store", dest="name",
@@ -31,7 +32,7 @@ class CmdOPCConf(object):
         self.__parser.add_option("--model", "-m", type="string", action="store", dest="model",
                                  help="set MODEL { N2 | N3 | R1 | S30 }")
 
-        self.__parser.add_option("--sample-period", "-s", type="int", nargs=1, action="store", dest="sample_period",
+        self.__parser.add_option("--sample-period", "-s", type="int", action="store", dest="sample_period",
                                  help="set SAMPLE_PERIOD")
 
         self.__parser.add_option("--restart-on-zeroes", "-z", type="int", dest="restart_on_zeroes",
@@ -50,6 +51,7 @@ class CmdOPCConf(object):
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

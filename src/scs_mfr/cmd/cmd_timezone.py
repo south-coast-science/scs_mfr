@@ -6,6 +6,8 @@ Created on 12 Aug 2017
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -18,21 +20,23 @@ class CmdTimezone(object):
 
     def __init__(self):
         self.__parser = optparse.OptionParser(usage="%prog [{ -z | -s TIMEZONE_NAME | -l }] [-v]",
-                                              version="%prog 1.0")
+                                              version=version())
 
         # optional...
         self.__parser.add_option("--zones", "-z", action="store_true", dest="list", default=False,
                                  help="list the available timezone names to stderr")
 
-        self.__parser.add_option("--set", "-s", type="string", nargs=1, action="store", dest="zone",
+        self.__parser.add_option("--set", "-s", type="string", action="store", dest="zone",
                                  help="override system timezone with ZONE")
 
         self.__parser.add_option("--link", "-l", action="store_true", dest="link", default=False,
                                  help="link to system timezone")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

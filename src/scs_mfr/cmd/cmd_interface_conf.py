@@ -7,6 +7,7 @@ Created on 27 Feb 2018
 import optparse
 
 from scs_dfe.interface.interface_conf import InterfaceConf
+from scs_mfr import version
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -21,18 +22,20 @@ class CmdInterfaceConf(object):
     def __init__(self):
         models = ' | '.join(InterfaceConf.models())
 
-        self.__parser = optparse.OptionParser(usage="%prog [{ -m MODEL | -d }] [-v]", version="%prog 1.0")
+        self.__parser = optparse.OptionParser(usage="%prog [{ -m MODEL | -d }] [-v]", version=version())
 
         # optional...
-        self.__parser.add_option("--model", "-m", type="string", nargs=1, action="store", dest="model",
+        self.__parser.add_option("--model", "-m", type="string", action="store", dest="model",
                                  help="interface model { %s }" % models)
 
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the interface configuration")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

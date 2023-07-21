@@ -7,6 +7,7 @@ Created on 1 Mar 2017
 import optparse
 
 from scs_core.data.datetime import LocalizedDatetime
+from scs_mfr import version
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -36,10 +37,10 @@ class CmdBaseline(object):
         self.__parser = optparse.OptionParser(usage="%prog [{ -b GAS  | "
                                                     "{ { -s | -o } GAS VALUE | -c GAS CORRECT REPORTED } "
                                                     "[-r SAMPLE_REC -t SAMPLE_TEMP -m SAMPLE_HUMID] | -z | -d }] "
-                                                    "[-i INDENT] [-v]", version="%prog 1.0")
+                                                    "[-i INDENT] [-v]", version=version())
 
         # functions...
-        self.__parser.add_option("--baseline", "-b", type="string", nargs=1, action="store", dest="baseline",
+        self.__parser.add_option("--baseline", "-b", type="string", action="store", dest="baseline",
                                  help="report offset for GAS")
 
         self.__parser.add_option("--set", "-s", type="string", nargs=2, action="store", dest="set",
@@ -58,13 +59,13 @@ class CmdBaseline(object):
                                  help="delete the baseline configuration")
 
         # sample...
-        self.__parser.add_option("--sample-rec", "-r", type="string", nargs=1, action="store", dest="sample_rec",
+        self.__parser.add_option("--sample-rec", "-r", type="string", action="store", dest="sample_rec",
                                  help="sample ISO 8601 datetime")
 
-        self.__parser.add_option("--sample-temp", "-t", type="float", nargs=1, action="store", dest="sample_temp",
+        self.__parser.add_option("--sample-temp", "-t", type="float", action="store", dest="sample_temp",
                                  help="sample temperature")
 
-        self.__parser.add_option("--sample-humid", "-m", type="float", nargs=1, action="store", dest="sample_humid",
+        self.__parser.add_option("--sample-humid", "-m", type="float", action="store", dest="sample_humid",
                                  help="sample humidity")
 
         # output...
@@ -74,6 +75,7 @@ class CmdBaseline(object):
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

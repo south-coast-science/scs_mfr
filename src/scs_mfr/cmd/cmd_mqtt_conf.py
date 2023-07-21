@@ -6,6 +6,8 @@ Created on 17 May 2018
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -18,24 +20,26 @@ class CmdMQTTConf(object):
 
     def __init__(self):
         self.__parser = optparse.OptionParser(usage="%prog { [-i { 0 | 1 }] [-f REPORT_FILE] [-l { 0 | 1 }] | "
-                                                    "-d } [-v]", version="%prog 1.0")
+                                                    "-d } [-v]", version=version())
 
         # optional...
-        self.__parser.add_option("--inhibit-pub", "-i", type="int", nargs=1, action="store", dest="inhibit_publishing",
+        self.__parser.add_option("--inhibit-pub", "-i", type="int", action="store", dest="inhibit_publishing",
                                  default=None, help="inhibit publishing (1) or enable (0)")
 
-        self.__parser.add_option("--report-file", "-f", type="string", nargs=1, action="store", dest="report_file",
+        self.__parser.add_option("--report-file", "-f", type="string", action="store", dest="report_file",
                                  help="file to store latest queue length value")
 
-        self.__parser.add_option("--debug", "-l", type="int", nargs=1, action="store", dest="debug",
+        self.__parser.add_option("--debug", "-l", type="int", action="store", dest="debug",
                                  help="set debug logging (default is 0)")
 
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="revert to the default MQTT configuration")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

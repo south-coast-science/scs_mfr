@@ -6,6 +6,8 @@ Created on 30 Apr 2021
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -16,7 +18,7 @@ class CmdModem(object):
         """
         Constructor
         """
-        self.__parser = optparse.OptionParser(usage="%prog { -m | -c | -s } [-v]", version="%prog 1.0")
+        self.__parser = optparse.OptionParser(usage="%prog { -m | -c | -s } [-v]", version=version())
 
         # modem...
         self.__parser.add_option("--model", "-m", action="store_true", dest="model", default=False,
@@ -28,10 +30,11 @@ class CmdModem(object):
         self.__parser.add_option("--sim", "-s", action="store_true", dest="sim", default=False,
                                  help="report on SIM")
 
-        # narrative...
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

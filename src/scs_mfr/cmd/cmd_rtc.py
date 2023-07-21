@@ -6,6 +6,8 @@ Created on 18 May 2017
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +17,7 @@ class CmdRTC(object):
     # ----------------------------------------------------------------------------------------------------------------
 
     def __init__(self):
-        self.__parser = optparse.OptionParser(usage="%prog [-i] [-s] [-v]", version="%prog 1.0")
+        self.__parser = optparse.OptionParser(usage="%prog [-i] [-s] [-v]", version=version())
 
         # optional...
         self.__parser.add_option("--init", "-i", action="store_true", dest="initialise", default=False,
@@ -24,9 +26,11 @@ class CmdRTC(object):
         self.__parser.add_option("--set", "-s", action="store_true", dest="set", default=False,
                                  help="set RTC time from system time")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

@@ -6,6 +6,8 @@ Created on 2 Jun 2021
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -32,13 +34,13 @@ class CmdSCD30Baseline(object):
         """
         self.__parser = optparse.OptionParser(usage="%prog [{ { { -s | -o } VALUE | -c CORRECT REPORTED } "
                                                     "[-t TEMP -m HUMID [-p PRESS]] | -z  | -d }] [-v]",
-                                              version="%prog 1.0")
+                                              version=version())
 
         # function...
-        self.__parser.add_option("--set", "-s", type="int", nargs=1, action="store", dest="set",
+        self.__parser.add_option("--set", "-s", type="int", action="store", dest="set",
                                  help="set offset to integer VALUE")
 
-        self.__parser.add_option("--offset", "-o", type="int", nargs=1, action="store", dest="offset",
+        self.__parser.add_option("--offset", "-o", type="int", action="store", dest="offset",
                                  help="change offset by integer VALUE")
 
         self.__parser.add_option("--correct", "-c", type="int", nargs=2, action="store", dest="correct",
@@ -51,13 +53,13 @@ class CmdSCD30Baseline(object):
                                  help="delete the baseline configuration")
 
         # sample...
-        self.__parser.add_option("--temp", "-t", type="float", nargs=1, action="store", dest="temp",
+        self.__parser.add_option("--temp", "-t", type="float", action="store", dest="temp",
                                  help="record temperature value (°C)")
 
-        self.__parser.add_option("--humid", "-m", type="float", nargs=1, action="store", dest="humid",
+        self.__parser.add_option("--humid", "-m", type="float", action="store", dest="humid",
                                  help="record relative humidity value (%)")
 
-        self.__parser.add_option("--press", "-p", type="float", nargs=1, action="store", dest="press",
+        self.__parser.add_option("--press", "-p", type="float", action="store", dest="press",
                                  help="record actual barometric pressure value (kPa)")
 
         # output...
@@ -67,6 +69,7 @@ class CmdSCD30Baseline(object):
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

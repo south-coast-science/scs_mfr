@@ -6,6 +6,8 @@ Created on 4 Jul 2023
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -16,12 +18,13 @@ class CmdSetHostname(object):
         """
         Constructor
         """
-        self.__parser = optparse.OptionParser(usage="%prog [-v] SERIAL_NUMBER", version="%prog 1.0")
+        self.__parser = optparse.OptionParser(usage="%prog [-v] SERIAL_NUMBER", version=version())
 
         # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

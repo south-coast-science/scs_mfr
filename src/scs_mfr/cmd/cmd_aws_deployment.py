@@ -6,6 +6,8 @@ Created on 11 Jan 2021
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -16,18 +18,20 @@ class CmdAWSDeployment(object):
         """
         Constructor
         """
-        self.__parser = optparse.OptionParser(usage="%prog [-w] [-i INDENT] [-v]", version="%prog 1.0")
+        self.__parser = optparse.OptionParser(usage="%prog [-w] [-i INDENT] [-v]", version=version())
 
         # output...
         self.__parser.add_option("--wait", "-w", action="store_true", dest="wait", default=False,
                                  help="wait for the deployment to finish")
 
+        # output...
         self.__parser.add_option("--indent", "-i", action="store", dest="indent", type=int,
                                  help="pretty-print the output with INDENT")
 
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

@@ -8,6 +8,8 @@ import optparse
 
 from datetime import date
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -20,13 +22,13 @@ class CmdAFECalib(object):
         """
         self.__parser = optparse.OptionParser(usage="%prog [{ -f SERIAL_NUMBER | -a SERIAL_NUMBER | "
                                                     "-s SERIAL_NUMBER YYYY-MM-DD | -r | -t  | -d }] [-i INDENT] [-v]",
-                                              version="%prog 1.0")
+                                              version=version())
 
         # functions...
-        self.__parser.add_option("--find", "-f", type="string", nargs=1, action="store", dest="find_serial_number",
+        self.__parser.add_option("--find", "-f", type="string", action="store", dest="find_serial_number",
                                  help="find calibration data (without loading it)")
 
-        self.__parser.add_option("--afe", "-a", type="string", nargs=1, action="store", dest="afe_serial_number",
+        self.__parser.add_option("--afe", "-a", type="string", action="store", dest="afe_serial_number",
                                  help="load calibration data for AFE with serial number")
 
         self.__parser.add_option("--sensor", "-s", type="string", nargs=2, action="store", dest="sensor",
@@ -48,6 +50,7 @@ class CmdAFECalib(object):
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

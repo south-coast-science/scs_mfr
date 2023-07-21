@@ -7,6 +7,7 @@ Created on 22 Dec 2020
 import optparse
 
 from scs_core.aws.greengrass.aws_group_configuration import AWSGroupConfiguration
+from scs_mfr import version
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -23,19 +24,19 @@ class CmdModelConf(object):
         self.__group_names = ' | '.join(AWSGroupConfiguration.templates())
 
         self.__parser = optparse.OptionParser(usage="%prog [{ -l | [-u UDS_PATH] [-i INTERFACE] [-g GROUP] | -d }] "
-                                                    "[-v]", version="%prog 1.0")
+                                                    "[-v]", version=version())
 
         # functions...
         self.__parser.add_option("--list", "-l", action="store_true", dest="list", default=False,
                                  help="list the available model compendium groups")
 
-        self.__parser.add_option("--uds-path", "-u", type="string", nargs=1, action="store", dest="uds_path",
+        self.__parser.add_option("--uds-path", "-u", type="string", action="store", dest="uds_path",
                                  help="set the UDS path (relative to ~/SCS)")
 
-        self.__parser.add_option("--interface", "-i", type="string", nargs=1, action="store", dest="model_interface",
+        self.__parser.add_option("--interface", "-i", type="string", action="store", dest="model_interface",
                                  help="set the interface code { %s }" % self.__interface_names)
 
-        self.__parser.add_option("--group", "-g", type="string", nargs=1, action="store", dest="model_compendium_group",
+        self.__parser.add_option("--group", "-g", type="string", action="store", dest="model_compendium_group",
                                  help="set the model compendium group { %s }" % self.__group_names)
 
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
@@ -45,6 +46,7 @@ class CmdModelConf(object):
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

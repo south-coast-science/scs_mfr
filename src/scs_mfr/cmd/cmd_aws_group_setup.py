@@ -6,6 +6,8 @@ Created on 21 Sep 2020
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -17,7 +19,7 @@ class CmdAWSGroupSetup(object):
         Constructor
         """
         self.__parser = optparse.OptionParser(usage="%prog [{ -r | -s [-a AWS_GROUP_NAME] [-f] }] "
-                                                    "[-i INDENT] [-v]", version="%prog 1.0")
+                                                    "[-i INDENT] [-v]", version=version())
 
         # retrieval...
         self.__parser.add_option("--retrieve", "-r", action="store_true", dest="retrieve", default=False,
@@ -40,6 +42,7 @@ class CmdAWSGroupSetup(object):
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

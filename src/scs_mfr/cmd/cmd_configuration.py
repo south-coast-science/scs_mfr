@@ -6,6 +6,8 @@ Created on 29 Jan 2021
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -17,16 +19,17 @@ class CmdConfiguration(object):
         Constructor
         """
         self.__parser = optparse.OptionParser(usage="%prog [-s CONFIGURATION] [-x] [{ -i INDENT | -t }] [-v]",
-                                              version="%prog 1.0")
+                                              version=version())
 
         # optional...
-        self.__parser.add_option("--save", "-s", type="string", nargs=1, action="store", dest="configuration",
+        self.__parser.add_option("--save", "-s", type="string", action="store", dest="configuration",
                                  help="save the given JSON configuration component(s)")
 
         # output...
         self.__parser.add_option("--exclude-sim", "-x", action="store_true", dest="exclude_sim", default=False,
                                  help="exclude SIM information from output")
 
+        # output...
         self.__parser.add_option("--indent", "-i", action="store", dest="indent", type=int,
                                  help="pretty-print the output with INDENT")
 
@@ -36,6 +39,7 @@ class CmdConfiguration(object):
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

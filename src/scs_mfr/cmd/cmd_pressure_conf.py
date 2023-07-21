@@ -8,6 +8,7 @@ import optparse
 
 from scs_core.data.datum import Datum
 from scs_dfe.climate.pressure_conf import PressureConf
+from scs_mfr import version
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -22,21 +23,23 @@ class CmdPressureConf(object):
     def __init__(self):
         models = ' | '.join(PressureConf.models())
 
-        self.__parser = optparse.OptionParser(usage="%prog { [-m MODEL] [-a ALTITUDE] | -d } [-v]", version="%prog 1.0")
+        self.__parser = optparse.OptionParser(usage="%prog { [-m MODEL] [-a ALTITUDE] | -d } [-v]", version=version())
 
         # optional...
-        self.__parser.add_option("--model", "-m", type="string", nargs=1, action="store", dest="model",
+        self.__parser.add_option("--model", "-m", type="string", action="store", dest="model",
                                  help="barometer model { %s }" % models)
 
-        self.__parser.add_option("--altitude", "-a", type="string", nargs=1, action="store", dest="altitude",
+        self.__parser.add_option("--altitude", "-a", type="string", action="store", dest="altitude",
                                  help="altitude in metres or 'GPS' for GPS altitude")
 
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the pressure configuration")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 

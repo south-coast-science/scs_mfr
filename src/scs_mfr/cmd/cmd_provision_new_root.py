@@ -6,6 +6,8 @@ Created on 24 Feb 2021
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -16,16 +18,17 @@ class CmdProvisionNewRoot(object):
         """
         Constructor
         """
-        self.__parser = optparse.OptionParser(usage="%prog [-s] [-v]", version="%prog 1.0")
+        self.__parser = optparse.OptionParser(usage="%prog [-s] [-v]", version=version())
 
         # functions...
         self.__parser.add_option("--prep-sd", "-s", action="store_true", dest="prep_sd", default=False,
                                  help="format the SD card")
 
-        # narrative...
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
+        # build...
         self.__opts, self.__args = self.__parser.parse_args()
 
 
