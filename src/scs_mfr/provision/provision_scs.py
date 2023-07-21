@@ -31,11 +31,16 @@ class ProvisionSCS(object):
     # ----------------------------------------------------------------------------------------------------------------
     # stage 1...
 
-    def upgrade(self):
-        self.__logger.info("upgrade...")
+    def upgrade_pips(self):
+        self.__logger.info("upgrade pips...")
 
         self.__clu.s(['pip', 'install', '--upgrade', 'pip'], no_verbose=True)
         self.__clu.s(['pip', 'install', '--upgrade', 'requests'], no_verbose=True)
+
+
+    def upgrade_scs(self):
+        self.__logger.info("upgrade scs...")
+
         self.__clu.s([self.MFR + 'git_pull.py', '-p', '-t', 60])
 
 
