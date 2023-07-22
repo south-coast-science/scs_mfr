@@ -20,11 +20,12 @@ class CmdAWSIdentity(object):
         """
         self.__parser = optparse.OptionParser(usage="%prog [-s [-g GROUP_NAME] [-c CORE_NAME]] [-i INDENT] [-v]",
                                               version=version())
-        # commands...
+
+        # mode...
         self.__parser.add_option("--setup", "-s", action="store_true", dest="setup", default=False,
                                  help="setup the device")
 
-        # optional..
+        # fields..
         self.__parser.add_option("--group-name", "-g", action="store", dest="group_name", default=False,
                                  help="Overwrite the name of the group to create")
 

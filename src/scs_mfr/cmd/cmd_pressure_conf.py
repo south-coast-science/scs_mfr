@@ -25,13 +25,14 @@ class CmdPressureConf(object):
 
         self.__parser = optparse.OptionParser(usage="%prog { [-m MODEL] [-a ALTITUDE] | -d } [-v]", version=version())
 
-        # optional...
+        # fields...
         self.__parser.add_option("--model", "-m", type="string", action="store", dest="model",
                                  help="barometer model { %s }" % models)
 
         self.__parser.add_option("--altitude", "-a", type="string", action="store", dest="altitude",
                                  help="altitude in metres or 'GPS' for GPS altitude")
 
+        # delete...
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the pressure configuration")
 

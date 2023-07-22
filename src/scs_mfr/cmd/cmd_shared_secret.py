@@ -23,7 +23,7 @@ class CmdSharedSecret(object):
         """
         self.__parser = optparse.OptionParser(usage="%prog [{ -g [-i] | -d }] [-v]", version=version())
 
-        # optional...
+        # operations...
         self.__parser.add_option("--generate", "-g", action="store_true", dest="generate", default=False,
                                  help="set or recreate shared secret")
 

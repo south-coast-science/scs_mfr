@@ -26,7 +26,7 @@ class CmdModelConf(object):
         self.__parser = optparse.OptionParser(usage="%prog [{ -l | [-u UDS_PATH] [-i INTERFACE] [-g GROUP] | -d }] "
                                                     "[-v]", version=version())
 
-        # functions...
+        # fields...
         self.__parser.add_option("--list", "-l", action="store_true", dest="list", default=False,
                                  help="list the available model compendium groups")
 
@@ -39,6 +39,7 @@ class CmdModelConf(object):
         self.__parser.add_option("--group", "-g", type="string", action="store", dest="model_compendium_group",
                                  help="set the model compendium group { %s }" % self.__group_names)
 
+        # delete...
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the inference configuration")
 

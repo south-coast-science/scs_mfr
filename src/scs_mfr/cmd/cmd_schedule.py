@@ -18,7 +18,7 @@ class CmdSchedule(object):
         self.__parser = optparse.OptionParser(usage="%prog [{-s NAME INTERVAL TALLY | -r NAME }] [-v]",
                                               version=version())
 
-        # optional...
+        # operations...
         self.__parser.add_option("--set", "-s", type="string", nargs=3, action="store", dest="set",
                                  help="set schedule NAME, INTERVAL (seconds) and TALLY (count)")
 

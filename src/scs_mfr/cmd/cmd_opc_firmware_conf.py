@@ -22,7 +22,7 @@ class CmdOPCFirmwareConf(object):
         self.__parser = optparse.OptionParser(usage="%prog [-n NAME] [{ -s FIELD VALUE | -f CONF_FILE }] [-c] [-v]",
                                               version=version())
 
-        # optional...
+        # operations...
         self.__parser.add_option("--name", "-n", type="string", action="store", dest="name",
                                  help="the name of the OPC configuration")
 

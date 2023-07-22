@@ -20,7 +20,7 @@ class CmdOPCCleaningInterval(object):
         """
         self.__parser = optparse.OptionParser(usage="%prog [-s INTERVAL] [-v]", version=version())
 
-        # optional...
+        # operations...
         self.__parser.add_option("--set", "-s", type="int", action="store", dest="interval",
                                  help="set the cleaning interval (>= 0 seconds)")
 

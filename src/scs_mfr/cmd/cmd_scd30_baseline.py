@@ -36,7 +36,7 @@ class CmdSCD30Baseline(object):
                                                     "[-t TEMP -m HUMID [-p PRESS]] | -z  | -d }] [-v]",
                                               version=version())
 
-        # function...
+        # fields...
         self.__parser.add_option("--set", "-s", type="int", action="store", dest="set",
                                  help="set offset to integer VALUE")
 
@@ -49,6 +49,7 @@ class CmdSCD30Baseline(object):
         self.__parser.add_option("--zero", "-z", action="store_true", dest="zero",
                                  help="zero all offsets")
 
+        # delete...
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the baseline configuration")
 

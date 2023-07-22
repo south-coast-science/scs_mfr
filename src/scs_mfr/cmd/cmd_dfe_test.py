@@ -21,7 +21,7 @@ class CmdDFETest(object):
         self.__parser = optparse.OptionParser(usage="%prog [-e] [-g] [-r] [-v] DFE_SERIAL_NUMBER",
                                               version=version())
 
-        # optional...
+        # mode...
         self.__parser.add_option("--eeprom", "-e", action="store_true", dest="ignore_eeprom", default=False,
                                  help="ignore EEPROM")
 

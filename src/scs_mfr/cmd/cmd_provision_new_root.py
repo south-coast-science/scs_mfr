@@ -20,7 +20,7 @@ class CmdProvisionNewRoot(object):
         """
         self.__parser = optparse.OptionParser(usage="%prog [-s] [-v]", version=version())
 
-        # functions...
+        # operations...
         self.__parser.add_option("--prep-sd", "-s", action="store_true", dest="prep_sd", default=False,
                                  help="format the SD card")
 

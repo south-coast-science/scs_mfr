@@ -22,10 +22,11 @@ class CmdTimezone(object):
         self.__parser = optparse.OptionParser(usage="%prog [{ -z | -s TIMEZONE_NAME | -l }] [-v]",
                                               version=version())
 
-        # optional...
+        # helper...
         self.__parser.add_option("--zones", "-z", action="store_true", dest="list", default=False,
                                  help="list the available timezone names to stderr")
 
+        # operations...
         self.__parser.add_option("--set", "-s", type="string", action="store", dest="zone",
                                  help="override system timezone with ZONE")
 

@@ -22,14 +22,14 @@ class CmdProvisionNewSCS(object):
                                                     "[{ -a AFE | -d DSI DATE }] [-c] [-t TIMEZONE] [-v]",
                                               version=version())
 
-        # required settings...
+        # identity...
         self.__parser.add_option("--invoice-number", "-i", type="string", action="store", dest="invoice_number",
                                  help="invoice number")
 
         self.__parser.add_option("--project", "-p", type="string", nargs=3, action="store", dest="project",
                                  help="AWS project (LOCATION may be '_')")
 
-        # optional settings...
+        # operations...
         self.__parser.add_option("--upgrade-pips", "-u", action="store_true", dest="upgrade_pips",
                                  help="upgrade pip and requests")
 

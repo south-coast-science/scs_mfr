@@ -20,7 +20,7 @@ class CmdAWSDeployment(object):
         """
         self.__parser = optparse.OptionParser(usage="%prog [-w] [-i INDENT] [-v]", version=version())
 
-        # output...
+        # mode...
         self.__parser.add_option("--wait", "-w", action="store_true", dest="wait", default=False,
                                  help="wait for the deployment to finish")
 

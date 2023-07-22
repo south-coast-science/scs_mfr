@@ -24,10 +24,11 @@ class CmdInterfaceConf(object):
 
         self.__parser = optparse.OptionParser(usage="%prog [{ -m MODEL | -d }] [-v]", version=version())
 
-        # optional...
+        # fields...
         self.__parser.add_option("--model", "-m", type="string", action="store", dest="model",
                                  help="interface model { %s }" % models)
 
+        # delete...
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the interface configuration")
 

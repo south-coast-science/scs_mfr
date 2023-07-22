@@ -19,7 +19,7 @@ class CmdRTC(object):
     def __init__(self):
         self.__parser = optparse.OptionParser(usage="%prog [-i] [-s] [-v]", version=version())
 
-        # optional...
+        # operations...
         self.__parser.add_option("--init", "-i", action="store_true", dest="initialise", default=False,
                                  help="initialise RTC default operating settings")
 

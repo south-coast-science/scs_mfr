@@ -24,7 +24,7 @@ class CmdAFECalib(object):
                                                     "-s SERIAL_NUMBER YYYY-MM-DD | -r | -t  | -d }] [-i INDENT] [-v]",
                                               version=version())
 
-        # functions...
+        # operations...
         self.__parser.add_option("--find", "-f", type="string", action="store", dest="find_serial_number",
                                  help="find calibration data (without loading it)")
 

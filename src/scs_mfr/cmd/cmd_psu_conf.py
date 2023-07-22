@@ -26,7 +26,7 @@ class CmdPSUConf(object):
                                                     "[-i REPORTING_INTERVAL] [-f REPORT_FILE] | -d } [-v]",
                                               version=version())
 
-        # optional...
+        # fields...
         self.__parser.add_option("--psu-model", "-p", type="string", action="store", dest="psu_model",
                                  help="set PSU model { %s }" % psu_models)
 
@@ -42,6 +42,7 @@ class CmdPSUConf(object):
         self.__parser.add_option("--report-file", "-f", type="string", action="store", dest="report_file",
                                  help="PSU monitor status report file")
 
+        # delete...
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the PSU configuration")
 

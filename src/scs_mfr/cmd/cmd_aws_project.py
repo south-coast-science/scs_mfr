@@ -21,7 +21,7 @@ class CmdAWSProject(object):
         self.__parser = optparse.OptionParser(usage="%prog [-s ORG GROUP LOCATION] [-d] [-v]",
                                               version=version())
 
-        # optional...
+        # operations...
         self.__parser.add_option("--set", "-s", type="string", nargs=3, action="store", dest="project",
                                  help="set project specification")
 

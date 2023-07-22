@@ -32,13 +32,14 @@ class CmdSHTConf(object):
         self.__parser = optparse.OptionParser(usage="%prog [{ [-i INT_ADDR] [-e EXT_ADDR] | -d }] [-v]",
                                               version=version())
 
-        # optional...
+        # fields...
         self.__parser.add_option("--int-addr", "-i", type="int", action="store", dest="int_addr",
                                  help="set I2C address of SHT in A4 package")
 
         self.__parser.add_option("--ext-addr", "-e", type="int", action="store", dest="ext_addr",
                                  help="set I2C address of SHT exposed to air")
 
+        # delete...
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the SHT configuration")
 

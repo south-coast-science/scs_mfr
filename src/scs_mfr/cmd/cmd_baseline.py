@@ -39,7 +39,7 @@ class CmdBaseline(object):
                                                     "[-r SAMPLE_REC -t SAMPLE_TEMP -m SAMPLE_HUMID] | -z | -d }] "
                                                     "[-i INDENT] [-v]", version=version())
 
-        # functions...
+        # operations...
         self.__parser.add_option("--baseline", "-b", type="string", action="store", dest="baseline",
                                  help="report offset for GAS")
 

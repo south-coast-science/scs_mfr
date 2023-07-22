@@ -22,13 +22,14 @@ class CmdSCD30Conf(object):
         self.__parser = optparse.OptionParser(usage="%prog [{ [-i INTERVAL] [-t OFFSET] | -d }] [-v]",
                                               version=version())
 
-        # optional...
+        # fields...
         self.__parser.add_option("--sample-interval", "-i", type="int", dest="sample_interval",
                                  action="store", help="set the SCD30 sample interval")
 
         self.__parser.add_option("--temp-offset", "-t", type="float", dest="temperature_offset",
                                  action="store", help="set the temperature offset")
 
+        # delete...
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the SCD30 configuration")
 

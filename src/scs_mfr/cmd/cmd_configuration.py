@@ -21,7 +21,7 @@ class CmdConfiguration(object):
         self.__parser = optparse.OptionParser(usage="%prog [-s CONFIGURATION] [-x] [{ -i INDENT | -t }] [-v]",
                                               version=version())
 
-        # optional...
+        # mode...
         self.__parser.add_option("--save", "-s", type="string", action="store", dest="configuration",
                                  help="save the given JSON configuration component(s)")
 
@@ -29,7 +29,6 @@ class CmdConfiguration(object):
         self.__parser.add_option("--exclude-sim", "-x", action="store_true", dest="exclude_sim", default=False,
                                  help="exclude SIM information from output")
 
-        # output...
         self.__parser.add_option("--indent", "-i", action="store", dest="indent", type=int,
                                  help="pretty-print the output with INDENT")
 

@@ -20,7 +20,7 @@ class CmdCognitoDeviceCredentials(object):
         """
         self.__parser = optparse.OptionParser(usage="%prog [{ -a INVOICE | -t }] [-v]", version=version())
 
-        # functions...
+        # operations...
         self.__parser.add_option("--assert", "-a", type="string", action="store", dest="assert_device",
                                  help="assert the credentials as a Cognito device for INVOICE")
 

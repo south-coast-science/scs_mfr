@@ -24,7 +24,7 @@ class CmdOPCVersion(object):
         self.__parser.add_option("--name", "-n", type="string", action="store", dest="name",
                                  help="the name of the OPC")
 
-        # function...
+        # operations...
         self.__parser.add_option("--set", "-s", action="store_true", dest="set", default=False,
                                  help="read from OPC and save to file")
 

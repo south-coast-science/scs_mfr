@@ -21,7 +21,7 @@ class CmdSystemID(object):
         self.__parser = optparse.OptionParser(usage="%prog [-d VENDOR_ID] [-m MODEL_ID] [-n MODEL_NAME] [-c CONFIG] "
                                                     "[{-s SYSTEM_SERIAL_NUMBER | -a }] [-v]", version=version())
 
-        # optional...
+        # fields...
         self.__parser.add_option("--vendor", "-d", type="string", action="store", dest="vendor_id",
                                  help="set vendor ID")
 

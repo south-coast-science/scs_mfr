@@ -20,7 +20,7 @@ class CmdMPL115A2Calib(object):
         """
         self.__parser = optparse.OptionParser(usage="%prog [{ -s | -d }] [-v]", version=version())
 
-        # optional...
+        # operations...
         self.__parser.add_option("--set", "-s", action="store_true", dest="set", default=False,
                                  help="set MPL115A2 calibration from internal SHT")
 

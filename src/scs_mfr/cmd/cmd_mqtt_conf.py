@@ -22,7 +22,7 @@ class CmdMQTTConf(object):
         self.__parser = optparse.OptionParser(usage="%prog { [-i { 0 | 1 }] [-f REPORT_FILE] [-l { 0 | 1 }] | "
                                                     "-d } [-v]", version=version())
 
-        # optional...
+        # fields...
         self.__parser.add_option("--inhibit-pub", "-i", type="int", action="store", dest="inhibit_publishing",
                                  default=None, help="inhibit publishing (1) or enable (0)")
 
@@ -32,6 +32,7 @@ class CmdMQTTConf(object):
         self.__parser.add_option("--debug", "-l", type="int", action="store", dest="debug",
                                  help="set debug logging (default is 0)")
 
+        # delete...
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="revert to the default MQTT configuration")
 

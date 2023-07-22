@@ -23,7 +23,7 @@ class CmdGPSConf(object):
         self.__parser = optparse.OptionParser(usage="%prog [{ [-m MODEL] [-i INTERVAL] [-t TALLY] [-f REPORT_FILE] "
                                                     "[-l { 0 | 1 }] | -d }] [-v]", version=version())
 
-        # optional...
+        # fields...
         self.__parser.add_option("--model", "-m", type="string", action="store", dest="model",
                                  help="set the model (PAM7Q or SAM8Q)")
 
@@ -39,6 +39,7 @@ class CmdGPSConf(object):
         self.__parser.add_option("--debug", "-l", type="int", action="store", dest="debug",
                                  help="set debug logging (default is 0)")
 
+        # delete...
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the GPS configuration")
 
