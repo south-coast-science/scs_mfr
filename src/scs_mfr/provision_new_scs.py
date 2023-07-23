@@ -101,6 +101,7 @@ if __name__ == '__main__':
         logger.error("unrecognised timezone: '%s'." % cmd.timezone)
         exit(2)
 
+    # TODO: check whitelist
 
     try:
         # ------------------------------------------------------------------------------------------------------------
@@ -138,9 +139,7 @@ if __name__ == '__main__':
         provision.aws_deployment()
         provision.test()
 
+        root_setup_completed.lower_flag()
 
     except KeyboardInterrupt:
         print(file=sys.stderr)
-
-    finally:
-        root_setup_completed.lower_flag()
