@@ -9,7 +9,6 @@ Created on 22 Feb 2021
 import sys
 
 from scs_core.aws.client.access_key import AccessKey
-from scs_core.aws.client.api_auth import APIAuth
 from scs_core.aws.client.client import Client
 from scs_core.aws.manager.s3_manager import S3Manager
 
@@ -20,8 +19,6 @@ from scs_host.sys.host import Host
 
 # ------------------------------------------------------------------------------------------------------------
 # resources...
-
-auth = APIAuth.load(Host)
 
 key = None
 

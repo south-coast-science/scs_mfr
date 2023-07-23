@@ -83,7 +83,6 @@ class ProvisionSCS(object):
     def system_id(self, invoice_number):
         self.__logger.info("system ID...")
 
-        self.__clu.s([self.MFR + 'aws_api_auth.py', '-d'])
         self.__clu.s([self.MFR + 'system_id.py', '-a'])
         self.__clu.s([self.MFR + 'shared_secret.py', '-g', '-i'])
         self.__clu.s([self.MFR + 'cognito_device_credentials.py', '-a', invoice_number])
