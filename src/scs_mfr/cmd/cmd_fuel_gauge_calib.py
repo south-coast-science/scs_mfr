@@ -6,6 +6,8 @@ Created on 16 Apr 2021
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -17,7 +19,7 @@ class CmdFuelGaugeCalib(object):
         Constructor
         """
         self.__parser = optparse.OptionParser(usage="%prog { { -c | -d | -l | -r | -z { D | L } } | "
-                                                    "{ -f | -s | -g | -p } [-i INTERVAL] } [-v]", version="%prog 1.0")
+                                                    "{ -f | -s | -g | -p } [-i INTERVAL] } [-v]", version=version())
 
         # configuration...
         self.__parser.add_option("--gauge-conf", "-c", action="store_true", dest="gauge_conf", default=False,
@@ -33,7 +35,7 @@ class CmdFuelGaugeCalib(object):
         self.__parser.add_option("--remove-learned", "-r", action="store_true", dest="remove_learned", default=False,
                                  help="delete params from host")
 
-        self.__parser.add_option("--init", "-z", type="string", nargs=1, action="store", dest="init",
+        self.__parser.add_option("--init", "-z", type="string", action="store", dest="init",
                                  help="initialise gauge with configuration and Default or Learned params")
 
         # iterable...
@@ -50,7 +52,7 @@ class CmdFuelGaugeCalib(object):
                                  help="report psu status")
 
         # output...
-        self.__parser.add_option("--interval", "-i", type="int", nargs=1, action="store", dest="interval",
+        self.__parser.add_option("--interval", "-i", type="int", action="store", dest="interval",
                                  help="sampling interval")
 
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,

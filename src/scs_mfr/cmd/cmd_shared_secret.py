@@ -9,6 +9,8 @@ example document:
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -19,9 +21,9 @@ class CmdSharedSecret(object):
         """
         Constructor
         """
-        self.__parser = optparse.OptionParser(usage="%prog [{ -g [-i] | -d }] [-v]", version="%prog 1.0")
+        self.__parser = optparse.OptionParser(usage="%prog [{ -g [-i] | -d }] [-v]", version=version())
 
-        # optional...
+        # operations...
         self.__parser.add_option("--generate", "-g", action="store_true", dest="generate", default=False,
                                  help="set or recreate shared secret")
 
@@ -31,6 +33,7 @@ class CmdSharedSecret(object):
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the shared secret")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 

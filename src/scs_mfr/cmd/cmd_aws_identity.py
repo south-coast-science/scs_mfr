@@ -6,6 +6,8 @@ Created on 09 Oct 2020
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -17,12 +19,13 @@ class CmdAWSIdentity(object):
         Constructor
         """
         self.__parser = optparse.OptionParser(usage="%prog [-s [-g GROUP_NAME] [-c CORE_NAME]] [-i INDENT] [-v]",
-                                              version="%prog 1.0")
-        # commands...
+                                              version=version())
+
+        # mode...
         self.__parser.add_option("--setup", "-s", action="store_true", dest="setup", default=False,
                                  help="setup the device")
 
-        # optional..
+        # fields..
         self.__parser.add_option("--group-name", "-g", action="store", dest="group_name", default=False,
                                  help="Overwrite the name of the group to create")
 

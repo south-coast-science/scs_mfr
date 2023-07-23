@@ -62,7 +62,6 @@ setup(
         'src/scs_mfr/afe_baseline.py',
         'src/scs_mfr/afe_calib.py',
         'src/scs_mfr/airnow_site_conf.py',
-        'src/scs_mfr/aws_api_auth.py',
         'src/scs_mfr/aws_client_auth.py',
         'src/scs_mfr/aws_deployment.py',
         'src/scs_mfr/aws_group_cloner.py',

@@ -28,26 +28,36 @@ class ProvisionRoot(object):
     # ----------------------------------------------------------------------------------------------------------------
     # stage 1...
 
-    def prepare(self):
-        self.__logger.info("prepare...")
+    def stop(self):
+        self.__logger.info("stop...")
 
         self.__clu.s(['systemctl', 'stop', 'scs_*'], no_verbose=True)
+
+
+    def prep_sd(self):
+        self.__logger.info("prep-sd...")
+
         self.__clu.s(['prep-sd', '-f'], no_verbose=True)
 
 
     # ----------------------------------------------------------------------------------------------------------------
     # stage 2...
 
+    def identity(self):
+        self.__logger.info("identity...")
+
+        self.__clu.s(['aws_identity', '-s'])
+
+
     def setup(self):
         self.__logger.info("setup...")
 
-        self.__clu.s(['aws_identity', '-s'])
         self.__clu.s(['aws_group_setup', '-f', '-i', 4, '-s'])
 
-        self.__clu.s(['rm', '/usr/local/etc/scs_machine_uncommissioned'], no_verbose=True)
+        self.__clu.s(['rm', '-f', '/usr/local/etc/scs_machine_uncommissioned'], no_verbose=True)
         self.__clu.s(['systemctl', 'enable', 'scs_*'], no_verbose=True)
         self.__clu.s(['systemctl', 'disable', 'scs_mqtt_client.service'], no_verbose=True)
-        self.__clu.s(['rm', 'scs_mqtt_client.service'], no_verbose=True)
+        self.__clu.s(['rm', '-f', 'scs_mqtt_client.service'], no_verbose=True)
         self.__clu.s(['systemctl', 'start', 'scs_greengrass.service'], no_verbose=True)
 
 
