@@ -6,6 +6,7 @@ Created on 21 Jun 2017
 
 import optparse
 
+from scs_mfr import version
 from scs_psu.psu.psu_conf import PSUConf
 
 
@@ -21,29 +22,31 @@ class CmdPSUConf(object):
         psu_models = ' | '.join(PSUConf.psu_models())
         batt_models = ' | '.join(PSUConf.batt_models())
 
-        self.__parser = optparse.OptionParser(usage="%prog { [-p PSU_MODEL] [-b BATT_MODEL] [-t { 1 | 0 }] "
+        self.__parser = optparse.OptionParser(usage="%prog { [-p PSU_MODEL] [-b BATT_MODEL] [-t { 0 | 1 }] "
                                                     "[-i REPORTING_INTERVAL] [-f REPORT_FILE] | -d } [-v]",
-                                              version="%prog 1.0")
+                                              version=version())
 
-        # optional...
-        self.__parser.add_option("--psu-model", "-p", type="string", nargs=1, action="store", dest="psu_model",
+        # fields...
+        self.__parser.add_option("--psu-model", "-p", type="string", action="store", dest="psu_model",
                                  help="set PSU model { %s }" % psu_models)
 
-        self.__parser.add_option("--batt-model", "-b", type="string", nargs=1, action="store", dest="batt_model",
+        self.__parser.add_option("--batt-model", "-b", type="string", action="store", dest="batt_model",
                                  help="set battery model { %s }" % batt_models)
 
-        self.__parser.add_option("--ignore-threshold", "-t", type="int", nargs=1, action="store",
+        self.__parser.add_option("--ignore-threshold", "-t", type="int", action="store",
                                  dest="ignore_threshold", help="ignore power threshold (default false)")
 
-        self.__parser.add_option("--reporting-interval", "-i", type="int", nargs=1, action="store",
+        self.__parser.add_option("--reporting-interval", "-i", type="int", action="store",
                                  dest="reporting_interval", help="PSU monitor reporting interval")
 
-        self.__parser.add_option("--report-file", "-f", type="string", nargs=1, action="store", dest="report_file",
+        self.__parser.add_option("--report-file", "-f", type="string", action="store", dest="report_file",
                                  help="PSU monitor status report file")
 
+        # delete...
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the PSU configuration")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 

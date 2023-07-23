@@ -6,19 +6,34 @@ Created on 14 Jul 2023
 @author: Bruno Beloff (bruno.beloff@southcoastscience.com)
 
 DESCRIPTION
-The provision_new_scs utility is used to
+The provision_new_scs utility is used to configure a device, together with its AWS Greengrass presence. This utility
+should be run as the scs user, the provision_new_root utility should be run simultaneously as the root user.
+
+The project location ID may be an integer or an alphanumeric string. Alternatively, the location may be the underscore
+character "_", indicating that the project location ID should be set as the device serial number.
 
 SYNOPSIS
-provision_new_scs.py -i INVOICE -p ORG GROUP LOCATION [{ -a AFE | -d DSI DATE }] [-s] [-t] [-v]
+provision_new_scs.py -i INVOICE -p ORG GROUP LOCATION [-u] [-s] [{ -a AFE | -d DSI DATE }] [-c] [-t] [-v]
 
 EXAMPLES
-./provision_new_scs.py -v -i INV-0000 -p south-coast-science-dev development 1 -a 26-000345
+./provision_new_scs.py -v -i INV-0000 -p south-coast-science-dev development _ -a 26-000345
 
 SEE ALSO
 scs_mfr/provision_new_root
 """
 
 import sys
+
+
+from scs_core.aws.security.cognito_device import CognitoDeviceIdentity
+from scs_core.client.http_exception import HTTPNotFoundException
+
+from scs_core.data.datetime import Date
+
+from scs_core.gas.afe_calib import AFECalib
+from scs_core.gas.dsi_calib import DSICalib
+
+from scs_core.location.timezone import Timezone
 
 from scs_core.sys.logging import Logging
 
@@ -56,13 +71,48 @@ if __name__ == '__main__':
     scs_configuration_completed = Flag('scs-configuration-completed')
     root_setup_completed = Flag('root-setup-completed')
 
+
+    # ----------------------------------------------------------------------------------------------------------------
+    # validation...
+
+    if not CognitoDeviceIdentity.is_valid_invoice_number(cmd.invoice_number):
+        logger.error("invalid invoice number: '%s'." % cmd.invoice_number)
+        exit(2)
+
+    try:
+        if cmd.afe_serial is not None:
+            AFECalib.download(cmd.afe_serial, parse=False)
+    except HTTPNotFoundException:
+        logger.error("unrecognised AFE serial number: '%s'." % cmd.afe_serial)
+        exit(2)
+
+    try:
+        if cmd.dsi_serial is not None:
+            DSICalib.download(cmd.dsi_serial, parse=False)
+    except HTTPNotFoundException:
+        logger.error("unrecognised DSI serial number: '%s'." % cmd.dsi_serial)
+        exit(2)
+
+    if cmd.dsi_calibration_date is not None and not Date.is_valid_iso_format(cmd.dsi_calibration_date):
+        logger.error("invalid ISO date: '%s'." % cmd.dsi_calibration_date)
+        exit(2)
+
+    if cmd.timezone is not None and not Timezone.is_valid(cmd.timezone):
+        logger.error("unrecognised timezone: '%s'." % cmd.timezone)
+        exit(2)
+
+
     try:
         # ------------------------------------------------------------------------------------------------------------
         # stage 1...
 
         logger.info("stage 1...")
 
-        provision.upgrade()
+        if cmd.upgrade_pips:
+            provision.upgrade_pips()
+
+        if cmd.upgrade_scs:
+            provision.upgrade_scs()
 
         if cmd.has_gases():
             provision.include_gases(cmd.afe_serial, cmd.dsi_serial, cmd.dsi_calibration_date, cmd.scd30)

@@ -12,7 +12,7 @@ module. In particular, it specifies some of the initial screen content.
 The configuration managed by this utility is used by the scs_dev/display utility.
 
 SYNOPSIS
-display_conf.py [{ [-m MODE] [-n NAME] [-u STARTUP] [-s SHUTDOWN] [-t { 1 | 0 }] | -d }] [-v]
+display_conf.py [{ [-m MODE] [-n NAME] [-u STARTUP] [-s SHUTDOWN] [-t { 0 | 1 }] | -d }] [-v]
 
 EXAMPLES
 ./display_conf.py -m SYS -n "SCS Praxis/Handheld v1.0" -u RUNNING -s STANDBY -t 1

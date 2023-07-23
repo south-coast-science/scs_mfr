@@ -6,6 +6,8 @@ Created on 29 Jun 2017
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -14,15 +16,16 @@ class CmdSchedule(object):
 
     def __init__(self):
         self.__parser = optparse.OptionParser(usage="%prog [{-s NAME INTERVAL TALLY | -r NAME }] [-v]",
-                                              version="%prog 1.0")
+                                              version=version())
 
-        # optional...
+        # operations...
         self.__parser.add_option("--set", "-s", type="string", nargs=3, action="store", dest="set",
                                  help="set schedule NAME, INTERVAL (seconds) and TALLY (count)")
 
-        self.__parser.add_option("--remove", "-r", type="string", nargs=1, action="store", dest="remove",
+        self.__parser.add_option("--remove", "-r", type="string", action="store", dest="remove",
                                  help="remove the named schedule")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 

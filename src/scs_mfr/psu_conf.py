@@ -22,7 +22,7 @@ or if a battery is not specified for one that does.
 Note that the scs_dev/psu_monitor process must be restarted for changes to take effect.
 
 SYNOPSIS
-psu_conf.py { [-p PSU_MODEL] [-b BATT_MODEL] [-t { 1 | 0 }] [-i REPORTING_INTERVAL] [-f REPORT_FILE] | -d } [-v]
+psu_conf.py { [-p PSU_MODEL] [-b BATT_MODEL] [-t { 0 | 1 }] [-i REPORTING_INTERVAL] [-f REPORT_FILE] | -d } [-v]
 
 EXAMPLES
 ./psu_conf.py -m OsloV1 -i 10 -f /tmp/southcoastscience/psu_status_report.json

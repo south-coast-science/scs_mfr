@@ -6,6 +6,8 @@ Created on 24 Nov 2021
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -16,9 +18,9 @@ class CmdCognitoDeviceCredentials(object):
         """
         Constructor
         """
-        self.__parser = optparse.OptionParser(usage="%prog [{ -a INVOICE | -t }] [-v]", version="%prog 1.0")
+        self.__parser = optparse.OptionParser(usage="%prog [{ -a INVOICE | -t }] [-v]", version=version())
 
-        # functions...
+        # operations...
         self.__parser.add_option("--assert", "-a", type="string", action="store", dest="assert_device",
                                  help="assert the credentials as a Cognito device for INVOICE")
 

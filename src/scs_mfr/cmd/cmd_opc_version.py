@@ -6,6 +6,8 @@ Created on 17 May 2019
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -16,19 +18,18 @@ class CmdOPCVersion(object):
         """
         Constructor
         """
-        self.__parser = optparse.OptionParser(usage="%prog [-n NAME] [{ -s | -d }] [-v]", version="%prog 1.0")
+        self.__parser = optparse.OptionParser(usage="%prog [-n NAME] [{ -s | -d }] [-v]", version=version())
 
         # identity...
-        self.__parser.add_option("--name", "-n", type="string", nargs=1, action="store", dest="name",
+        self.__parser.add_option("--name", "-n", type="string", action="store", dest="name",
                                  help="the name of the OPC")
 
-        # function...
+        # operations...
         self.__parser.add_option("--set", "-s", action="store_true", dest="set", default=False,
                                  help="read from OPC and save to file")
 
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the file")
-
 
         # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,

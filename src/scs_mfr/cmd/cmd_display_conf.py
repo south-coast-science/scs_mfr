@@ -7,6 +7,7 @@ Created on 22 Jun 2019
 import optparse
 
 from scs_core.display.display_conf import DisplayConf
+from scs_mfr import version
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -20,27 +21,28 @@ class CmdDisplayConf(object):
 
     def __init__(self):
         self.__parser = optparse.OptionParser(usage="%prog [{ [-m MODE] [-n NAME] [-u STARTUP] [-s SHUTDOWN] "
-                                                    "[-t { 1 | 0 }] | -d }] [-v]", version="%prog 1.0")
+                                                    "[-t { 0 | 1 }] | -d }] [-v]", version=version())
 
-        # optional...
-        self.__parser.add_option("--mode", "-m", type="string", nargs=1, action="store", dest="mode",
+        # mode...
+        self.__parser.add_option("--mode", "-m", type="string", action="store", dest="mode",
                                  help="set display mode (SYS only)")
 
-        self.__parser.add_option("--name", "-n", type="string", nargs=1, action="store", dest="name",
+        self.__parser.add_option("--name", "-n", type="string", action="store", dest="name",
                                  help="set device name")
 
-        self.__parser.add_option("--startup", "-u", type="string", nargs=1, action="store", dest="startup",
+        self.__parser.add_option("--startup", "-u", type="string", action="store", dest="startup",
                                  help="set startup message")
 
-        self.__parser.add_option("--shutdown", "-s", type="string", nargs=1, action="store", dest="shutdown",
+        self.__parser.add_option("--shutdown", "-s", type="string", action="store", dest="shutdown",
                                  help="set shutdown message")
 
-        self.__parser.add_option("--show-time", "-t", type="int", nargs=1, action="store", dest="show_time",
+        self.__parser.add_option("--show-time", "-t", type="int", action="store", dest="show_time",
                                  help="show current time")
 
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete display configuration")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 

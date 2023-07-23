@@ -6,13 +6,15 @@ Created on 14 Jul 2023
 @author: Bruno Beloff (bruno.beloff@southcoastscience.com)
 
 DESCRIPTION
-The provision_new_root utility is used to
+The provision_new_root utility is used to provide device and AWS Greengrass configuration tasks that require
+superuser privileges. This utility should be run as the root user, the provision_new_scs utility should be run
+simultaneously as the scs user.
 
 SYNOPSIS
-provision_new_root.py [-v]
+provision_new_root.py [-s] [-v]
 
 EXAMPLES
-provision_new_root -v
+provision_new_root -sv
 
 SEE ALSO
 scs_mfr/provision_new_scs
@@ -69,7 +71,10 @@ if __name__ == '__main__':
 
         logger.info("stage 1...")
 
-        provision.prepare()
+        provision.stop()
+
+        if cmd.prep_sd:
+            provision.prep_sd()
 
 
         # ------------------------------------------------------------------------------------------------------------
@@ -79,6 +84,7 @@ if __name__ == '__main__':
 
         logger.info("stage 2...")
 
+        provision.identity()
         provision.setup()
 
         root_setup_completed.raise_flag()

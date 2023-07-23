@@ -6,6 +6,8 @@ Created on 8 Sep 2020
 
 import optparse
 
+from scs_mfr import version
+
 
 # TODO: sort out flag syntax
 # --------------------------------------------------------------------------------------------------------------------
@@ -18,18 +20,20 @@ class CmdSCD30Conf(object):
         Constructor
         """
         self.__parser = optparse.OptionParser(usage="%prog [{ [-i INTERVAL] [-t OFFSET] | -d }] [-v]",
-                                              version="%prog 1.0")
+                                              version=version())
 
-        # optional...
-        self.__parser.add_option("--sample-interval", "-i", type="int", nargs=1, dest="sample_interval",
+        # fields...
+        self.__parser.add_option("--sample-interval", "-i", type="int", dest="sample_interval",
                                  action="store", help="set the SCD30 sample interval")
 
-        self.__parser.add_option("--temp-offset", "-t", type="float", nargs=1, dest="temperature_offset",
+        self.__parser.add_option("--temp-offset", "-t", type="float", dest="temperature_offset",
                                  action="store", help="set the temperature offset")
 
+        # delete...
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the SCD30 configuration")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
