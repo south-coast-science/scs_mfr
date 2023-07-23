@@ -37,6 +37,9 @@ class ProvisionSCS(object):
         self.__clu.s(['pip', 'install', '--upgrade', 'pip'], no_verbose=True)
         self.__clu.s(['pip', 'install', '--upgrade', 'requests'], no_verbose=True)
 
+        self.__clu.s(['pip', 'uninstall', '-y', 'spidev', '&&',
+                      'pip', 'install', 'git+https://github.com/tim-seoss/py-spidev.git@v3.6.1.dev1'], no_verbose=True)
+
 
     def upgrade_scs(self):
         self.__logger.info("upgrade scs...")
@@ -77,7 +80,7 @@ class ProvisionSCS(object):
     def timezone(self, timezone):
         self.__logger.info("timezone...")
 
-        self.__clu.s([self.MFR + 'timezone.py', timezone])
+        self.__clu.s([self.MFR + 'timezone.py', '-s', timezone])
 
 
     def system_id(self, invoice_number):
