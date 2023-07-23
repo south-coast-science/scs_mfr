@@ -21,7 +21,7 @@ class CmdDisplayConf(object):
 
     def __init__(self):
         self.__parser = optparse.OptionParser(usage="%prog [{ [-m MODE] [-n NAME] [-u STARTUP] [-s SHUTDOWN] "
-                                                    "[-t { 1 | 0 }] | -d }] [-v]", version=version())
+                                                    "[-t { 0 | 1 }] | -d }] [-v]", version=version())
 
         # mode...
         self.__parser.add_option("--mode", "-m", type="string", action="store", dest="mode",

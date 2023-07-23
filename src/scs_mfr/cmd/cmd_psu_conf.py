@@ -22,7 +22,7 @@ class CmdPSUConf(object):
         psu_models = ' | '.join(PSUConf.psu_models())
         batt_models = ' | '.join(PSUConf.batt_models())
 
-        self.__parser = optparse.OptionParser(usage="%prog { [-p PSU_MODEL] [-b BATT_MODEL] [-t { 1 | 0 }] "
+        self.__parser = optparse.OptionParser(usage="%prog { [-p PSU_MODEL] [-b BATT_MODEL] [-t { 0 | 1 }] "
                                                     "[-i REPORTING_INTERVAL] [-f REPORT_FILE] | -d } [-v]",
                                               version=version())
 
