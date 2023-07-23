@@ -88,6 +88,7 @@ if __name__ == '__main__':
         provision.setup()
 
         root_setup_completed.raise_flag()
+        scs_configuration_completed.lower_flag()
 
 
         # ----------------------------------------------------------------------------------------------------------------
@@ -95,6 +96,3 @@ if __name__ == '__main__':
 
     except KeyboardInterrupt:
         print(file=sys.stderr)
-
-    finally:
-        scs_configuration_completed.lower_flag()
