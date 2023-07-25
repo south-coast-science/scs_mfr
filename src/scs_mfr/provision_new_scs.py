@@ -23,9 +23,11 @@ scs_mfr/provision_new_root
 """
 
 import sys
-
+import requests
 
 from scs_core.aws.security.cognito_device import CognitoDeviceIdentity
+from scs_core.aws.security.cognito_device_creator import CognitoDeviceCreator
+
 from scs_core.client.http_exception import HTTPNotFoundException
 
 from scs_core.data.datetime import Date
@@ -36,8 +38,10 @@ from scs_core.gas.dsi_calib import DSICalib
 from scs_core.location.timezone import Timezone
 
 from scs_core.sys.logging import Logging
+from scs_core.sys.system_id import SystemID
 
 from scs_host.sync.flag import Flag
+from scs_host.sys.host import Host
 
 from scs_mfr.cmd.cmd_provision_new_scs import CmdProvisionNewSCS
 from scs_mfr.provision.provision_scs import ProvisionSCS
@@ -71,9 +75,20 @@ if __name__ == '__main__':
     scs_configuration_completed = Flag('scs-configuration-completed')
     root_setup_completed = Flag('root-setup-completed')
 
+    creator = CognitoDeviceCreator(requests)
+
 
     # ----------------------------------------------------------------------------------------------------------------
     # validation...
+
+    system_id = SystemID.load(Host)
+
+    system_id.system_serial_number = Host.numeric_component_of_name()
+    tag = system_id.message_tag()
+
+    if not creator.may_create(tag):
+        logger.error("device tag '%s' is not whitelisted." % tag)
+        exit(1)
 
     if not CognitoDeviceIdentity.is_valid_invoice_number(cmd.invoice_number):
         logger.error("invalid invoice number: '%s'." % cmd.invoice_number)
@@ -101,7 +116,6 @@ if __name__ == '__main__':
         logger.error("unrecognised timezone: '%s'." % cmd.timezone)
         exit(2)
 
-    # TODO: check whitelist
 
     try:
         # ------------------------------------------------------------------------------------------------------------
