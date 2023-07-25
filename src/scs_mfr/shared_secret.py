@@ -85,7 +85,7 @@ if __name__ == '__main__':
     # ------------------------------------------------------------------------------------------------------------
     # authentication...
 
-    if not cmd.ignore_credentials:
+    if cmd.generate and not cmd.ignore_credentials:
         credentials = CognitoDeviceCredentials.load_credentials_for_device(Host, strict=False)
 
         if credentials:
