@@ -55,7 +55,7 @@ class ProvisionRoot(object):
         self.__clu.s(['aws_group_setup', '-f', '-i', 4, '-s'])
 
         self.__clu.s(['rm', '-f', '/usr/local/etc/scs_machine_uncommissioned'], no_verbose=True, abort_on_fail=False)
-        self.__clu.s(['systemctl', 'enable', 'scs_*'], no_verbose=True)
+        self.__clu.s(['systemctl', 'enable', 'scs_*'], no_verbose=True, abort_on_fail=False)
         self.__clu.s(['systemctl', 'disable', 'scs_mqtt_client.service'], no_verbose=True, abort_on_fail=False)
         self.__clu.s(['rm', '-f', 'scs_mqtt_client.service'], no_verbose=True, abort_on_fail=False)
         self.__clu.s(['systemctl', 'start', 'scs_greengrass.service'], no_verbose=True)
