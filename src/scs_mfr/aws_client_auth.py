@@ -32,7 +32,6 @@ DOCUMENT EXAMPLE
 
 SEE ALSO
 scs_dev/aws_mqtt_client
-scs_mfr/aws_api_auth
 scs_mfr/aws_project
 """
 

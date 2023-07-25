@@ -85,7 +85,7 @@ if __name__ == '__main__':
     elif cmd.set():
         if not Timezone.is_valid(cmd.zone):
             print("timezone: unrecognised name: %s" % cmd.zone, file=sys.stderr)
-            exit(1)
+            exit(2)
 
         if cmd.zone != conf.name:
             conf = TimezoneConf(now, cmd.zone)

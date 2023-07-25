@@ -6,6 +6,8 @@ Created on 20 Jun 2018
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -16,15 +18,16 @@ class CmdMPL115A2Calib(object):
         """
         Constructor
         """
-        self.__parser = optparse.OptionParser(usage="%prog [{ -s | -d }] [-v]", version="%prog 1.0")
+        self.__parser = optparse.OptionParser(usage="%prog [{ -s | -d }] [-v]", version=version())
 
-        # optional...
+        # operations...
         self.__parser.add_option("--set", "-s", action="store_true", dest="set", default=False,
                                  help="set MPL115A2 calibration from internal SHT")
 
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the MPL115A2 calibration")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 

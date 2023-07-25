@@ -6,6 +6,8 @@ Created on 3 May 2019
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -16,12 +18,13 @@ class CmdOPCCleaningInterval(object):
         """
         Constructor
         """
-        self.__parser = optparse.OptionParser(usage="%prog [-s INTERVAL] [-v]", version="%prog 1.0")
+        self.__parser = optparse.OptionParser(usage="%prog [-s INTERVAL] [-v]", version=version())
 
-        # optional...
-        self.__parser.add_option("--set", "-s", type="int", nargs=1, action="store", dest="interval",
+        # operations...
+        self.__parser.add_option("--set", "-s", type="int", action="store", dest="interval",
                                  help="set the cleaning interval (>= 0 seconds)")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 

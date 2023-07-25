@@ -6,6 +6,8 @@ Created on 29 Jan 2021
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -17,10 +19,10 @@ class CmdConfiguration(object):
         Constructor
         """
         self.__parser = optparse.OptionParser(usage="%prog [-s CONFIGURATION] [-x] [{ -i INDENT | -t }] [-v]",
-                                              version="%prog 1.0")
+                                              version=version())
 
-        # optional...
-        self.__parser.add_option("--save", "-s", type="string", nargs=1, action="store", dest="configuration",
+        # mode...
+        self.__parser.add_option("--save", "-s", type="string", action="store", dest="configuration",
                                  help="save the given JSON configuration component(s)")
 
         # output...

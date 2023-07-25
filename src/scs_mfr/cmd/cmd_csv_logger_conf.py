@@ -6,6 +6,8 @@ Created on 18 Apr 2018
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -17,22 +19,26 @@ class CmdCSVLoggerConf(object):
         Constructor
         """
         self.__parser = optparse.OptionParser(usage="%prog [{ -f | [-r ROOT_PATH] [-o DELETE_OLDEST] "
-                                                    "[-i WRITE_INTERVAL] | -d }] [-v]", version="%prog 1.0")
+                                                    "[-i WRITE_INTERVAL] [-l] | -d }] [-v]", version=version())
 
         # filesystem...
         self.__parser.add_option("--filesystem", "-f", action="store_true", dest="filesystem", default=False,
                                  help="report on the logging filesystem")
 
-        # configuration...
-        self.__parser.add_option("--root", "-r", type="string", nargs=1, action="store", dest="root_path",
+        # fields...
+        self.__parser.add_option("--root", "-r", type="string", action="store", dest="root_path",
                                  help="set filesystem logging directory")
 
-        self.__parser.add_option("--del-oldest", "-o", type="int", nargs=1, action="store", dest="delete_oldest",
+        self.__parser.add_option("--del-oldest", "-o", type="int", action="store", dest="delete_oldest",
                                  help="delete oldest logs to recover space (1) or stop when full (0)")
 
-        self.__parser.add_option("--write-int", "-i", type="int", nargs=1, action="store", dest="write_interval",
+        self.__parser.add_option("--write-int", "-i", type="int", action="store", dest="write_interval",
                                  help="write interval in seconds (0 for immediate writes)")
 
+        self.__parser.add_option("--limit-retrospection", "-l", action="store_true", dest="limit_retrospection",
+                                 default=False, help="set retrospection limit to now")
+
+        # delete...
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the logger configuration")
 
@@ -74,7 +80,8 @@ class CmdCSVLoggerConf(object):
 
 
     def set(self):
-        if self.root_path is not None or self.delete_oldest is not None or self.write_interval is not None:
+        if self.root_path is not None or self.delete_oldest is not None or self.write_interval is not None \
+                or self.limit_retrospection:
             return True
 
         return False
@@ -103,6 +110,11 @@ class CmdCSVLoggerConf(object):
 
 
     @property
+    def limit_retrospection(self):
+        return self.__opts.limit_retrospection
+
+
+    @property
     def delete(self):
         return self.__opts.delete
 
@@ -119,7 +131,7 @@ class CmdCSVLoggerConf(object):
 
 
     def __str__(self, *args, **kwargs):
-        return "CmdCSVLoggerConf:{filesystem:%s, root_path:%s, delete_oldest:%s, write_interval:%s, delete:%s, " \
-               "verbose:%s}" % \
-               (self.filesystem, self.root_path, self.delete_oldest, self.write_interval, self.delete,
-                self.verbose)
+        return "CmdCSVLoggerConf:{filesystem:%s, root_path:%s, delete_oldest:%s, write_interval:%s, " \
+               "limit_retrospection:%s, delete:%s, verbose:%s}" % \
+               (self.filesystem, self.root_path, self.delete_oldest, self.write_interval,
+                self.limit_retrospection, self.delete, self.verbose)

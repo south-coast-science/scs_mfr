@@ -6,6 +6,8 @@ Created on 3 Apr 2018
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -17,15 +19,16 @@ class CmdAWSProject(object):
         Constructor
         """
         self.__parser = optparse.OptionParser(usage="%prog [-s ORG GROUP LOCATION] [-d] [-v]",
-                                              version="%prog 1.0")
+                                              version=version())
 
-        # optional...
+        # operations...
         self.__parser.add_option("--set", "-s", type="string", nargs=3, action="store", dest="project",
                                  help="set project specification")
 
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the project reference")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 

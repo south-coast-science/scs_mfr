@@ -31,11 +31,19 @@ class ProvisionSCS(object):
     # ----------------------------------------------------------------------------------------------------------------
     # stage 1...
 
-    def upgrade(self):
-        self.__logger.info("upgrade...")
+    def upgrade_pips(self):
+        self.__logger.info("upgrade pips...")
 
         self.__clu.s(['pip', 'install', '--upgrade', 'pip'], no_verbose=True)
         self.__clu.s(['pip', 'install', '--upgrade', 'requests'], no_verbose=True)
+
+        self.__clu.s(['pip', 'uninstall', '-y', 'spidev', '&&',
+                      'pip', 'install', 'git+https://github.com/tim-seoss/py-spidev.git@v3.6.1.dev1'], no_verbose=True)
+
+
+    def upgrade_scs(self):
+        self.__logger.info("upgrade scs...")
+
         self.__clu.s([self.MFR + 'git_pull.py', '-p', '-t', 60])
 
 
@@ -72,13 +80,12 @@ class ProvisionSCS(object):
     def timezone(self, timezone):
         self.__logger.info("timezone...")
 
-        self.__clu.s([self.MFR + 'timezone.py', timezone])
+        self.__clu.s([self.MFR + 'timezone.py', '-s', timezone])
 
 
     def system_id(self, invoice_number):
         self.__logger.info("system ID...")
 
-        self.__clu.s([self.MFR + 'aws_api_auth.py', '-d'])
         self.__clu.s([self.MFR + 'system_id.py', '-a'])
         self.__clu.s([self.MFR + 'shared_secret.py', '-g', '-i'])
         self.__clu.s([self.MFR + 'cognito_device_credentials.py', '-a', invoice_number])

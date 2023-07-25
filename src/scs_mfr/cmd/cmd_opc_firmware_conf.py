@@ -6,6 +6,8 @@ Created on 13 Feb 2020
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -18,21 +20,22 @@ class CmdOPCFirmwareConf(object):
 
     def __init__(self):
         self.__parser = optparse.OptionParser(usage="%prog [-n NAME] [{ -s FIELD VALUE | -f CONF_FILE }] [-c] [-v]",
-                                              version="%prog 1.0")
+                                              version=version())
 
-        # optional...
-        self.__parser.add_option("--name", "-n", type="string", nargs=1, action="store", dest="name",
+        # operations...
+        self.__parser.add_option("--name", "-n", type="string", action="store", dest="name",
                                  help="the name of the OPC configuration")
 
         self.__parser.add_option("--set", "-s", type="string", nargs=2, action="store", dest="set",
                                  help="set FIELD to numeric VALUE")
 
-        self.__parser.add_option("--file", "-f", type="string", nargs=1, action="store", dest="file",
+        self.__parser.add_option("--file", "-f", type="string", action="store", dest="file",
                                  help="load the named CONF_FILE")
 
         self.__parser.add_option("--commit", "-c", action="store_true", dest="commit", default=False,
                                  help="commit the configuration to non-volatile memory")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 

@@ -6,6 +6,8 @@ Created on 17 Feb 2017
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -17,27 +19,28 @@ class CmdSystemID(object):
         Constructor
         """
         self.__parser = optparse.OptionParser(usage="%prog [-d VENDOR_ID] [-m MODEL_ID] [-n MODEL_NAME] [-c CONFIG] "
-                                                    "[{-s SYSTEM_SERIAL_NUMBER | -a }] [-v]", version="%prog 1.0")
+                                                    "[{-s SYSTEM_SERIAL_NUMBER | -a }] [-v]", version=version())
 
-        # optional...
-        self.__parser.add_option("--vendor", "-d", type="string", nargs=1, action="store", dest="vendor_id",
+        # fields...
+        self.__parser.add_option("--vendor", "-d", type="string", action="store", dest="vendor_id",
                                  help="set vendor ID")
 
-        self.__parser.add_option("--model", "-m", type="string", nargs=1, action="store", dest="model_id",
+        self.__parser.add_option("--model", "-m", type="string", action="store", dest="model_id",
                                  help="set model ID")
 
-        self.__parser.add_option("--name", "-n", type="string", nargs=1, action="store", dest="model_name",
+        self.__parser.add_option("--name", "-n", type="string", action="store", dest="model_name",
                                  help="set model name")
 
-        self.__parser.add_option("--config", "-c", type="string", nargs=1, action="store", dest="configuration",
+        self.__parser.add_option("--config", "-c", type="string", action="store", dest="configuration",
                                  help="set device configuration")
 
-        self.__parser.add_option("--serial", "-s", type="int", nargs=1, action="store", dest="serial_number",
+        self.__parser.add_option("--serial", "-s", type="int", action="store", dest="serial_number",
                                  help="set serial number")
 
         self.__parser.add_option("--auto-serial", "-a", action="store_true", dest="auto_serial", default=False,
                                  help="set serial number automatically from hostname")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 

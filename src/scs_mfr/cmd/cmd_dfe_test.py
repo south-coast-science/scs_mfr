@@ -6,6 +6,8 @@ Created on 2 Aug 2016
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -17,9 +19,9 @@ class CmdDFETest(object):
         Constructor
         """
         self.__parser = optparse.OptionParser(usage="%prog [-e] [-g] [-r] [-v] DFE_SERIAL_NUMBER",
-                                              version="%prog 1.0")
+                                              version=version())
 
-        # optional...
+        # mode...
         self.__parser.add_option("--eeprom", "-e", action="store_true", dest="ignore_eeprom", default=False,
                                  help="ignore EEPROM")
 
@@ -29,6 +31,7 @@ class CmdDFETest(object):
         self.__parser.add_option("--rtc", "-r", action="store_true", dest="ignore_rtc", default=False,
                                  help="ignore real-time clock")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 

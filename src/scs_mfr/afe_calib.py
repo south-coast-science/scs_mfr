@@ -46,6 +46,7 @@ import sys
 
 from scs_core.client.http_exception import HTTPException
 
+from scs_core.data.datetime import Date
 from scs_core.data.json import JSONify
 
 from scs_core.gas.afe_calib import AFECalib
@@ -103,6 +104,11 @@ if __name__ == '__main__':
 
             else:
                 calib = DSICalib.download(cmd.sensor_serial_number)
+
+                if not Date.is_valid_iso_format(cmd.sensor_calibration_date):
+                    logger.error("invalid ISO date: '%s'." % cmd.sensor_calibration_date)
+                    exit(2)
+
                 calib.calibrated_on = cmd.sensor_calibration_date
 
         if cmd.reload:

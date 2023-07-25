@@ -39,6 +39,7 @@ import sys
 
 from scs_core.csv.csv_logger_conf import CSVLoggerConf
 
+from scs_core.data.datetime import LocalizedDatetime
 from scs_core.data.json import JSONify
 
 from scs_core.sys.filesystem import Filesystem
@@ -97,6 +98,7 @@ if __name__ == '__main__':
         root_path = conf.root_path if cmd.root_path is None else cmd.root_path
         delete_oldest = conf.delete_oldest if cmd.delete_oldest is None else cmd.delete_oldest
         write_interval = conf.write_interval if cmd.write_interval is None else cmd.write_interval
+        retrospection_limit = LocalizedDatetime.now() if cmd.limit_retrospection else conf.retrospection_limit
 
         try:
             Filesystem.mkdir(root_path)
@@ -104,7 +106,7 @@ if __name__ == '__main__':
             logger.error("You do not have permission to write in that directory.")
             exit(1)
 
-        report = CSVLoggerConf(root_path, delete_oldest, write_interval)
+        report = CSVLoggerConf(root_path, delete_oldest, write_interval, retrospection_limit)
         report.save(Host)
 
     elif cmd.delete and conf is not None:

@@ -7,6 +7,7 @@ Created on 10 Nov 2021
 import optparse
 
 from scs_core.data.datetime import LocalizedDatetime
+from scs_mfr import version
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -35,10 +36,10 @@ class CmdVCalBaseline(object):
         """
         self.__parser = optparse.OptionParser(usage="%prog [{ -b GAS  | { { -s | -o } GAS VALUE "
                                                     "[-r SAMPLE_REC -t SAMPLE_TEMP -m SAMPLE_HUMID] } "
-                                                    "| -d }] [-i INDENT] [-v]", version="%prog 1.0")
+                                                    "| -d }] [-i INDENT] [-v]", version=version())
 
-        # functions...
-        self.__parser.add_option("--baseline", "-b", type="string", nargs=1, action="store", dest="baseline",
+        # operations...
+        self.__parser.add_option("--baseline", "-b", type="string", action="store", dest="baseline",
                                  help="report offset for GAS")
 
         self.__parser.add_option("--set", "-s", type="string", nargs=2, action="store", dest="set",
@@ -51,13 +52,13 @@ class CmdVCalBaseline(object):
                                  help="delete the baseline configuration")
 
         # sample...
-        self.__parser.add_option("--sample-rec", "-r", type="string", nargs=1, action="store", dest="sample_rec",
+        self.__parser.add_option("--sample-rec", "-r", type="string", action="store", dest="sample_rec",
                                  help="sample ISO 8601 datetime")
 
-        self.__parser.add_option("--sample-temp", "-t", type="float", nargs=1, action="store", dest="sample_temp",
+        self.__parser.add_option("--sample-temp", "-t", type="float", action="store", dest="sample_temp",
                                  help="sample temperature")
 
-        self.__parser.add_option("--sample-humid", "-m", type="float", nargs=1, action="store", dest="sample_humid",
+        self.__parser.add_option("--sample-humid", "-m", type="float", action="store", dest="sample_humid",
                                  help="sample humidity")
 
         # output...

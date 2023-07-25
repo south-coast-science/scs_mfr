@@ -6,6 +6,8 @@ Created on 13 Jul 2016
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -28,18 +30,20 @@ class CmdSHTConf(object):
 
     def __init__(self):
         self.__parser = optparse.OptionParser(usage="%prog [{ [-i INT_ADDR] [-e EXT_ADDR] | -d }] [-v]",
-                                              version="%prog 1.0")
+                                              version=version())
 
-        # optional...
-        self.__parser.add_option("--int-addr", "-i", type="int", nargs=1, action="store", dest="int_addr",
+        # fields...
+        self.__parser.add_option("--int-addr", "-i", type="int", action="store", dest="int_addr",
                                  help="set I2C address of SHT in A4 package")
 
-        self.__parser.add_option("--ext-addr", "-e", type="int", nargs=1, action="store", dest="ext_addr",
+        self.__parser.add_option("--ext-addr", "-e", type="int", action="store", dest="ext_addr",
                                  help="set I2C address of SHT exposed to air")
 
+        # delete...
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the SHT configuration")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 

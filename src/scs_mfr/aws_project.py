@@ -23,7 +23,8 @@ Device path, e.g.:
 Typically, the device paths should remain fixed throughout the lifetime of the device. In contrast, a given set of
 location paths are used by the device only when it is installed at a given location.
 
-The location ID may be an integer or a string.
+The location ID may be an integer or an alphanumeric string. Alternatively, the location may be the underscore
+character "_", indicating that the location ID should be set as the device serial number.
 
 When the "verbose" "-v" flag is used, the aws_project utility reports all the topic paths derived from
 its specification.
@@ -45,7 +46,6 @@ FILES
 
 SEE ALSO
 scs_dev/aws_mqtt_client
-scs_mfr/aws_api_auth
 scs_mfr/aws_client_auth
 """
 
@@ -100,7 +100,9 @@ if __name__ == '__main__':
         # run...
 
         if cmd.set():
-            project = Project.construct(cmd.organisation, cmd.group, cmd.location)
+            location = system_id.system_serial_number if cmd.location == '_' else cmd.location
+
+            project = Project.construct(cmd.organisation, cmd.group, location)
             project.save(Host)
 
         if cmd.delete and project is not None:

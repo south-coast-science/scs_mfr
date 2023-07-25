@@ -6,6 +6,8 @@ Created on 8 Mar 2019
 
 import optparse
 
+from scs_mfr import version
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -17,9 +19,9 @@ class CmdAirNowSiteConf(object):
         Constructor
         """
         self.__parser = optparse.OptionParser(usage="%prog { -c | -p | [-s COUNTRY LOC IS_MOBILE] "
-                                                    "[-o PARAM POC] [-d PARAM] } [-v]", version="%prog 1.0")
+                                                    "[-o PARAM POC] [-d PARAM] } [-v]", version=version())
 
-        # optional...
+        # fields...
         self.__parser.add_option("--countries", "-c", action="store_true", dest="countries", default=False,
                                  help="list the available countries to stdout")
 
@@ -32,9 +34,11 @@ class CmdAirNowSiteConf(object):
         self.__parser.add_option("--poc", "-o", type="int", nargs=2, action="store", dest="poc",
                                  help="add or update a parameter occurrence code")
 
-        self.__parser.add_option("--delete", "-d", type="int", nargs=1, action="store", dest="delete",
+        # delete...
+        self.__parser.add_option("--delete", "-d", type="int", action="store", dest="delete",
                                  help="delete a parameter occurrence code")
 
+        # output...
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
