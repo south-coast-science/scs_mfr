@@ -1,5 +1,5 @@
 """
-Created on 24 Feb 2021
+Created on 14 Jul 2023
 
 @author: Bruno Beloff (bruno.beloff@southcoastscience.com)
 """
@@ -34,7 +34,7 @@ class CmdProvisionNewSCS(object):
                                  help="upgrade pip and requests")
 
         self.__parser.add_option("--upgrade-scs", "-s", action="store_true", dest="upgrade_scs",
-                                 help="upgrade pip and requests")
+                                 help="upgrade SCS git repos")
 
         self.__parser.add_option("--afe-serial", "-a", type="string", action="store", dest="afe_serial",
                                  help="AFE serial number")
