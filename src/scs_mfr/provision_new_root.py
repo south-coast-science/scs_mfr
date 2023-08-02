@@ -57,6 +57,7 @@ if __name__ == '__main__':
         logger.error("you must have root privileges to set the identity.")
         exit(1)
 
+
     # ----------------------------------------------------------------------------------------------------------------
     # resources...
 
@@ -64,6 +65,7 @@ if __name__ == '__main__':
 
     scs_configuration_completed = Flag('scs-configuration-completed')
     root_setup_completed = Flag('root-setup-completed')
+
 
     try:
         # ------------------------------------------------------------------------------------------------------------

@@ -11,12 +11,16 @@ specifies the csv_logger behaviour when the volume becomes full: if delete-oldes
 removed to make space, if false, then logging stops. A write-interval parameter may be used to specify time between
 flushes, in order to extend the life of SD cards.
 
+The --limit-retrospection flag is used to prevent an unwanted data backlog from being published. When used, this
+flag sets the limit to now. When the system is restarted, the backlog will be ignored. (Backlog data remains on
+the SD card.)
+
 The --filesystem flag is used to report on the condition of the filesystem that will be used by the csv_logger.
 
 Note that the logging process(es) must be restarted for configuration changes to take effect.
 
 SYNOPSIS
-csv_logger_conf.py [{ -f | [-r ROOT_PATH] [-o DELETE_OLDEST] [-i WRITE_INTERVAL] | -d }] [-v]
+csv_logger_conf.py [{ -f | [-r ROOT_PATH] [-o DELETE_OLDEST] [-i WRITE_INTERVAL] [-l] | -d }] [-v]
 
 EXAMPLES
 ./csv_logger_conf.py -r /srv/removable_data_storage -o 1 -i 0
@@ -26,7 +30,8 @@ FILES
 ~/SCS/conf/csv_logger_conf.json
 
 DOCUMENT EXAMPLE - CONFIGURATION
-{"root-path": "/srv/removable_data_storage", "delete-oldest": true, "write-interval": 0}
+{"root-path": "/srv/removable_data_storage", "delete-oldest": true, "write-interval": 0,
+"retrospection-limit": "2023-07-25T11:36:30Z"}
 
 DOCUMENT EXAMPLE - FILESYSTEM REPORT
 {"path": "/srv/removable_data_storage", "is-available": true, "on-root": false}
