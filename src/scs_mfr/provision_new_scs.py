@@ -23,7 +23,6 @@ scs_mfr/provision_new_root
 """
 
 import sys
-import requests
 
 from scs_core.aws.security.cognito_device import CognitoDeviceIdentity
 from scs_core.aws.security.cognito_device_creator import CognitoDeviceCreator
@@ -75,7 +74,7 @@ if __name__ == '__main__':
     scs_configuration_completed = Flag('scs-configuration-completed')
     root_setup_completed = Flag('root-setup-completed')
 
-    creator = CognitoDeviceCreator(requests)
+    creator = CognitoDeviceCreator()
 
 
     # ----------------------------------------------------------------------------------------------------------------

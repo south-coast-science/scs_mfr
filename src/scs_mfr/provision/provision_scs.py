@@ -77,6 +77,10 @@ class ProvisionSCS(object):
         self.__clu.s([self.MFR + 'schedule.py', '-r', 'scs-gases'])
 
 
+    def include_pressure(self):
+        self.__clu.s([self.MFR + 'pressure_conf.py', '-m', 'ICP'])
+
+
     def timezone(self, timezone):
         self.__logger.info("timezone...")
 
