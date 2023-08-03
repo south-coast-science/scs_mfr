@@ -33,7 +33,6 @@ scs_mfr/shared_secret
 scs_mfr/system_id
 """
 
-import requests
 import sys
 
 from scs_core.aws.security.cognito_device import CognitoDeviceCredentials, CognitoDeviceIdentity
@@ -84,16 +83,16 @@ if __name__ == '__main__':
                 logger.error("invalid invoice number: '%s'." % cmd.invoice_number)
                 exit(2)
 
-            creator = CognitoDeviceCreator(requests)
+            creator = CognitoDeviceCreator()
             identity = CognitoDeviceIdentity(credentials.tag, credentials.password, cmd.invoice_number, None, None)
             report = creator.create(identity)
 
         elif cmd.test:
-            gatekeeper = CognitoLoginManager(requests)
+            gatekeeper = CognitoLoginManager()
             auth = gatekeeper.device_login(credentials)
 
             if auth.is_ok():
-                finder = CognitoDeviceIntrospector(requests)
+                finder = CognitoDeviceIntrospector()
                 report = finder.find_self(auth.id_token)
 
             else:
