@@ -26,13 +26,16 @@ location paths are used by the device only when it is installed at a given locat
 The location ID may be an integer or an alphanumeric string. Alternatively, the location may be the underscore
 character "_", indicating that the location ID should be set as the device serial number.
 
+The specified location path set is tested to check whether it is in use by another device. If so, the utility
+terminated. The validation can be circumvented with the --force flag.
+
 When the "verbose" "-v" flag is used, the aws_project utility reports all the topic paths derived from
 its specification.
 
-Note that the scs_mfr/aws_mqtt_client process must be restarted for changes to take effect.
+Note that the sampling process must be restarted for changes to take effect.
 
 SYNOPSIS
-aws_project.py [-s ORG GROUP LOCATION] [-d] [-v]
+aws_project.py [-s ORG GROUP LOCATION [-f]] [-d] [-v]
 
 EXAMPLES
 ./aws_project.py -s south-coast-science-dev development 1
@@ -53,8 +56,15 @@ import sys
 
 from scs_core.aws.config.project import Project
 
+from scs_core.aws.security.cognito_device import CognitoDeviceCredentials
+from scs_core.aws.security.cognito_login_manager import CognitoLoginManager
+from scs_core.aws.security.organisation_manager import DeviceOrganisationManager
+
+from scs_core.client.http_exception import HTTPException
+
 from scs_core.data.json import JSONify
 
+from scs_core.sys.logging import Logging
 from scs_core.sys.system_id import SystemID
 
 from scs_host.sys.host import Host
@@ -71,28 +81,48 @@ if __name__ == '__main__':
 
     cmd = CmdAWSProject()
 
-    if cmd.verbose:
-        print("aws_project: %s" % cmd, file=sys.stderr)
-        sys.stderr.flush()
+    if not cmd.is_valid():
+        cmd.print_help(sys.stderr)
+        exit(2)
+
+    # logging...
+    Logging.config('aws_project', verbose=cmd.verbose)
+    logger = Logging.getLogger()
+
+    logger.info(cmd)
 
     try:
+        # ------------------------------------------------------------------------------------------------------------
+        # authentication...
+
+        # credentials...
+        credentials = CognitoDeviceCredentials.load_credentials_for_device(Host)
+
+        # AccessKey...
+        gatekeeper = CognitoLoginManager()
+        auth = gatekeeper.device_login(credentials)
+
+        if not auth.is_ok():
+            logger.error(auth.authentication_status.description)
+            exit(1)
+
+
         # ----------------------------------------------------------------------------------------------------------------
         # resources...
 
         # SystemID...
-        if cmd.verbose:
-            system_id = SystemID.load(Host)
+        system_id = SystemID.load(Host)
 
-            if system_id is None:
-                print("aws_project: SystemID not available.", file=sys.stderr)
-                exit(1)
+        if system_id is None:
+            logger.error("SystemID not available.")
+            exit(1)
 
-            print("aws_project: %s" % system_id, file=sys.stderr)
-        else:
-            system_id = None
+        logger.info(system_id)
 
+        # DeviceOrganisation...
+        manager = DeviceOrganisationManager()
 
-        # ClientAuth...
+        # Project...
         project = Project.load(Host)
 
 
@@ -103,6 +133,12 @@ if __name__ == '__main__':
             location = system_id.system_serial_number if cmd.location == '_' else cmd.location
 
             project = Project.construct(cmd.organisation, cmd.group, location)
+            location_path = project.location_path + '/'
+
+            if not cmd.force and manager.location_path_in_use(auth.id_token, location_path):
+                logger.error("The location path '%s' is in use." % location_path)
+                exit(1)
+
             project.save(Host)
 
         if cmd.delete and project is not None:
@@ -123,4 +159,8 @@ if __name__ == '__main__':
 
     except KeyboardInterrupt:
         print(file=sys.stderr)
+
+    except HTTPException as ex:
+        logger.error(ex.error_report)
+        exit(1)
 
