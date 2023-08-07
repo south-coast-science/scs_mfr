@@ -105,8 +105,8 @@ if __name__ == '__main__':
             else:
                 calib = DSICalib.download(cmd.sensor_serial_number)
 
-                if not Date.is_valid_iso_format(cmd.sensor_calibration_date):
-                    logger.error("invalid ISO date: '%s'." % cmd.sensor_calibration_date)
+                if not Date.is_valid_iso_format(cmd.sensor_calibration_date_str):
+                    logger.error("invalid ISO date: '%s'." % cmd.sensor_calibration_date_str)
                     exit(2)
 
                 calib.calibrated_on = cmd.sensor_calibration_date
