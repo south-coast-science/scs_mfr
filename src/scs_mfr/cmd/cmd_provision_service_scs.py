@@ -1,5 +1,5 @@
 """
-Created on 14 Jul 2023
+Created on 9 Aug 2023
 
 @author: Bruno Beloff (bruno.beloff@southcoastscience.com)
 """
@@ -11,21 +11,18 @@ from scs_mfr import version
 
 # --------------------------------------------------------------------------------------------------------------------
 
-class CmdProvisionNewSCS(object):
+class CmdProvisionServiceSCS(object):
     """unix command line handler"""
 
     def __init__(self):
         """
         Constructor
         """
-        self.__parser = optparse.OptionParser(usage="%prog -i INVOICE -p ORG GROUP LOCATION [-u] [-s] "
-                                                    "[{ -a AFE | -d DSI DATE }] [-c] [-m PSU_MODEL] [-t TIMEZONE] [-v]",
+        self.__parser = optparse.OptionParser(usage="%prog [-p ORG GROUP LOCATION] [-u] [-s] "
+                                                    "[{ -a AFE | -d DSI DATE }] [-c] [-b] [-t TIMEZONE] [-v]",
                                               version=version())
 
         # identity...
-        self.__parser.add_option("--invoice-number", "-i", type="string", action="store", dest="invoice_number",
-                                 help="invoice number")
-
         self.__parser.add_option("--project", "-p", type="string", nargs=3, action="store", dest="project",
                                  help="AWS project (LOCATION may be '_')")
 
@@ -43,10 +40,10 @@ class CmdProvisionNewSCS(object):
                                  help="DSI serial number and YYYY-MM-DD")
 
         self.__parser.add_option("--co2-scd30", "-c", action="store_true", dest="scd30", default=False,
-                                 help="SCD30 is present")
+                                 help="SCD30 is now present")
 
-        self.__parser.add_option("--psu-model", "-m", type="string", action="store", dest="psu_model",
-                                 help="PSU model")
+        self.__parser.add_option("--barometric", "-b", action="store_true", dest="barometric", default=False,
+                                 help="ICP is now present")
 
         self.__parser.add_option("--timezone", "-t", type="string", action="store", dest="timezone",
                                  help="timezone name")
@@ -61,9 +58,6 @@ class CmdProvisionNewSCS(object):
     # ----------------------------------------------------------------------------------------------------------------
 
     def is_valid(self):
-        if self.invoice_number is None or self.__opts.project is None:
-            return False
-
         if self.afe_serial and self.dsi_serial:
             return False
 
@@ -77,8 +71,8 @@ class CmdProvisionNewSCS(object):
     # ----------------------------------------------------------------------------------------------------------------
 
     @property
-    def invoice_number(self):
-        return self.__opts.invoice_number
+    def project(self):
+        return bool(self.__opts.project)
 
 
     @property
@@ -127,8 +121,8 @@ class CmdProvisionNewSCS(object):
 
 
     @property
-    def psu_model(self):
-        return self.__opts.psu_model
+    def barometric(self):
+        return self.__opts.barometric
 
 
     @property
@@ -148,7 +142,7 @@ class CmdProvisionNewSCS(object):
 
 
     def __str__(self, *args, **kwargs):
-        return "CmdProvisionNewSCS:{invoice_number:%s, project:%s, upgrade_pips:%s, upgrade_scs:%s, " \
-               "afe_serial:%s, dsi:%s, scd30:%s, psu_model:%s, timezone:%s, verbose:%s}" % \
-            (self.invoice_number, self.__opts.project, self.upgrade_pips, self.upgrade_scs,
-             self.afe_serial, self.__opts.dsi, self.scd30, self.psu_model, self.timezone, self.verbose)
+        return "CmdProvisionServiceSCS:{project:%s, upgrade_pips:%s, upgrade_scs:%s, " \
+               "afe_serial:%s, dsi:%s, scd30:%s, barometric:%s, timezone:%s, verbose:%s}" % \
+            (self.__opts.project, self.upgrade_pips, self.upgrade_scs,
+             self.afe_serial, self.__opts.dsi, self.scd30, self.barometric, self.timezone, self.verbose)
