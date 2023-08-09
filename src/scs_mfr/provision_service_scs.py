@@ -1,32 +1,29 @@
 #!/usr/bin/env python3
 
 """
-Created on 14 Jul 2023
+Created on 9 Aug 2023
 
 @author: Bruno Beloff (bruno.beloff@southcoastscience.com)
 
 DESCRIPTION
-The provision_new_scs utility is used to configure a device, together with its AWS Greengrass presence. This utility
-should be run as the scs user, the provision_new_root utility should be run simultaneously as the root user.
+The provision_service_scs utility is used to upgrade a device, together with its AWS Greengrass presence. This
+utility should be run as the scs user, the provision_new_root utility should be run simultaneously as the root user.
 
 The project location ID may be an integer or an alphanumeric string. Alternatively, the location may be the underscore
 character "_", indicating that the project location ID should be set as the device serial number.
 
 SYNOPSIS
-provision_new_scs.py -i INVOICE -p ORG GROUP LOCATION [-u] [-s] [{ -a AFE | -d DSI DATE }] [-c] [-m PSU_MODEL] [-t] [-v]
+provision_service_scs.py [-p ORG GROUP LOCATION] [-u] [-s] [{ -a AFE | -d DSI DATE }] [-c] [-b] [-t] [-v]
 
 EXAMPLES
-./provision_new_scs.py -v -i INV-0000 -p south-coast-science-dev development _ -a 26-000345 -m OPCubeV1
+./provision_service_scs.py -v -a 26-000345 -b
 
 SEE ALSO
 scs_mfr/provision_new_root
-scs_mfr/provision_service_scs
+scs_mfr/provision_new_scs
 """
 
 import sys
-
-from scs_core.aws.security.cognito_device import CognitoDeviceIdentity
-from scs_core.aws.security.cognito_device_creator import CognitoDeviceCreator
 
 from scs_core.client.http_exception import HTTPNotFoundException
 
@@ -43,7 +40,7 @@ from scs_core.sys.system_id import SystemID
 from scs_host.sync.flag import Flag
 from scs_host.sys.host import Host
 
-from scs_mfr.cmd.cmd_provision_new_scs import CmdProvisionNewSCS
+from scs_mfr.cmd.cmd_provision_service_scs import CmdProvisionServiceSCS
 from scs_mfr.provision.provision_scs import ProvisionSCS
 
 
@@ -54,14 +51,14 @@ if __name__ == '__main__':
     # ----------------------------------------------------------------------------------------------------------------
     # cmd...
 
-    cmd = CmdProvisionNewSCS()
+    cmd = CmdProvisionServiceSCS()
 
     if not cmd.is_valid():
         cmd.print_help(sys.stderr)
         exit(2)
 
     # logging...
-    Logging.config('provision_new_scs', verbose=cmd.verbose)
+    Logging.config('provision_service_scs', verbose=cmd.verbose)
     logger = Logging.getLogger()
 
     logger.info(cmd)
@@ -75,8 +72,6 @@ if __name__ == '__main__':
     scs_configuration_completed = Flag('scs-configuration-completed')
     root_setup_completed = Flag('root-setup-completed')
 
-    creator = CognitoDeviceCreator()
-
 
     # ----------------------------------------------------------------------------------------------------------------
     # validation...
@@ -85,14 +80,6 @@ if __name__ == '__main__':
 
     system_id.system_serial_number = Host.numeric_component_of_name()
     tag = system_id.message_tag()
-
-    if not creator.may_create(tag):
-        logger.error("device tag '%s' is not whitelisted." % tag)
-        exit(1)
-
-    if not CognitoDeviceIdentity.is_valid_invoice_number(cmd.invoice_number):
-        logger.error("invalid invoice number: '%s'." % cmd.invoice_number)
-        exit(2)
 
     try:
         if cmd.afe_serial is not None:
@@ -131,17 +118,15 @@ if __name__ == '__main__':
 
         if cmd.has_gases():
             provision.include_gases(cmd.afe_serial, cmd.dsi_serial, cmd.dsi_calibration_date, cmd.scd30)
-        else:
-            provision.remove_gases()
 
-        if cmd.psu_model:
-            provision.psu_model(cmd.psu_model)
+        if cmd.barometric:
+            provision.include_pressure()
 
         if cmd.timezone:
             provision.timezone(cmd.timezone)
 
-        provision.system_id(cmd.invoice_number)
-        provision.aws_project(cmd.project_org, cmd.project_group, cmd.project_location)
+        if cmd.project:
+            provision.aws_project(cmd.project_org, cmd.project_group, cmd.project_location)
 
         scs_configuration_completed.raise_flag()
 
