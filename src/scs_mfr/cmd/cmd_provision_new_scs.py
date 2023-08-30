@@ -7,6 +7,7 @@ Created on 14 Jul 2023
 import optparse
 
 from scs_mfr import version
+from scs_psu.psu.psu_conf import PSUConf
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -18,6 +19,8 @@ class CmdProvisionNewSCS(object):
         """
         Constructor
         """
+        psu_models = ' | '.join(PSUConf.psu_models())
+
         self.__parser = optparse.OptionParser(usage="%prog -i INVOICE -p ORG GROUP LOCATION [-u] [-s] "
                                                     "[{ -a AFE | -d DSI DATE }] [-c] [-m PSU_MODEL] [-t TIMEZONE] [-v]",
                                               version=version())
@@ -46,7 +49,7 @@ class CmdProvisionNewSCS(object):
                                  help="SCD30 is present")
 
         self.__parser.add_option("--psu-model", "-m", type="string", action="store", dest="psu_model",
-                                 help="PSU model")
+                                 help="PSU model { %s }" % psu_models)
 
         self.__parser.add_option("--timezone", "-t", type="string", action="store", dest="timezone",
                                  help="timezone name")
