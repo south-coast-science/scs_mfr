@@ -35,10 +35,8 @@ from scs_core.gas.dsi_calib import DSICalib
 from scs_core.location.timezone import Timezone
 
 from scs_core.sys.logging import Logging
-from scs_core.sys.system_id import SystemID
 
 from scs_host.sync.flag import Flag
-from scs_host.sys.host import Host
 
 from scs_mfr.cmd.cmd_provision_service_scs import CmdProvisionServiceSCS
 from scs_mfr.provision.provision_scs import ProvisionSCS
@@ -76,11 +74,6 @@ if __name__ == '__main__':
     # ----------------------------------------------------------------------------------------------------------------
     # validation...
 
-    system_id = SystemID.load(Host)
-
-    system_id.system_serial_number = Host.numeric_component_of_name()
-    tag = system_id.message_tag()
-
     try:
         if cmd.afe_serial is not None:
             AFECalib.download(cmd.afe_serial, parse=False)
@@ -108,7 +101,7 @@ if __name__ == '__main__':
         # ------------------------------------------------------------------------------------------------------------
         # stage 1...
 
-        logger.info("stage 1...")
+        logger.info("Stage 1...")
 
         if cmd.upgrade_pips:
             provision.upgrade_pips()
@@ -136,7 +129,7 @@ if __name__ == '__main__':
 
         root_setup_completed.wait_for_raised()
 
-        logger.info("stage 2...")
+        logger.info("Stage 2...")
 
         provision.aws_deployment()
         provision.test()
