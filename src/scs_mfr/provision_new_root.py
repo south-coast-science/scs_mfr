@@ -73,7 +73,7 @@ if __name__ == '__main__':
         # ------------------------------------------------------------------------------------------------------------
         # stage 1...
 
-        logger.info("stage 1...")
+        logger.info("Stage 1...")
 
         provision.stop()
 
@@ -86,7 +86,7 @@ if __name__ == '__main__':
 
         scs_configuration_completed.wait_for_raised()
 
-        logger.info("stage 2...")
+        logger.info("Stage 2...")
 
         provision.identity()
         provision.setup()

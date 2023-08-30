@@ -108,7 +108,7 @@ if __name__ == '__main__':
         # ------------------------------------------------------------------------------------------------------------
         # stage 1...
 
-        logger.info("stage 1...")
+        logger.info("Stage 1...")
 
         if cmd.upgrade_pips:
             provision.upgrade_pips()
@@ -136,7 +136,7 @@ if __name__ == '__main__':
 
         root_setup_completed.wait_for_raised()
 
-        logger.info("stage 2...")
+        logger.info("Stage 2...")
 
         provision.aws_deployment()
         provision.test()
