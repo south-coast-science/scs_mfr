@@ -130,7 +130,7 @@ class ProvisionSCS(object):
     def test(self):
         self.__logger.info("Test...")
 
-        self.__clu.s([self.DEV + 'status_sampler.py', '-i', 12])
+        self.__clu.s([self.DEV + 'status_sampler.py', '-i', 12, '-c', 1])
         self.__clu.s([self.DEV + 'climate_sampler.py'])
         self.__clu.s([self.DEV + 'particulates_sampler.py'])
         self.__clu.s([self.DEV + 'gases_sampler.py'])
