@@ -4,6 +4,8 @@ Created on 14 Jul 2023
 @author: Bruno Beloff (bruno.beloff@southcoastscience.com)
 """
 
+import spidev
+
 from scs_core.sys.command import Command
 from scs_core.sys.logging import Logging
 
@@ -14,6 +16,8 @@ class ProvisionSCS(object):
     """
     classdocs
     """
+
+    SPIDEV_VERSION = '3.6.1.dev1'
 
     MFR = '/home/scs/SCS/scs_mfr/src/scs_mfr/'
     DEV = '/home/scs/SCS/scs_dev/src/scs_dev/'
@@ -29,7 +33,7 @@ class ProvisionSCS(object):
 
 
     # ----------------------------------------------------------------------------------------------------------------
-    # stage 1...
+    # Stage 1...
 
     def upgrade_pips(self):
         self.__logger.info("Upgrade pips...")
@@ -37,8 +41,10 @@ class ProvisionSCS(object):
         self.__clu.s(['pip', 'install', '--upgrade', 'pip'], no_verbose=True)
         self.__clu.s(['pip', 'install', '--upgrade', 'requests'], no_verbose=True)
 
-        self.__clu.s(['pip', 'uninstall', '-y', 'spidev', '&&',
-                      'pip', 'install', 'git+https://github.com/tim-seoss/py-spidev.git@v3.6.1.dev1'], no_verbose=True)
+        if spidev.__version__ != self.SPIDEV_VERSION:
+            self.__clu.s(['pip', 'uninstall', '-y', 'spidev', '&&',
+                          'pip', 'install', 'git+https://github.com/tim-seoss/py-spidev.git@' + self.SPIDEV_VERSION],
+                         no_verbose=True)
 
 
     def upgrade_scs(self):
@@ -113,7 +119,7 @@ class ProvisionSCS(object):
 
 
     # ----------------------------------------------------------------------------------------------------------------
-    # stage 2...
+    # Stage 2...
 
     def aws_deployment(self):
         self.__logger.info("AWS deployment...")
@@ -124,7 +130,7 @@ class ProvisionSCS(object):
     def test(self):
         self.__logger.info("Test...")
 
-        self.__clu.s([self.DEV + 'status_sampler.py', '-i', 12, '-c', 2])
+        self.__clu.s([self.DEV + 'status_sampler.py', '-i', 12])
         self.__clu.s([self.DEV + 'climate_sampler.py'])
         self.__clu.s([self.DEV + 'particulates_sampler.py'])
         self.__clu.s([self.DEV + 'gases_sampler.py'])

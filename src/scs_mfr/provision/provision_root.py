@@ -26,7 +26,7 @@ class ProvisionRoot(object):
 
 
     # ----------------------------------------------------------------------------------------------------------------
-    # stage 1...
+    # Stage 1...
 
     def stop(self):
         self.__logger.info("Stop...")
@@ -41,7 +41,7 @@ class ProvisionRoot(object):
 
 
     # ----------------------------------------------------------------------------------------------------------------
-    # stage 2...
+    # Stage 2...
 
     def identity(self):
         self.__logger.info("AWS identity...")

@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
     try:
         # ------------------------------------------------------------------------------------------------------------
-        # stage 1...
+        # Stage 1...
 
         logger.info("Stage 1...")
 
@@ -82,13 +82,13 @@ if __name__ == '__main__':
 
 
         # ------------------------------------------------------------------------------------------------------------
-        # stage 2...
+        # Stage 2...
 
         scs_configuration_completed.wait_for_raised()
 
         logger.info("Stage 2...")
 
-        provision.identity()
+        provision.identity()            # TODO: not for service version
         provision.setup()
 
         root_setup_completed.raise_flag()
