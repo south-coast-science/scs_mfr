@@ -35,6 +35,12 @@ class ProvisionSCS(object):
     # ----------------------------------------------------------------------------------------------------------------
     # Stage 1...
 
+    def os_info(self):
+        self.__logger.info("OS info...")
+
+        self.__clu.s(['uname', '-r'], no_verbose=True)          # equivalent to platform.uname().release
+
+
     def upgrade_pips(self):
         self.__logger.info("Upgrade pips...")
 
