@@ -123,6 +123,8 @@ if __name__ == '__main__':
 
         logger.info("Stage 1...")
 
+        provision.os_info()
+
         if cmd.upgrade_pips:
             provision.upgrade_pips()
 
