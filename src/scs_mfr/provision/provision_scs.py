@@ -49,7 +49,7 @@ class ProvisionSCS(object):
 
         if spidev.__version__ != self.SPIDEV_VERSION:
             self.__clu.s(['pip', 'uninstall', '-y', 'spidev', '&&',
-                          'pip', 'install', 'git+https://github.com/tim-seoss/py-spidev.git@' + self.SPIDEV_VERSION],
+                          'pip', 'install', 'git+https://github.com/tim-seoss/py-spidev.git@v' + self.SPIDEV_VERSION],
                          no_verbose=True)
 
 
