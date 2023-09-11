@@ -18,12 +18,15 @@ class CmdAWSProject(object):
         """
         Constructor
         """
-        self.__parser = optparse.OptionParser(usage="%prog [-s ORG GROUP LOCATION] [-d] [-v]",
+        self.__parser = optparse.OptionParser(usage="%prog [-s ORG GROUP LOCATION [-f]] [-d] [-v]",
                                               version=version())
 
         # operations...
         self.__parser.add_option("--set", "-s", type="string", nargs=3, action="store", dest="project",
                                  help="set project specification")
+
+        self.__parser.add_option("--force", "-f", action="store_true", dest="force", default=False,
+                                 help="do not check for pre-existing topics")
 
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
                                  help="delete the project reference")
@@ -35,7 +38,16 @@ class CmdAWSProject(object):
         self.__opts, self.__args = self.__parser.parse_args()
 
 
+
+
     # ----------------------------------------------------------------------------------------------------------------
+
+    def is_valid(self):
+        if self.force and self.__opts.project is None:
+            return False
+
+        return True
+
 
     def set(self):
         return self.__opts.project is not None
@@ -59,6 +71,11 @@ class CmdAWSProject(object):
 
 
     @property
+    def force(self):
+        return self.__opts.force
+
+
+    @property
     def delete(self):
         return self.__opts.delete
 
@@ -75,5 +92,5 @@ class CmdAWSProject(object):
 
 
     def __str__(self, *args, **kwargs):
-        return "CmdAWSProject:{organisation:%s, group:%s, location:%s, delete:%s, verbose:%s}" % \
-               (self.organisation, self.group, self.location, self.delete, self.verbose)
+        return "CmdAWSProject:{organisation:%s, group:%s, location:%s, force:%s, delete:%s, verbose:%s}" % \
+               (self.organisation, self.group, self.location, self.force, self.delete, self.verbose)

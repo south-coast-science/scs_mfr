@@ -44,7 +44,6 @@ https://docs.aws.amazon.com/iot/latest/developerguide/server-authentication.html
 """
 
 import os
-import requests
 import sys
 
 from botocore.exceptions import NoCredentialsError, ClientError
@@ -104,14 +103,14 @@ if __name__ == '__main__':
         credentials = CognitoDeviceCredentials.load_credentials_for_device(Host)
 
         # AccessKey...
-        gatekeeper = CognitoLoginManager(requests)
+        gatekeeper = CognitoLoginManager()
         auth = gatekeeper.device_login(credentials)
 
         if not auth.is_ok():
             logger.error(auth.authentication_status.description)
             exit(1)
 
-        manager = AccessKeyManager(requests)
+        manager = AccessKeyManager()
         key = manager.get(auth.id_token)
 
 

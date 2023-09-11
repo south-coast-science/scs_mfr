@@ -10,6 +10,8 @@ The provision_new_root utility is used to provide device and AWS Greengrass conf
 superuser privileges. This utility should be run as the root user, the provision_new_scs utility should be run
 simultaneously as the scs user.
 
+Warning: do NOT use the --prep-sd  / -s flag when doing a service or upgrade.
+
 SYNOPSIS
 provision_new_root.py [-s] [-v]
 
@@ -52,6 +54,7 @@ if __name__ == '__main__':
 
     if os.getcwd() != '/etc/systemd/system':
         logger.error("must be run in /etc/systemd/system.")
+        exit(1)
 
     if os.geteuid() != 0:
         logger.error("you must have root privileges to set the identity.")
@@ -69,9 +72,9 @@ if __name__ == '__main__':
 
     try:
         # ------------------------------------------------------------------------------------------------------------
-        # stage 1...
+        # Stage 1...
 
-        logger.info("stage 1...")
+        logger.info("Stage 1...")
 
         provision.stop()
 
@@ -80,13 +83,13 @@ if __name__ == '__main__':
 
 
         # ------------------------------------------------------------------------------------------------------------
-        # stage 2...
+        # Stage 2...
 
         scs_configuration_completed.wait_for_raised()
 
-        logger.info("stage 2...")
+        logger.info("Stage 2...")
 
-        provision.identity()
+        provision.identity()            # TODO: not for service version
         provision.setup()
 
         root_setup_completed.raise_flag()

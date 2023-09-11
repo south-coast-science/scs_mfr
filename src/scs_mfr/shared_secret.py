@@ -28,7 +28,6 @@ SEE ALSO
 scs_dev/control_receiver
 """
 
-import requests
 import sys
 
 from scs_core.aws.security.cognito_device import CognitoDeviceCredentials
@@ -75,11 +74,11 @@ if __name__ == '__main__':
     secret = SharedSecret.load(Host)
 
     # CognitoDeviceCredentials...
-    gatekeeper = CognitoLoginManager(requests)
-    finder = CognitoDeviceIntrospector(requests)
+    gatekeeper = CognitoLoginManager()
+    finder = CognitoDeviceIntrospector()
 
     # CognitoDeviceManager...
-    manager = CognitoDeviceManager(requests)
+    manager = CognitoDeviceManager()
 
 
     # ------------------------------------------------------------------------------------------------------------

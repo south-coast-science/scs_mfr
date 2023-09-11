@@ -32,7 +32,6 @@ scs_mfr/aws_group_setup.py
 scs_mfr/aws_identity.py
 """
 
-import requests
 import sys
 import time
 
@@ -78,14 +77,14 @@ if __name__ == '__main__':
     credentials = CognitoDeviceCredentials.load_credentials_for_device(Host)
 
     # AccessKey...
-    gatekeeper = CognitoLoginManager(requests)
+    gatekeeper = CognitoLoginManager()
     auth = gatekeeper.device_login(credentials)
 
     if not auth.is_ok():
         logger.error(auth.authentication_status.description)
         exit(1)
 
-    manager = AccessKeyManager(requests)
+    manager = AccessKeyManager()
     key = manager.get(auth.id_token)
 
 

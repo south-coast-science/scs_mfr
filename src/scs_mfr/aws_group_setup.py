@@ -42,7 +42,6 @@ https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/green
 """
 
 import os
-import requests
 import sys
 
 from botocore.exceptions import ClientError, EndpointConnectionError, NoCredentialsError
@@ -117,14 +116,14 @@ if __name__ == '__main__':
         credentials = CognitoDeviceCredentials.load_credentials_for_device(Host)
 
         # AccessKey...
-        gatekeeper = CognitoLoginManager(requests)
+        gatekeeper = CognitoLoginManager()
         auth = gatekeeper.device_login(credentials)
 
         if not auth.is_ok():
             logger.error(auth.authentication_status.description)
             exit(1)
 
-        manager = AccessKeyManager(requests)
+        manager = AccessKeyManager()
         key = manager.get(auth.id_token)
 
         # client...
