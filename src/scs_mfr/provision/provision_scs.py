@@ -118,10 +118,10 @@ class ProvisionSCS(object):
         self.__clu.s([self.MFR + 'cognito_device_credentials.py', '-a', invoice_number])
 
 
-    def aws_project(self, org, group, location):
+    def aws_project(self, org, group, location, force):
         self.__logger.info("AWS project...")
 
-        self.__clu.s([self.MFR + 'aws_project.py', '-s', org, group, location])
+        self.__clu.s([self.MFR + 'aws_project.py', '-s', org, group, location, '-f' if force else None])
 
 
     # ----------------------------------------------------------------------------------------------------------------

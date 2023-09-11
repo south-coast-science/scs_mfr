@@ -21,7 +21,7 @@ class CmdProvisionNewSCS(object):
         """
         psu_models = ' | '.join(PSUConf.psu_models())
 
-        self.__parser = optparse.OptionParser(usage="%prog -i INVOICE -p ORG GROUP LOCATION [-u] [-s] "
+        self.__parser = optparse.OptionParser(usage="%prog -i INVOICE -p ORG GROUP LOCATION [-f] [-u] [-s] "
                                                     "[{ -a AFE | -d DSI DATE }] [-c] [-m PSU_MODEL] [-t TIMEZONE] [-v]",
                                               version=version())
 
@@ -31,6 +31,9 @@ class CmdProvisionNewSCS(object):
 
         self.__parser.add_option("--project", "-p", type="string", nargs=3, action="store", dest="project",
                                  help="AWS project (LOCATION may be '_')")
+
+        self.__parser.add_option("--force", "-f", action="store_true", dest="force", default=False,
+                                 help="do not check for pre-existing topics")
 
         # operations...
         self.__parser.add_option("--upgrade-pips", "-u", action="store_true", dest="upgrade_pips",
@@ -100,6 +103,11 @@ class CmdProvisionNewSCS(object):
 
 
     @property
+    def force(self):
+        return self.__opts.force
+
+
+    @property
     def upgrade_pips(self):
         return self.__opts.upgrade_pips
 
@@ -151,7 +159,7 @@ class CmdProvisionNewSCS(object):
 
 
     def __str__(self, *args, **kwargs):
-        return "CmdProvisionNewSCS:{invoice_number:%s, project:%s, upgrade_pips:%s, upgrade_scs:%s, " \
+        return "CmdProvisionNewSCS:{invoice_number:%s, project:%s, force:%s, upgrade_pips:%s, upgrade_scs:%s, " \
                "afe_serial:%s, dsi:%s, scd30:%s, psu_model:%s, timezone:%s, verbose:%s}" % \
-            (self.invoice_number, self.__opts.project, self.upgrade_pips, self.upgrade_scs,
+            (self.invoice_number, self.__opts.project, self.force, self.upgrade_pips, self.upgrade_scs,
              self.afe_serial, self.__opts.dsi, self.scd30, self.psu_model, self.timezone, self.verbose)
