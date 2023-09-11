@@ -54,6 +54,7 @@ if __name__ == '__main__':
 
     if os.getcwd() != '/etc/systemd/system':
         logger.error("must be run in /etc/systemd/system.")
+        exit(1)
 
     if os.geteuid() != 0:
         logger.error("you must have root privileges to set the identity.")
