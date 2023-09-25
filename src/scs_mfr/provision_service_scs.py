@@ -111,7 +111,7 @@ if __name__ == '__main__':
         if cmd.upgrade_scs:
             provision.upgrade_scs()
 
-        if cmd.has_gases():
+        if cmd.set_gases():
             provision.include_gases(cmd.afe_serial, cmd.dsi_serial, cmd.dsi_calibration_date, cmd.scd30)
 
         if cmd.barometric:
@@ -121,7 +121,7 @@ if __name__ == '__main__':
             provision.timezone(cmd.timezone)
 
         if cmd.project:
-            provision.aws_project(cmd.project_org, cmd.project_group, cmd.project_location)
+            provision.aws_project(cmd.project_org, cmd.project_group, cmd.project_location, cmd.force)
 
         scs_configuration_completed.raise_flag()
 

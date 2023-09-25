@@ -18,13 +18,16 @@ class CmdProvisionServiceSCS(object):
         """
         Constructor
         """
-        self.__parser = optparse.OptionParser(usage="%prog [-p ORG GROUP LOCATION] [-u] [-s] "
+        self.__parser = optparse.OptionParser(usage="%prog [-p ORG GROUP LOCATION [-f]] [-u] [-s] "
                                                     "[{ -a AFE | -d DSI DATE }] [-c] [-b] [-t TIMEZONE] [-v]",
                                               version=version())
 
         # identity...
         self.__parser.add_option("--project", "-p", type="string", nargs=3, action="store", dest="project",
                                  help="AWS project (LOCATION may be '_')")
+
+        self.__parser.add_option("--force", "-f", action="store_true", dest="force", default=False,
+                                 help="do not check for pre-existing topics")
 
         # operations...
         self.__parser.add_option("--upgrade-pips", "-u", action="store_true", dest="upgrade_pips",
@@ -61,10 +64,13 @@ class CmdProvisionServiceSCS(object):
         if self.afe_serial and self.dsi_serial:
             return False
 
+        if self.__opts.project is None and self.force:
+            return False
+
         return True
 
 
-    def has_gases(self):
+    def set_gases(self):
         return self.__opts.afe_serial or self.__opts.dsi or self.scd30
 
 
@@ -88,6 +94,11 @@ class CmdProvisionServiceSCS(object):
     @property
     def project_location(self):
         return self.__opts.project[2] if self.__opts.project else None
+
+
+    @property
+    def force(self):
+        return self.__opts.force
 
 
     @property
@@ -142,7 +153,7 @@ class CmdProvisionServiceSCS(object):
 
 
     def __str__(self, *args, **kwargs):
-        return "CmdProvisionServiceSCS:{project:%s, upgrade_pips:%s, upgrade_scs:%s, " \
+        return "CmdProvisionServiceSCS:{project:%s, force:%s, upgrade_pips:%s, upgrade_scs:%s, " \
                "afe_serial:%s, dsi:%s, scd30:%s, barometric:%s, timezone:%s, verbose:%s}" % \
-            (self.__opts.project, self.upgrade_pips, self.upgrade_scs,
+            (self.__opts.project, self.force, self.upgrade_pips, self.upgrade_scs,
              self.afe_serial, self.__opts.dsi, self.scd30, self.barometric, self.timezone, self.verbose)
