@@ -70,7 +70,7 @@ class CmdProvisionServiceSCS(object):
         return True
 
 
-    def has_gases(self):
+    def set_gases(self):
         return self.__opts.afe_serial or self.__opts.dsi or self.scd30
 
 
