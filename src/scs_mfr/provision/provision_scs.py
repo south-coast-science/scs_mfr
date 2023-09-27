@@ -62,6 +62,8 @@ class ProvisionSCS(object):
     def include_gases(self, afe_serial, dsi_serial, dsi_calibration_date, scd30):
         self.__logger.info("Include gases...")
 
+        self.__clu.s([self.MFR + 'schedule.py', '-s', 'scs-gases', 10, 1])
+
         if afe_serial or dsi_serial:
             self.__clu.s([self.MFR + 'afe_baseline.py', '-z'])
             self.__clu.s([self.MFR + 'gas_baseline.py', '-d'])
@@ -85,13 +87,14 @@ class ProvisionSCS(object):
     def remove_gases(self):
         self.__logger.info("Remove gases...")
 
+        self.__clu.s([self.MFR + 'schedule.py', '-r', 'scs-gases'])
+
         self.__clu.s([self.MFR + 'afe_calib.py', '-d'])
         self.__clu.s([self.MFR + 'afe_baseline.py', '-d'])
         self.__clu.s([self.MFR + 'gas_baseline.py', '-d'])
         self.__clu.s([self.MFR + 'vcal_baseline.py', '-d'])
         self.__clu.s([self.MFR + 'scd30_baseline.py', '-d'])
         self.__clu.s([self.MFR + 'gas_model_conf.py', '-d'])
-        self.__clu.s([self.MFR + 'schedule.py', '-r', 'scs-gases'])
 
 
     def include_pressure(self):
