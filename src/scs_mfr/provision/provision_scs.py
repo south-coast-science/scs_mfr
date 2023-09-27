@@ -72,9 +72,11 @@ class ProvisionSCS(object):
 
         if afe_serial:
             self.__clu.s([self.MFR + 'afe_calib.py', '-a', afe_serial])
+            self.__clu.s([self.MFR + 'gas_model_conf.py', '-u', 'pipes/lambda-gas-model.uds', '-i', 'vE', '-g', 'uE.1'])
 
         if dsi_serial:
             self.__clu.s([self.MFR + 'afe_calib.py', '-s', dsi_serial, dsi_calibration_date])
+            self.__clu.s([self.MFR + 'gas_model_conf.py', '-u', 'pipes/lambda-gas-model.uds', '-i', 'vE', '-g', 'oE.1'])
 
         if scd30:
             self.__clu.s([self.MFR + 'scd30_conf.py', '-i', 5, '-t', 0.0])
