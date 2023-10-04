@@ -6,8 +6,13 @@ Created on 14 Jul 2023
 
 import spidev
 
+from scs_core.model.gas.gas_model_conf import GasModelConf
+from scs_core.model.pmx.pmx_model_conf import PMxModelConf
+
 from scs_core.sys.command import Command
 from scs_core.sys.logging import Logging
+
+from scs_host.sys.host import Host
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -21,6 +26,10 @@ class ProvisionSCS(object):
 
     MFR = '/home/scs/SCS/scs_mfr/src/scs_mfr/'
     DEV = '/home/scs/SCS/scs_dev/src/scs_dev/'
+
+    __GAS_MODEL_GROUPS = {'scs-bbe-': 'uE.1', 'scs-cube-': 'oE.1'}
+    __GAS_MODEL_INTERFACE = 'vE'
+    __PMX_MODEL_INTERFACE = 's2'
 
     # ----------------------------------------------------------------------------------------------------------------
 
@@ -95,6 +104,25 @@ class ProvisionSCS(object):
         self.__clu.s([self.MFR + 'vcal_baseline.py', '-d'])
         self.__clu.s([self.MFR + 'scd30_baseline.py', '-d'])
         self.__clu.s([self.MFR + 'gas_model_conf.py', '-d'])
+
+
+    def update_models(self):
+        self.__logger.info("Updating models...")
+
+        # GasModelConf...
+        conf = GasModelConf.load(Host)
+
+        if conf is not None:
+            group = self.__GAS_MODEL_GROUPS[Host.hostname_prefix()]
+            conf = GasModelConf('pipes/lambda-gas-model.uds', self.__GAS_MODEL_INTERFACE, model_compendium_group=group)
+            conf.save(Host)
+
+        # PMxModelConf...
+        conf = PMxModelConf.load(Host)
+
+        if conf is not None:
+            conf = GasModelConf('pipes/lambda-pmx-model.uds', self.__PMX_MODEL_INTERFACE)
+            conf.save(Host)
 
 
     def include_pressure(self):

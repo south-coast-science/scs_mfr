@@ -18,10 +18,10 @@ SYNOPSIS
 pmx_model_conf.py [{ [-u UDS_PATH] [-i INTERFACE] | -d }] [-v]
 
 EXAMPLES
-./pmx_model_conf.py -u pipes/lambda-pmx-model.uds -i s1 -v
+./pmx_model_conf.py -u pipes/lambda-pmx-model.uds -i s2 -v
 
 DOCUMENT EXAMPLE
-{"uds-path": "pipes/lambda-pmx-model.uds", "model-interface": "s1"}
+{"uds-path": "pipes/lambda-pmx-model.uds", "model-interface": "s2"}
 
 FILES
 ~/SCS/conf/pmx_model_conf.json
