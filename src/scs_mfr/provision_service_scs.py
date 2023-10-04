@@ -111,11 +111,13 @@ if __name__ == '__main__':
         if cmd.upgrade_scs:
             provision.upgrade_scs()
 
+        if cmd.barometric:
+            provision.include_pressure()
+
         if cmd.set_gases():
             provision.include_gases(cmd.afe_serial, cmd.dsi_serial, cmd.dsi_calibration_date, cmd.scd30)
 
-        if cmd.barometric:
-            provision.include_pressure()
+        provision.update_models()
 
         if cmd.timezone:
             provision.timezone(cmd.timezone)
