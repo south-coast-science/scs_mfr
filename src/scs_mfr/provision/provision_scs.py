@@ -24,11 +24,14 @@ class ProvisionSCS(object):
 
     SPIDEV_VERSION = '3.6.1.dev1'
 
-    MFR = '/home/scs/SCS/scs_mfr/src/scs_mfr/'
-    DEV = '/home/scs/SCS/scs_dev/src/scs_dev/'
+    MFR = '~/SCS/scs_mfr/src/scs_mfr/'
+    DEV = '~/SCS/scs_dev/src/scs_dev/'
 
+    __GAS_PIPE = 'pipes/lambda-gas-model.uds'
     __GAS_MODEL_GROUPS = {'scs-bbe-': 'uE.1', 'scs-cube-': 'oE.1'}
     __GAS_MODEL_INTERFACE = 'vE'
+
+    __PMX_PIPE = 'pipes/lambda-pmx-model.uds'
     __PMX_MODEL_INTERFACE = 's2'
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -38,6 +41,7 @@ class ProvisionSCS(object):
         Constructor
         """
         self.__clu = Command(verbose)
+        self.__gas_model_group = self.__GAS_MODEL_GROUPS[Host.hostname_prefix()]
         self.__logger = Logging.getLogger()
 
 
@@ -83,11 +87,13 @@ class ProvisionSCS(object):
 
         if afe_serial:
             self.__clu.s([self.MFR + 'afe_calib.py', '-a', afe_serial])
-            self.__clu.s([self.MFR + 'gas_model_conf.py', '-u', 'pipes/lambda-gas-model.uds', '-i', 'vE', '-g', 'uE.1'])
+            self.__clu.s([self.MFR + 'gas_model_conf.py', '-u', self.__GAS_PIPE, '-i', self.__GAS_MODEL_INTERFACE,
+                          '-g', self.__gas_model_group])
 
         if dsi_serial:
             self.__clu.s([self.MFR + 'afe_calib.py', '-s', dsi_serial, dsi_calibration_date])
-            self.__clu.s([self.MFR + 'gas_model_conf.py', '-u', 'pipes/lambda-gas-model.uds', '-i', 'vE', '-g', 'oE.1'])
+            self.__clu.s([self.MFR + 'gas_model_conf.py', '-u', self.__GAS_PIPE, '-i', self.__GAS_MODEL_INTERFACE,
+                          '-g', self.__gas_model_group])
 
         if scd30:
             self.__clu.s([self.MFR + 'scd30_conf.py', '-i', 5, '-t', 0.0])
@@ -110,19 +116,13 @@ class ProvisionSCS(object):
         self.__logger.info("Updating models...")
 
         # GasModelConf...
-        conf = GasModelConf.load(Host)
-
-        if conf is not None:
-            group = self.__GAS_MODEL_GROUPS[Host.hostname_prefix()]
-            conf = GasModelConf('pipes/lambda-gas-model.uds', self.__GAS_MODEL_INTERFACE, model_compendium_group=group)
-            conf.save(Host)
+        if GasModelConf.load(Host) is not None:
+            self.__clu.s([self.MFR + 'gas_model_conf.py', '-u', self.__GAS_PIPE, '-i', self.__GAS_MODEL_INTERFACE,
+                          '-g', self.__gas_model_group])
 
         # PMxModelConf...
-        conf = PMxModelConf.load(Host)
-
-        if conf is not None:
-            conf = PMxModelConf('pipes/lambda-pmx-model.uds', self.__PMX_MODEL_INTERFACE)
-            conf.save(Host)
+        if PMxModelConf.load(Host) is not None:
+            self.__clu.s([self.MFR + 'pmx_model_conf.py', '-u', self.__PMX_PIPE, '-i', self.__PMX_MODEL_INTERFACE])
 
 
     def include_pressure(self):
@@ -179,4 +179,4 @@ class ProvisionSCS(object):
     # ----------------------------------------------------------------------------------------------------------------
 
     def __str__(self, *args, **kwargs):
-        return "ProvisionSCS:{clu:%s}" % self.__clu
+        return "ProvisionSCS:{clu:%s, gas_model_group:%s}" % (self.__clu, self.__gas_model_group)

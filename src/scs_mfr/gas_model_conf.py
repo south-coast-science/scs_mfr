@@ -49,6 +49,7 @@ from scs_host.sys.host import Host
 from scs_mfr.cmd.cmd_model_conf import CmdModelConf
 
 
+# TODO: add validation
 # --------------------------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
