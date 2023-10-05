@@ -121,7 +121,7 @@ class ProvisionSCS(object):
         conf = PMxModelConf.load(Host)
 
         if conf is not None:
-            conf = GasModelConf('pipes/lambda-pmx-model.uds', self.__PMX_MODEL_INTERFACE)
+            conf = PMxModelConf('pipes/lambda-pmx-model.uds', self.__PMX_MODEL_INTERFACE)
             conf.save(Host)
 
 
