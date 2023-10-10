@@ -34,6 +34,8 @@ class ProvisionSCS(object):
     __PMX_PIPE = 'pipes/lambda-pmx-model.uds'
     __PMX_MODEL_INTERFACE = 's2'
 
+    __CLIMATE_INTERVAL = 60                         # seconds
+
     # ----------------------------------------------------------------------------------------------------------------
 
     def __init__(self, verbose=False):
@@ -123,6 +125,12 @@ class ProvisionSCS(object):
         # PMxModelConf...
         if PMxModelConf.load(Host) is not None:
             self.__clu.s([self.MFR + 'pmx_model_conf.py', '-u', self.__PMX_PIPE, '-i', self.__PMX_MODEL_INTERFACE])
+
+
+    def set_schedule(self):
+        self.__logger.info("Set schedule...")
+
+        self.__clu.s([self.MFR + 'schedule.py', '-s', 'scs-climate', self.__CLIMATE_INTERVAL, 1])
 
 
     def include_pressure(self):

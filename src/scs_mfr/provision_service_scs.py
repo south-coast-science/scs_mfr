@@ -125,6 +125,8 @@ if __name__ == '__main__':
         if cmd.project:
             provision.aws_project(cmd.project_org, cmd.project_group, cmd.project_location, cmd.force)
 
+        provision.set_schedule()
+
         scs_configuration_completed.raise_flag()
 
 
