@@ -46,6 +46,9 @@ class CmdAWSProject(object):
         if self.force and self.__opts.project is None:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

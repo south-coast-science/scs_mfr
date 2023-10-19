@@ -64,6 +64,10 @@ if __name__ == '__main__':
 
         cmd = CmdCognitoDeviceCredentials()
 
+        if not cmd.is_valid():
+            cmd.print_help(sys.stderr)
+            exit(2)
+
         Logging.config('cognito_device_credentials', verbose=cmd.verbose)
         logger = Logging.getLogger()
 

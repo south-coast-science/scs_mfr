@@ -48,6 +48,9 @@ class CmdInterfaceConf(object):
         if self.set() and self.model is not None and self.model not in InterfaceConf.models():
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

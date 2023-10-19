@@ -42,6 +42,10 @@ if __name__ == '__main__':
 
     cmd = CmdProvisionNewRoot()
 
+    if not cmd.is_valid():
+        cmd.print_help(sys.stderr)
+        exit(2)
+
     # logging...
     Logging.config('provision_new_root', verbose=cmd.verbose)
     logger = Logging.getLogger()

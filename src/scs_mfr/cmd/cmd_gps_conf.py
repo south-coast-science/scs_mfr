@@ -59,6 +59,9 @@ class CmdGPSConf(object):
         if self.model and not GPSConf.is_valid_model(self.model):
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

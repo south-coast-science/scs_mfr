@@ -76,6 +76,9 @@ class CmdProvisionNewSCS(object):
         if self.afe_serial and self.dsi_serial:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

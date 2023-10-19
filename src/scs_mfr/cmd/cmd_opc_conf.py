@@ -71,6 +71,9 @@ class CmdOPCConf(object):
                 not (self.__opts.power_saving == 0 or self.__opts.power_saving == 1):
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

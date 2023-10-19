@@ -59,6 +59,10 @@ if __name__ == '__main__':
 
     cmd = CmdGitPull()
 
+    if not cmd.is_valid():
+        cmd.print_help(sys.stderr)
+        exit(2)
+
     # logging...
     Logging.config('git_pull', verbose=cmd.verbose)
     logger = Logging.getLogger()

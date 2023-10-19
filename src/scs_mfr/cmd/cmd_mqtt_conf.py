@@ -55,6 +55,9 @@ class CmdMQTTConf(object):
         if self.__opts.inhibit_publishing is not None and self.__opts.inhibit_publishing not in (0, 1):
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

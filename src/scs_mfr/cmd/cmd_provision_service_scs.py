@@ -67,6 +67,9 @@ class CmdProvisionServiceSCS(object):
         if self.__opts.project is None and self.force:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

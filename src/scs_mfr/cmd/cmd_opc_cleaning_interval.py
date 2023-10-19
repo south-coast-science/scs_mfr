@@ -37,6 +37,9 @@ class CmdOPCCleaningInterval(object):
         if self.interval is not None and self.interval < 0:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 
