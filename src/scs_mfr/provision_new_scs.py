@@ -40,7 +40,6 @@ from scs_core.location.timezone import Timezone
 from scs_core.sys.logging import Logging
 from scs_core.sys.system_id import SystemID
 
-from scs_host.sync.flag import Flag
 from scs_host.sys.host import Host
 
 from scs_mfr.cmd.cmd_provision_new_scs import CmdProvisionNewSCS
@@ -71,9 +70,7 @@ if __name__ == '__main__':
     # resources...
 
     provision = ProvisionSCS(cmd.verbose)
-
-    scs_configuration_completed = Flag('scs-configuration-completed')
-    root_setup_completed = Flag('root-setup-completed')
+    logger.info(provision)
 
     creator = CognitoDeviceCreator()
 
@@ -144,23 +141,25 @@ if __name__ == '__main__':
         if cmd.timezone:
             provision.timezone(cmd.timezone)
 
-        provision.system_id(cmd.invoice_number)
+        provision.system_id()
         provision.aws_project(cmd.project_org, cmd.project_group, cmd.project_location, cmd.force)
 
-        scs_configuration_completed.raise_flag()
+        provision.raise_scs_configuration_completed()
 
 
         # ------------------------------------------------------------------------------------------------------------
         # Stage 2...
 
-        root_setup_completed.wait_for_raised()
+        provision.wait_for_root_setup_completed()
 
         logger.info("Stage 2...")
 
         provision.aws_deployment()
+        provision.cognito_identity(cmd.invoice_number)
+
         provision.test()
 
-        root_setup_completed.lower_flag()
+        provision.lower_root_setup_completed()
 
 
         # ----------------------------------------------------------------------------------------------------------------

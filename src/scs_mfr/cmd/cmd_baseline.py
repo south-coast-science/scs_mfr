@@ -134,6 +134,9 @@ class CmdBaseline(object):
                 (not self.__is_integer(self.correct[1]) or not self.__is_integer(self.correct[2])):
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

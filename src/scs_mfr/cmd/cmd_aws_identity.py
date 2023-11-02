@@ -48,6 +48,9 @@ class CmdAWSIdentity(object):
         if not self.setup and (bool(self.group_name) or bool(self.core_name)):
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

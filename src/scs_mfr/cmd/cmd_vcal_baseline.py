@@ -117,6 +117,9 @@ class CmdVCalBaseline(object):
         if self.offset is not None and not self.__is_integer(self.offset[1]):
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

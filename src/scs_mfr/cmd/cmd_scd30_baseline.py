@@ -101,6 +101,9 @@ class CmdSCD30Baseline(object):
         if bool(self.humid is None) != bool(self.temp is None):
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

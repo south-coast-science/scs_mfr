@@ -54,6 +54,9 @@ class CmdOPCFirmwareConf(object):
             except ValueError:
                 return False
 
+        if self.__args:
+            return False
+
         return True
 
 

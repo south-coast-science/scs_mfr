@@ -40,6 +40,9 @@ class CmdMPL115A2Calib(object):
         if self.set and self.delete:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

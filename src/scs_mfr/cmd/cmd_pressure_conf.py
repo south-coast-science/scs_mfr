@@ -55,6 +55,9 @@ class CmdPressureConf(object):
         if self.model is not None and self.model not in PressureConf.models():
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

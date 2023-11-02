@@ -58,6 +58,9 @@ class CmdDisplayConf(object):
         if self.mode is not None and self.mode not in DisplayConf.modes():
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

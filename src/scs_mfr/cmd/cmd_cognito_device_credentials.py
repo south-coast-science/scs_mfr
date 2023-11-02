@@ -36,6 +36,15 @@ class CmdCognitoDeviceCredentials(object):
 
     # ----------------------------------------------------------------------------------------------------------------
 
+    def is_valid(self):
+        if self.__args:
+            return False
+
+        return True
+
+
+    # ----------------------------------------------------------------------------------------------------------------
+
     @property
     def assert_device(self):
         return self.__opts.assert_device is not None

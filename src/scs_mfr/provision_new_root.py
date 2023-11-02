@@ -27,8 +27,6 @@ import sys
 
 from scs_core.sys.logging import Logging
 
-from scs_host.sync.flag import Flag
-
 from scs_mfr.cmd.cmd_provision_new_root import CmdProvisionNewRoot
 from scs_mfr.provision.provision_root import ProvisionRoot
 
@@ -41,6 +39,10 @@ if __name__ == '__main__':
     # cmd...
 
     cmd = CmdProvisionNewRoot()
+
+    if not cmd.is_valid():
+        cmd.print_help(sys.stderr)
+        exit(2)
 
     # logging...
     Logging.config('provision_new_root', verbose=cmd.verbose)
@@ -65,10 +67,7 @@ if __name__ == '__main__':
     # resources...
 
     provision = ProvisionRoot(cmd.verbose)
-
-    scs_configuration_completed = Flag('scs-configuration-completed')
-    root_setup_completed = Flag('root-setup-completed')
-
+    logger.info(provision)
 
     try:
         # ------------------------------------------------------------------------------------------------------------
@@ -85,15 +84,15 @@ if __name__ == '__main__':
         # ------------------------------------------------------------------------------------------------------------
         # Stage 2...
 
-        scs_configuration_completed.wait_for_raised()
+        provision.wait_for_scs_configuration_completed()
 
         logger.info("Stage 2...")
 
         provision.identity()            # TODO: not for service version
         provision.setup()
 
-        root_setup_completed.raise_flag()
-        scs_configuration_completed.lower_flag()
+        provision.raise_root_setup_completed()
+        provision.lower_scs_configuration_completed()
 
 
         # ----------------------------------------------------------------------------------------------------------------

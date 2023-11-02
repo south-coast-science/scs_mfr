@@ -57,6 +57,9 @@ class CmdAirNowSiteConf(object):
         if self.is_set_site() and self.__opts.site[2] != 0 and self.__opts.site[2] != 1:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

@@ -46,6 +46,9 @@ class CmdSCD30Conf(object):
         if self.__opts.sample_interval is not None and self.delete:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

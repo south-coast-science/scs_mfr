@@ -33,6 +33,15 @@ class CmdProvisionNewRoot(object):
 
     # ----------------------------------------------------------------------------------------------------------------
 
+    def is_valid(self):
+        if self.__args:
+            return False
+
+        return True
+
+
+    # ----------------------------------------------------------------------------------------------------------------
+
     @property
     def prep_sd(self):
         return self.__opts.prep_sd
@@ -44,6 +53,10 @@ class CmdProvisionNewRoot(object):
 
 
     # ----------------------------------------------------------------------------------------------------------------
+
+    def print_help(self, file):
+        self.__parser.print_help(file)
+
 
     def __str__(self, *args, **kwargs):
         return "CmdProvisionNewRoot:{prep_sd:%s, verbose:%s}" % (self.prep_sd, self.verbose)
