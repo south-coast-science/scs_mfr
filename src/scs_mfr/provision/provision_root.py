@@ -7,6 +7,8 @@ Created on 14 Jul 2023
 from scs_core.sys.command import Command
 from scs_core.sys.logging import Logging
 
+from scs_host.sync.flag import Flag
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -21,8 +23,32 @@ class ProvisionRoot(object):
         """
         Constructor
         """
-        self.__clu = Command(verbose)
+        self.__scs_configuration_completed = Flag('scs-configuration-completed')
+        self.__root_setup_completed = Flag('root-setup-completed')
+
+        self.__clu = Command(verbose, on_abort=self.on_abort)
+
         self.__logger = Logging.getLogger()
+
+
+    # ----------------------------------------------------------------------------------------------------------------
+    # flags...
+
+    def on_abort(self):
+        self.__scs_configuration_completed.lower_flag()
+        self.__root_setup_completed.lower_flag()
+
+
+    def raise_root_setup_completed(self):
+        self.__root_setup_completed.raise_flag()
+
+
+    def wait_for_scs_configuration_completed(self):
+        self.__scs_configuration_completed.wait_for_raised()
+
+
+    def lower_scs_configuration_completed(self):
+        self.__scs_configuration_completed.lower_flag()
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -64,4 +90,5 @@ class ProvisionRoot(object):
     # ----------------------------------------------------------------------------------------------------------------
 
     def __str__(self, *args, **kwargs):
-        return "ProvisionRoot:{clu:%s}" % self.__clu
+        return "ProvisionRoot:{scs_configuration_completed:%s, root_setup_completed:%s, clu:%s}" % \
+            (self.__scs_configuration_completed, self.__root_setup_completed, self.__clu)

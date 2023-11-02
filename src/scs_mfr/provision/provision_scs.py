@@ -9,6 +9,8 @@ import spidev
 from scs_core.model.gas.gas_model_conf import GasModelConf
 from scs_core.model.pmx.pmx_model_conf import PMxModelConf
 
+from scs_host.sync.flag import Flag
+
 from scs_core.sys.command import Command
 from scs_core.sys.logging import Logging
 
@@ -42,9 +44,35 @@ class ProvisionSCS(object):
         """
         Constructor
         """
-        self.__clu = Command(verbose)
         self.__gas_model_group = self.__GAS_MODEL_GROUPS[Host.hostname_prefix()]
+
+        self.__scs_configuration_completed = Flag('scs-configuration-completed')
+        self.__root_setup_completed = Flag('root-setup-completed')
+
+        self.__clu = Command(verbose, on_abort=self.on_abort)
+
         self.__logger = Logging.getLogger()
+
+
+    # ----------------------------------------------------------------------------------------------------------------
+    # flags...
+
+    def on_abort(self):
+        self.__scs_configuration_completed.lower_flag()
+        self.__root_setup_completed.lower_flag()
+
+
+    def raise_scs_configuration_completed(self):
+        self.__scs_configuration_completed.raise_flag()
+
+
+    def wait_for_root_setup_completed(self):
+        self.__root_setup_completed.wait_for_raised()
+
+
+    def lower_root_setup_completed(self):
+        self.__root_setup_completed.lower_flag()
+
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -114,11 +142,11 @@ class ProvisionSCS(object):
         self.__clu.s([self.MFR + 'gas_model_conf.py', '-d'])
 
 
-    def update_models(self):
+    def update_models(self, electrochems_are_being_set):
         self.__logger.info("Updating models...")
 
         # GasModelConf...
-        if GasModelConf.load(Host) is not None:
+        if GasModelConf.load(Host) is not None and not electrochems_are_being_set:
             self.__clu.s([self.MFR + 'gas_model_conf.py', '-u', self.__GAS_PIPE, '-i', self.__GAS_MODEL_INTERFACE,
                           '-g', self.__gas_model_group])
 
@@ -151,12 +179,10 @@ class ProvisionSCS(object):
         self.__clu.s([self.MFR + 'timezone.py', '-s', timezone])
 
 
-    def system_id(self, invoice_number):
+    def system_id(self):
         self.__logger.info("System ID...")
 
         self.__clu.s([self.MFR + 'system_id.py', '-a'])
-        self.__clu.s([self.MFR + 'shared_secret.py', '-g', '-i'])
-        self.__clu.s([self.MFR + 'cognito_device_credentials.py', '-a', invoice_number])
 
 
     def aws_project(self, org, group, location, force):
@@ -174,17 +200,25 @@ class ProvisionSCS(object):
         self.__clu.s([self.MFR + 'aws_deployment.py', '-w', '-i', 4])
 
 
+    def cognito_identity(self, invoice_number):
+        self.__logger.info("Cognito identity...")
+
+        self.__clu.s([self.MFR + 'shared_secret.py', '-g', '-i'])
+        self.__clu.s([self.MFR + 'cognito_device_credentials.py', '-a', invoice_number])
+
+
     def test(self):
         self.__logger.info("Test...")
 
-        self.__clu.s([self.DEV + 'status_sampler.py', '-i', 10, '-c', 2])
-        self.__clu.s([self.DEV + 'climate_sampler.py'])
-        self.__clu.s([self.DEV + 'particulates_sampler.py'])
-        self.__clu.s([self.DEV + 'gases_sampler.py'])
-        self.__clu.s([self.DEV + 'psu_monitor.py'])
+        self.__clu.s([self.DEV + 'status_sampler.py', '-i', 10, '-c', 2], abort_on_fail=False)
+        self.__clu.s([self.DEV + 'climate_sampler.py'], abort_on_fail=False)
+        self.__clu.s([self.DEV + 'particulates_sampler.py'], abort_on_fail=False)
+        self.__clu.s([self.DEV + 'gases_sampler.py'], abort_on_fail=False)
+        self.__clu.s([self.DEV + 'psu_monitor.py'], abort_on_fail=False)
 
 
     # ----------------------------------------------------------------------------------------------------------------
 
     def __str__(self, *args, **kwargs):
-        return "ProvisionSCS:{clu:%s, gas_model_group:%s}" % (self.__clu, self.__gas_model_group)
+        return "ProvisionSCS:{gas_model_group:%s, scs_configuration_completed:%s, root_setup_completed:%s, clu:%s}" % \
+            (self.__gas_model_group, self.__scs_configuration_completed, self.__root_setup_completed, self.__clu)

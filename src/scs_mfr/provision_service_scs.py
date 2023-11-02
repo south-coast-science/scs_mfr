@@ -36,8 +36,6 @@ from scs_core.location.timezone import Timezone
 
 from scs_core.sys.logging import Logging
 
-from scs_host.sync.flag import Flag
-
 from scs_mfr.cmd.cmd_provision_service_scs import CmdProvisionServiceSCS
 from scs_mfr.provision.provision_scs import ProvisionSCS
 
@@ -66,9 +64,7 @@ if __name__ == '__main__':
     # resources...
 
     provision = ProvisionSCS(cmd.verbose)
-
-    scs_configuration_completed = Flag('scs-configuration-completed')
-    root_setup_completed = Flag('root-setup-completed')
+    logger.info(provision)
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -117,7 +113,7 @@ if __name__ == '__main__':
         if cmd.set_gases():
             provision.include_gases(cmd.afe_serial, cmd.dsi_serial, cmd.dsi_calibration_date, cmd.scd30)
 
-        provision.update_models()
+        provision.update_models(cmd.electrochems_are_being_set())
 
         if cmd.timezone:
             provision.timezone(cmd.timezone)
@@ -127,20 +123,20 @@ if __name__ == '__main__':
 
         provision.set_schedule()
 
-        scs_configuration_completed.raise_flag()
+        provision.raise_scs_configuration_completed()
 
 
         # ------------------------------------------------------------------------------------------------------------
         # Stage 2...
 
-        root_setup_completed.wait_for_raised()
+        provision.wait_for_root_setup_completed()
 
         logger.info("Stage 2...")
 
         provision.aws_deployment()
         provision.test()
 
-        root_setup_completed.lower_flag()
+        provision.lower_root_setup_completed()
 
 
         # ----------------------------------------------------------------------------------------------------------------
