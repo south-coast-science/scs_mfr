@@ -73,6 +73,9 @@ class CmdModelConf(object):
         if self.model_compendium_group is not None and self.model_compendium_group not in self.__group_names:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

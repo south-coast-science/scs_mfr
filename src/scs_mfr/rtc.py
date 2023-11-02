@@ -46,6 +46,10 @@ if __name__ == '__main__':
 
     cmd = CmdRTC()
 
+    if not cmd.is_valid():
+        cmd.print_help(sys.stderr)
+        exit(2)
+
     if cmd.verbose:
         print("rtc: %s" % cmd, file=sys.stderr)
 

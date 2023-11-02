@@ -46,6 +46,9 @@ class CmdTimezone(object):
         if int(self.list) + int(bool(self.zone)) + int(self.link) > 1:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

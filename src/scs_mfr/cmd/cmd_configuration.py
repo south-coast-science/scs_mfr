@@ -47,6 +47,9 @@ class CmdConfiguration(object):
         if self.indent and self.table:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

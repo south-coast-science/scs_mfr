@@ -56,6 +56,9 @@ class CmdSHTConf(object):
         if self.set() and self.delete:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

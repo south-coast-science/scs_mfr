@@ -49,6 +49,9 @@ class CmdSharedSecret(object):
         if self.ignore_credentials and not self.generate:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

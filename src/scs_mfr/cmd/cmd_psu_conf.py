@@ -67,6 +67,9 @@ class CmdPSUConf(object):
         if self.batt_model is not None and self.batt_model not in PSUConf.batt_models():
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

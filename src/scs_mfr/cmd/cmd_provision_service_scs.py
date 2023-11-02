@@ -67,11 +67,18 @@ class CmdProvisionServiceSCS(object):
         if self.__opts.project is None and self.force:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 
     def set_gases(self):
         return self.__opts.afe_serial or self.__opts.dsi or self.scd30
+
+
+    def electrochems_are_being_set(self):
+        return self.__opts.afe_serial or self.__opts.dsi
 
 
     # ----------------------------------------------------------------------------------------------------------------

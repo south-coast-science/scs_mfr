@@ -103,6 +103,9 @@ class CmdFuelGaugeCalib(object):
                 not self.fuel and not self.psu:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

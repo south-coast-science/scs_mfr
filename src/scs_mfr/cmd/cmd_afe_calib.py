@@ -79,6 +79,9 @@ class CmdAFECalib(object):
         if count > 1:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

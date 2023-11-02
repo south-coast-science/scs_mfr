@@ -53,6 +53,9 @@ class CmdSystemID(object):
         if self.serial_number is not None and self.auto_serial:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

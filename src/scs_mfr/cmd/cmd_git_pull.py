@@ -36,6 +36,15 @@ class CmdGitPull(object):
 
     # ----------------------------------------------------------------------------------------------------------------
 
+    def is_valid(self):
+        if self.__args:
+            return False
+
+        return True
+
+
+    # ----------------------------------------------------------------------------------------------------------------
+
     @property
     def pull(self):
         return self.__opts.pull
@@ -52,6 +61,10 @@ class CmdGitPull(object):
 
 
     # ----------------------------------------------------------------------------------------------------------------
+
+    def print_help(self, file):
+        self.__parser.print_help(file)
+
 
     def __str__(self, *args, **kwargs):
         return "CmdGitPull:{pull:%s, timeout:%s, verbose:%s}" % (self.pull, self.timeout, self.verbose)

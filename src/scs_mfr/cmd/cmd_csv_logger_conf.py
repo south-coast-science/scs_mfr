@@ -69,6 +69,9 @@ class CmdCSVLoggerConf(object):
         if self.write_interval is not None and self.write_interval < 0:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 

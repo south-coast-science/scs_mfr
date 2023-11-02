@@ -57,6 +57,9 @@ class CmdAWSGroupSetup(object):
         if not self.set and not self.force:
             return False
 
+        if self.__args:
+            return False
+
         return True
 
 
