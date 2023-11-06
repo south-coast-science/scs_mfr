@@ -142,6 +142,7 @@ if __name__ == '__main__':
             provision.timezone(cmd.timezone)
 
         provision.system_id()
+        provision.cognito_identity(cmd.invoice_number)
         provision.aws_project(cmd.project_org, cmd.project_group, cmd.project_location, cmd.force)
 
         provision.raise_scs_configuration_completed()
@@ -155,7 +156,6 @@ if __name__ == '__main__':
         logger.info("Stage 2...")
 
         provision.aws_deployment()
-        provision.cognito_identity(cmd.invoice_number)
 
         provision.test()
 
