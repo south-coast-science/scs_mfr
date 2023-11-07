@@ -77,12 +77,13 @@ class ProvisionSCS(object):
     # ----------------------------------------------------------------------------------------------------------------
     # Check...
 
-    def os_info(self):
+    def os_check(self):
         self.__logger.info("OS info...")
 
-        self.__clu.s(['uname', '-r'], no_verbose=True)          # equivalent to platform.uname().release
+        self.__clu.s(['uname', '-r'], no_verbose=True)              # equivalent to platform.uname().release
 
-        if Host.is_acceptable_os_release():
+        if not Host.has_acceptable_os_release():
+            self.__logger.error('unacceptable kernel version.')
             self.__clu.abort(1)
 
 
