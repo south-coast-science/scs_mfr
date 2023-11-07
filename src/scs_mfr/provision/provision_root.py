@@ -8,6 +8,7 @@ from scs_core.sys.command import Command
 from scs_core.sys.logging import Logging
 
 from scs_host.sync.flag import Flag
+from scs_host.sys.host import Host
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -49,6 +50,18 @@ class ProvisionRoot(object):
 
     def lower_scs_configuration_completed(self):
         self.__scs_configuration_completed.lower_flag()
+
+
+    # ----------------------------------------------------------------------------------------------------------------
+    # Check...
+
+    def os_info(self):
+        self.__logger.info("OS info...")
+
+        self.__clu.s(['uname', '-r'], no_verbose=True)          # equivalent to platform.uname().release
+
+        if Host.is_acceptable_os_release():
+            self.__clu.abort(1)
 
 
     # ----------------------------------------------------------------------------------------------------------------

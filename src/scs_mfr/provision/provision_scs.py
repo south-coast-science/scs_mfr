@@ -74,15 +74,20 @@ class ProvisionSCS(object):
         self.__root_setup_completed.lower_flag()
 
 
-
     # ----------------------------------------------------------------------------------------------------------------
-    # Stage 1...
+    # Check...
 
     def os_info(self):
         self.__logger.info("OS info...")
 
         self.__clu.s(['uname', '-r'], no_verbose=True)          # equivalent to platform.uname().release
 
+        if Host.is_acceptable_os_release():
+            self.__clu.abort(1)
+
+
+    # ----------------------------------------------------------------------------------------------------------------
+    # Stage 1...
 
     def upgrade_pips(self):
         self.__logger.info("Upgrade pips...")
