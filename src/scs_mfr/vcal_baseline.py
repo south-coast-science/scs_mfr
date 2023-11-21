@@ -97,7 +97,7 @@ if __name__ == '__main__':
 
         # update...
         if cmd.update():
-            if cmd.offset and cmd.gas_name() not in baseline.gases():
+            if cmd.offset and cmd.gas_name() not in baseline.gases:
                 logger.error("gas '%s' not in baseline group." % cmd.gas_name())
                 exit(2)
 
