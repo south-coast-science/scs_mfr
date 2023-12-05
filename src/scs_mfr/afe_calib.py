@@ -154,6 +154,6 @@ if __name__ == '__main__':
         logger.error(ex.error_report)
         exit(1)
 
-    except ConnectionError as ex:
-        logger.error(repr(ex))
+    except Exception as ex:
+        logger.error(ex.__class__.__name__)
         exit(1)
