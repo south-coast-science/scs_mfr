@@ -51,7 +51,7 @@ class Provision(ABC):
         current = Host.os_release()
         required = Host.minimum_required_os_release()
 
-        self._logger.info("current: %s required: %s" % (current.as_json(), required.as_json()))
+        self._logger.info("current = %s required >= %s" % (current.as_json(), required.as_json()))
 
         if current < required:
             self._logger.error('unacceptable kernel version.')
@@ -64,7 +64,7 @@ class Provision(ABC):
         current = Host.greengrass_release()
         required = Host.minimum_required_greengrass_release()
 
-        self._logger.info("current: %s required: %s" % (current.as_json(), required.as_json()))
+        self._logger.info("current = %s required >= %s" % (current.as_json(), required.as_json()))
 
         if current < required:
             self._logger.error('unacceptable greengrass version.')
