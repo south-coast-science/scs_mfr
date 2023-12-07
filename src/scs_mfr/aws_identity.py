@@ -138,6 +138,8 @@ if __name__ == '__main__':
     except ClientError as error:
         if error.response['Error']['Code'] == 'ResourceAlreadyExistsException':
             logger.error("the resources for this group already exist.")
+        else:
+            raise error
 
     except (EOFError, NoCredentialsError):
         logger.error("credentials error.")
