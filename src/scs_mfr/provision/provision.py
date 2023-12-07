@@ -53,11 +53,9 @@ class Provision(ABC):
 
         self._logger.info("current: %s required: %s" % (current.as_json(), required.as_json()))
 
-        # TODO: replace OS version check as needed
-
-        # if current < required:
-        #     self._logger.error('unacceptable kernel version.')
-        #     self._clu.abort(1)
+        if current < required:
+            self._logger.error('unacceptable kernel version.')
+            self._clu.abort(1)
 
 
     def greengrass_check(self):
