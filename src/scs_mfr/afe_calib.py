@@ -14,8 +14,8 @@ The calibration values are provided in a structured document, either on paper or
 Science - in electronic form. The afe_calib utility is used to retrieve this JSON document via a web API.
 
 The --pid-test-sens flag is used to correct the sensitivity of PID sensors, based on the result of a bump test.
-The correction removes any zero-offset set by afe_baseline. The afe_baseline utility should be run following
-the sensitivity correction.
+Prior to the bump test, sensor should have its zero offset set to the match the ambient VOC concentration.
+The afe_baseline utility should be set once more, following the sensitivity correction.
 
 The afe_calib utility may also be used to set a "test" calibration sheet, for use in an R & D environment.
 
@@ -54,7 +54,7 @@ from scs_core.client.http_exception import HTTPException
 from scs_core.data.datetime import Date, LocalizedDatetime
 from scs_core.data.json import JSONify
 
-from scs_core.gas.afe_baseline import AFEBaseline
+# from scs_core.gas.afe_baseline import AFEBaseline
 from scs_core.gas.afe_calib import AFECalib
 from scs_core.gas.dsi_calib import DSICalib
 from scs_core.gas.pid.pid_calib import PIDTestCalib
@@ -94,7 +94,7 @@ if __name__ == '__main__':
         # resources...
 
         calib = AFECalib.load(Host)
-        baseline = AFEBaseline.load(Host, skeleton=True)
+        # baseline = AFEBaseline.load(Host, skeleton=True)
 
 
         # ------------------------------------------------------------------------------------------------------------
@@ -139,10 +139,11 @@ if __name__ == '__main__':
                 logger.error('PID not present.')
                 exit(1)
 
-            sensor_baseline = None if baseline is None else baseline.sensor_baseline(index)
-            offset = 0 if sensor_baseline is None else sensor_baseline.offset
+            # sensor_baseline = None if baseline is None else baseline.sensor_baseline(index)
+            # offset = 0 if sensor_baseline is None else sensor_baseline.offset
 
-            sensitivity = round((cmd.pid_test_reported - offset) / cmd.pid_test_correct, 3)
+            sensitivity = round(cmd.pid_test_reported / cmd.pid_test_correct, 3)
+            # sensitivity = round((cmd.pid_test_reported - offset) / cmd.pid_test_correct, 3)
 
             sensor_calib = calib.sensor_calib(index)
             sensor_calib.bump_calib = PIDTestCalib(sensitivity, LocalizedDatetime.now())
