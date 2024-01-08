@@ -54,9 +54,9 @@ from scs_core.client.http_exception import HTTPException
 from scs_core.data.datetime import Date, LocalizedDatetime
 from scs_core.data.json import JSONify
 
-# from scs_core.gas.afe_baseline import AFEBaseline
 from scs_core.gas.afe_calib import AFECalib
 from scs_core.gas.dsi_calib import DSICalib
+from scs_core.gas.pid.pid import PID
 from scs_core.gas.pid.pid_calib import PIDTestCalib
 
 from scs_core.sys.logging import Logging
@@ -94,7 +94,6 @@ if __name__ == '__main__':
         # resources...
 
         calib = AFECalib.load(Host)
-        # baseline = AFEBaseline.load(Host, skeleton=True)
 
 
         # ------------------------------------------------------------------------------------------------------------
@@ -139,11 +138,7 @@ if __name__ == '__main__':
                 logger.error('PID not present.')
                 exit(1)
 
-            # sensor_baseline = None if baseline is None else baseline.sensor_baseline(index)
-            # offset = 0 if sensor_baseline is None else sensor_baseline.offset
-
-            sensitivity = round(cmd.pid_test_reported / cmd.pid_test_correct, 3)
-            # sensitivity = round((cmd.pid_test_reported - offset) / cmd.pid_test_correct, 3)
+            sensitivity = PID.sensitivity(cmd.pid_test_correct, cmd.pid_test_reported)
 
             sensor_calib = calib.sensor_calib(index)
             sensor_calib.bump_calib = PIDTestCalib(sensitivity, LocalizedDatetime.now())
