@@ -13,22 +13,27 @@ Alphasense electrochemical sensors are calibrated in the factory when fitted to 
 The calibration values are provided in a structured document, either on paper or - for sensors provided by South Coast
 Science - in electronic form. The afe_calib utility is used to retrieve this JSON document via a web API.
 
+The --pid-test-sens flag is used to correct the sensitivity of PID sensors, based on the result of a bump test.
+The correction removes any zero-offset set by afe_baseline. The afe_baseline utility should be run following
+the sensitivity correction.
+
 The afe_calib utility may also be used to set a "test" calibration sheet, for use in an R & D environment.
 
 Note that the scs_dev/gasses_sampler process must be restarted for changes to take effect.
 
 SYNOPSIS
-afe_calib.py [{ -f SERIAL_NUMBER | -a SERIAL_NUMBER | -s SERIAL_NUMBER YYYY-MM-DD | -r | -t  | -d }] [-i INDENT] [-v]
+afe_calib.py [{ -f SERIAL_NUMBER | -a SERIAL_NUMBER | -s SERIAL_NUMBER YYYY-MM-DD | -r | -p CORRECT REPORTED |
+-t  | -d }] [-i INDENT] [-v]
 
 EXAMPLES
-./afe_calib.py -s 212810465 2019-08-22
+./afe_calib.py -vi4 -s 143800348 2023-03-01
+
+./afe_calib.py -vi4 -p 14000 12000
 
 DOCUMENT EXAMPLE
-{"serial_number": null, "type": "ISI", "calibrated_on": "2019-09-09", "dispatched_on": null, "pt1000_v20": null,
-"sn1": {"serial_number": "212810464", "sensor_type": "NOGA4", "we_electronic_zero_mv": 300, "we_sensor_zero_mv": 0,
-"we_total_zero_mv": 300, "ae_electronic_zero_mv": 300, "ae_sensor_zero_mv": 0, "ae_total_zero_mv": 300,
-"we_sensitivity_na_ppb": -0.445, "we_cross_sensitivity_no2_na_ppb": "n/a", "pcb_gain": -0.7,
-"we_sensitivity_mv_ppb": 0.325, "we_cross_sensitivity_no2_mv_ppb": 0.324}}
+{"serial_number": null, "type": "DSI", "calibrated_on": "2024-01-01", "dispatched_on": null, "pt1000_v20": null,
+"sn1": {"serial_number": "143351067", "sensor_type": "PIDH2", "pid_zero_mv": null, "pid_sensitivity_mv_ppm": 44.9,
+"bump-calib": {"sensitivity": 0.857, "calibrated-on": "2024-01-05T13:16:04Z"}}}
 
 FILES
 ~/SCS/conf/afe_calib.json
@@ -46,11 +51,13 @@ import sys
 
 from scs_core.client.http_exception import HTTPException
 
-from scs_core.data.datetime import Date
+from scs_core.data.datetime import Date, LocalizedDatetime
 from scs_core.data.json import JSONify
 
+from scs_core.gas.afe_baseline import AFEBaseline
 from scs_core.gas.afe_calib import AFECalib
 from scs_core.gas.dsi_calib import DSICalib
+from scs_core.gas.pid.pid_calib import PIDTestCalib
 
 from scs_core.sys.logging import Logging
 
@@ -87,6 +94,7 @@ if __name__ == '__main__':
         # resources...
 
         calib = AFECalib.load(Host)
+        baseline = AFEBaseline.load(Host, skeleton=True)
 
 
         # ------------------------------------------------------------------------------------------------------------
@@ -123,6 +131,21 @@ if __name__ == '__main__':
 
             else:
                 calib = AFECalib.download(calib.serial_number)
+
+        if cmd.pid_test_correct:
+            index = calib.sensor_index('VOC')
+
+            if index is None:
+                logger.error('PID not present.')
+                exit(1)
+
+            sensor_baseline = None if baseline is None else baseline.sensor_baseline(index)
+            offset = 0 if sensor_baseline is None else sensor_baseline.offset
+
+            sensitivity = round((cmd.pid_test_reported - offset) / cmd.pid_test_correct, 3)
+
+            sensor_calib = calib.sensor_calib(index)
+            sensor_calib.bump_calib = PIDTestCalib(sensitivity, LocalizedDatetime.now())
 
         if cmd.test:
             jdict = json.loads(AFECalib.TEST_LOAD)

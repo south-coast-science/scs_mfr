@@ -21,8 +21,8 @@ class CmdAFECalib(object):
         Constructor
         """
         self.__parser = optparse.OptionParser(usage="%prog [{ -f SERIAL_NUMBER | -a SERIAL_NUMBER | "
-                                                    "-s SERIAL_NUMBER YYYY-MM-DD | -r | -t  | -d }] [-i INDENT] [-v]",
-                                              version=version())
+                                                    "-s SERIAL_NUMBER YYYY-MM-DD | -r | -p CORRECT REPORTED | "
+                                                    "-t  | -d }] [-i INDENT] [-v]", version=version())
 
         # operations...
         self.__parser.add_option("--find", "-f", type="string", action="store", dest="find_serial_number",
@@ -36,6 +36,9 @@ class CmdAFECalib(object):
 
         self.__parser.add_option("--reload", "-r", action="store_true", dest="reload", default=False,
                                  help="reload calibration data")
+
+        self.__parser.add_option("--pid-test-sens", "-p", type="float", nargs=2, action="store", dest="pid_test_sens",
+                                 help="set the PID test sensitivity")
 
         self.__parser.add_option("--test", "-t", action="store_true", dest="test", default=False,
                                  help="set AFE as test load")
@@ -70,6 +73,9 @@ class CmdAFECalib(object):
         if self.reload:
             count += 1
 
+        if self.__opts.pid_test_sens is not None:
+            count += 1
+
         if self.test:
             count += 1
 
@@ -92,7 +98,8 @@ class CmdAFECalib(object):
 
 
     def update(self):
-        return self.afe_serial_number is not None or self.sensor is not None or self.reload or self.test
+        return self.afe_serial_number is not None or self.sensor is not None or \
+            self.__opts.pid_test_sens is not None or self.reload or self.test
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -137,6 +144,16 @@ class CmdAFECalib(object):
 
 
     @property
+    def pid_test_correct(self):
+        return None if self.__opts.pid_test_sens is None else self.__opts.pid_test_sens[0]
+
+
+    @property
+    def pid_test_reported(self):
+        return None if self.__opts.pid_test_sens is None else self.__opts.pid_test_sens[1]
+
+
+    @property
     def test(self):
         return self.__opts.test
 
@@ -163,7 +180,7 @@ class CmdAFECalib(object):
 
 
     def __str__(self, *args, **kwargs):
-        return "CmdAFECalib:{find_serial_number:%s, afe_serial_number:%s, sensor:%s, reload:%s, test:%s, delete:%s, " \
-               "indent:%s, verbose:%s}" % \
-               (self.find_serial_number, self.afe_serial_number, self.sensor, self.reload, self.test, self.delete,
-                self.indent, self.verbose)
+        return "CmdAFECalib:{find_serial_number:%s, afe_serial_number:%s, sensor:%s, reload:%s, pid_test_sens:%s, " \
+               "test:%s, delete:%s, indent:%s, verbose:%s}" % \
+               (self.find_serial_number, self.afe_serial_number, self.sensor, self.reload, self.__opts.pid_test_sens,
+                self.test, self.delete, self.indent, self.verbose)
