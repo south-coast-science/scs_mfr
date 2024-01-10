@@ -46,6 +46,7 @@ from scs_mfr.cmd.cmd_provision_new_scs import CmdProvisionNewSCS
 from scs_mfr.provision.provision_scs import ProvisionSCS
 
 
+# TODO: re-provisioning did not add gas lambda - is there an ordering problem?
 # --------------------------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
