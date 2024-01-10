@@ -28,7 +28,7 @@ class CmdGPSConf(object):
                                  help="set the model (PAM7Q or SAM8Q)")
 
         self.__parser.add_option("--sample-interval", "-i", type="int", action="store", dest="sample_interval",
-                                 help="set sampling interval")
+                                 help="set sampling interval (seconds)")
 
         self.__parser.add_option("--tally", "-t", type="int", action="store", dest="tally",
                                  help="set the averaging tally")
