@@ -12,7 +12,7 @@ SYNOPSIS
 opc_error_log.py [{ -t | -d }] [-i INDENT] [-v]
 
 EXAMPLES
-./opc_error_log.py -vi4
+./opc_error_log.py -v | node.py -vs
 
 DOCUMENT EXAMPLE
 [{"rec": "2024-01-10T11:55:45Z", "cause": "checksum error"}]
