@@ -27,7 +27,7 @@ class ProvisionSCS(Provision):
     DEV = '~/SCS/scs_dev/src/scs_dev/'
 
     __GAS_PIPE = 'pipes/lambda-gas-model.uds'
-    __GAS_MODEL_GROUPS = {'scs-bbe-': 'uE.1', 'scs-cube-': 'oE.1'}
+    __GAS_MODEL_GROUPS = {'scs-bbe-': 'uE.1', 'scs-cube-': 'oE.2'}      # was oE.1
     __GAS_MODEL_INTERFACE = 'vE'
 
     __PMX_PIPE = 'pipes/lambda-pmx-model.uds'

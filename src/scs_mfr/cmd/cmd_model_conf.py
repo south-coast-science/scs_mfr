@@ -67,12 +67,6 @@ class CmdModelConf(object):
         if count > 1:
             return False
 
-        if self.model_interface is not None and self.model_interface not in self.__interface_names:
-            return False
-
-        if self.model_compendium_group is not None and self.model_compendium_group not in self.__group_names:
-            return False
-
         if self.__args:
             return False
 
@@ -80,7 +74,7 @@ class CmdModelConf(object):
 
 
     def is_complete(self):
-        if self.uds_path is None or self.model_interface is None:
+        if self.uds_path is None or self.model_interface is None or self.model_compendium_group is None:
             return False
 
         return True

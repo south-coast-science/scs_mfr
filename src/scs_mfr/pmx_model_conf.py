@@ -32,6 +32,7 @@ scs_dev/particulates_sampler
 
 import sys
 
+from scs_core.aws.greengrass.aws_group_configuration import AWSGroupConfiguration
 from scs_core.data.json import JSONify
 
 from scs_core.model.pmx.pmx_model_conf import PMxModelConf
@@ -47,10 +48,13 @@ from scs_mfr.cmd.cmd_model_conf import CmdModelConf
 
 if __name__ == '__main__':
 
+    interfaces = PMxModelConf.interfaces()
+    model_templates = AWSGroupConfiguration.templates()
+
     # ----------------------------------------------------------------------------------------------------------------
     # cmd...
 
-    cmd = CmdModelConf(PMxModelConf.interfaces())
+    cmd = CmdModelConf(interfaces)
 
     if not cmd.is_valid():
         cmd.print_help(sys.stderr)
@@ -61,6 +65,18 @@ if __name__ == '__main__':
     logger = Logging.getLogger()
 
     logger.info(cmd)
+
+
+    # ----------------------------------------------------------------------------------------------------------------
+    # validation...
+
+    group_configuration = AWSGroupConfiguration.load(Host)
+    ml = None if group_configuration is None else group_configuration.ml
+
+    if cmd.model_compendium_group is not None and ml is not None:
+        if cmd.model_compendium_group != ml:
+            logger.error("WARNING: the specified group '%s' does not match the server template '%s'" %
+                         (cmd.model_compendium_group, ml))
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -81,8 +97,17 @@ if __name__ == '__main__':
             cmd.print_help(sys.stderr)
             exit(2)
 
+        if cmd.model_interface is not None and cmd.model_interface not in interfaces:
+            logger.error("interface '%s' cannot be found." % cmd.model_interface)
+            exit(2)
+
+        if cmd.model_compendium_group is not None and cmd.model_compendium_group not in model_templates:
+            logger.error("model group '%s' cannot be found." % cmd.model_compendium_group)
+            exit(2)
+
         uds_path = cmd.uds_path if cmd.uds_path else conf.uds_path
         model_interface = cmd.model_interface if cmd.model_interface else conf.model_interface
+        compendium_group = cmd.model_compendium_group if cmd.model_compendium_group else conf.model_compendium_group
 
         if uds_path is None:
             logger.error("the UDS path must be set.")
@@ -92,7 +117,11 @@ if __name__ == '__main__':
             logger.error("the interface code must be set.")
             exit(2)
 
-        conf = PMxModelConf(uds_path, model_interface)
+        if compendium_group is None:
+            logger.error("the model group must be set.")
+            exit(2)
+
+        conf = PMxModelConf(uds_path, model_interface, model_compendium_group=compendium_group)
         conf.save(Host)
 
     if cmd.delete and conf is not None:
