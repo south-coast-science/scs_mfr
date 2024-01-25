@@ -26,8 +26,9 @@ class ProvisionSCS(Provision):
     MFR = '~/SCS/scs_mfr/src/scs_mfr/'
     DEV = '~/SCS/scs_dev/src/scs_dev/'
 
+    __MODEL_MAPS = {'scs-bbe-': 'uE.1', 'scs-cube-': 'oM.2'}      # was oE.1
+
     __GAS_PIPE = 'pipes/lambda-gas-model.uds'
-    __GAS_MODEL_GROUPS = {'scs-bbe-': 'uE.1', 'scs-cube-': 'oE.2'}      # was oE.1
     __GAS_MODEL_INTERFACE = 'vE'
 
     __PMX_PIPE = 'pipes/lambda-pmx-model.uds'
@@ -43,7 +44,7 @@ class ProvisionSCS(Provision):
         """
         super().__init__(verbose=verbose)
 
-        self._gas_model_group = self.__GAS_MODEL_GROUPS[Host.hostname_prefix()]
+        self._model_map = self.__MODEL_MAPS[Host.hostname_prefix()]
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -103,12 +104,12 @@ class ProvisionSCS(Provision):
         if afe_serial:
             self._clu.s([self.MFR + 'afe_calib.py', '-a', afe_serial])
             self._clu.s([self.MFR + 'gas_model_conf.py', '-u', self.__GAS_PIPE, '-i', self.__GAS_MODEL_INTERFACE,
-                         '-g', self._gas_model_group])
+                         '-m', self._model_map])
 
         if dsi_serial:
             self._clu.s([self.MFR + 'afe_calib.py', '-s', dsi_serial, dsi_calibration_date])
             self._clu.s([self.MFR + 'gas_model_conf.py', '-u', self.__GAS_PIPE, '-i', self.__GAS_MODEL_INTERFACE,
-                         '-g', self._gas_model_group])
+                         '-m', self._model_map])
 
         if scd30:
             self._clu.s([self.MFR + 'scd30_conf.py', '-i', 5, '-t', 0.0])
@@ -133,11 +134,12 @@ class ProvisionSCS(Provision):
         # GasModelConf...
         if GasModelConf.load(Host) is not None and not electrochems_are_being_set:
             self._clu.s([self.MFR + 'gas_model_conf.py', '-u', self.__GAS_PIPE, '-i', self.__GAS_MODEL_INTERFACE,
-                         '-g', self._gas_model_group])
+                         '-m', self._model_map])
 
         # PMxModelConf...
         if PMxModelConf.load(Host) is not None:
-            self._clu.s([self.MFR + 'pmx_model_conf.py', '-u', self.__PMX_PIPE, '-i', self.__PMX_MODEL_INTERFACE])
+            self._clu.s([self.MFR + 'pmx_model_conf.py', '-u', self.__PMX_PIPE, '-i', self.__PMX_MODEL_INTERFACE,
+                         '-m', self._model_map])
 
 
     def set_schedule(self):
@@ -205,5 +207,5 @@ class ProvisionSCS(Provision):
     # ----------------------------------------------------------------------------------------------------------------
 
     def __str__(self, *args, **kwargs):
-        return "ProvisionSCS:{gas_model_group:%s, scs_configuration_completed:%s, root_setup_completed:%s, clu:%s}" % \
-            (self._gas_model_group, self._scs_configuration_completed, self._root_setup_completed, self._clu)
+        return "ProvisionSCS:{model_map:%s, scs_configuration_completed:%s, root_setup_completed:%s, clu:%s}" % \
+            (self._model_map, self._scs_configuration_completed, self._root_setup_completed, self._clu)

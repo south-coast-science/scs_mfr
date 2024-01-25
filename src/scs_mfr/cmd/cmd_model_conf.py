@@ -24,13 +24,10 @@ class CmdModelConf(object):
         interface_names = ' | '.join(interfaces)
         map_names = ' | '.join(ModelMapping.names())
 
-        self.__parser = optparse.OptionParser(usage="%prog [{ -l | [-u UDS_PATH] [-i INTERFACE] [-m MAP] | -d }] "
-                                                    "[-v]", version=version())
+        self.__parser = optparse.OptionParser(usage="%prog [{ [-u UDS_PATH] [-i INTERFACE] [-m MAP] | -d }] [-v]",
+                                              version=version())
 
         # fields...
-        self.__parser.add_option("--list", "-l", action="store_true", dest="list", default=False,
-                                 help="list the available model compendium groups")
-
         self.__parser.add_option("--uds-path", "-u", type="string", action="store", dest="uds_path",
                                  help="set the UDS path (relative to ~/SCS)")
 
@@ -55,9 +52,6 @@ class CmdModelConf(object):
 
     def is_valid(self):
         count = 0
-
-        if self.list:
-            count += 1
 
         if self.set():
             count += 1
@@ -86,11 +80,6 @@ class CmdModelConf(object):
 
 
     # ----------------------------------------------------------------------------------------------------------------
-
-    @property
-    def list(self):
-        return self.__opts.list
-
 
     @property
     def uds_path(self):
@@ -124,5 +113,5 @@ class CmdModelConf(object):
 
 
     def __str__(self, *args, **kwargs):
-        return "CmdModelConf:{list:%s, uds_path:%s, model_interface:%s, model_map:%s, delete:%s, verbose:%s}" % \
-               (self.list, self.uds_path, self.model_interface, self.model_map, self.delete, self.verbose)
+        return "CmdModelConf:{uds_path:%s, model_interface:%s, model_map:%s, delete:%s, verbose:%s}" % \
+               (self.uds_path, self.model_interface, self.model_map, self.delete, self.verbose)
