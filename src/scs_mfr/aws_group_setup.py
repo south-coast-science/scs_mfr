@@ -75,7 +75,7 @@ from scs_mfr.cmd.cmd_aws_group_setup import CmdAWSGroupSetup
 if __name__ == '__main__':
 
     client = None
-    model_compendium_group = None
+    gg_ml_template = None
 
     # ----------------------------------------------------------------------------------------------------------------
     # cmd...
@@ -110,13 +110,14 @@ if __name__ == '__main__':
         pmx_model_conf = PMxModelConf.load(Host)
 
         try:
-            model_compendium_group = ModelConf.compendium_group_resolution(gas_model_conf, pmx_model_conf)
+            gg_ml_template = ModelConf.gg_ml_template(gas_model_conf, pmx_model_conf)
 
         except ValueError as ex:
             logger.error(ex)
             exit(1)
 
-        logger.info("model_compendium_group: %s" % model_compendium_group)
+        logger.info("gg_ml_template: %s" % gg_ml_template)
+
 
     # ----------------------------------------------------------------------------------------------------------------
     # authentication...
@@ -155,7 +156,7 @@ if __name__ == '__main__':
 
             try:
                 now = LocalizedDatetime.now()
-                conf = AWSGroupConfiguration(AWS.group_name(), now, ml=model_compendium_group)
+                conf = AWSGroupConfiguration(AWS.group_name(), now, ml=gg_ml_template)
                 configurator = conf.configurator(client)
 
                 configurator.collect_information(Host)

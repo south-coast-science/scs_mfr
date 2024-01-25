@@ -39,6 +39,7 @@ from scs_core.aws.greengrass.aws_group_configuration import AWSGroupConfiguratio
 
 from scs_core.data.json import JSONify
 
+from scs_core.model.model_mapping import ModelMapping
 from scs_core.model.catalogue.model_compendium_group import ModelCompendiumGroup
 from scs_core.model.gas.gas_model_conf import GasModelConf
 
@@ -53,13 +54,10 @@ from scs_mfr.cmd.cmd_model_conf import CmdModelConf
 
 if __name__ == '__main__':
 
-    interfaces = GasModelConf.interfaces()
-    model_templates = AWSGroupConfiguration.templates()
-
     # ----------------------------------------------------------------------------------------------------------------
     # cmd...
 
-    cmd = CmdModelConf()
+    cmd = CmdModelConf(GasModelConf.interfaces())
 
     if not cmd.is_valid():
         cmd.print_help(sys.stderr)
@@ -78,10 +76,10 @@ if __name__ == '__main__':
     group_configuration = AWSGroupConfiguration.load(Host)
     ml = None if group_configuration is None else group_configuration.ml
 
-    if cmd.model_compendium_group is not None and ml is not None:
-        if cmd.model_compendium_group != ml:
-            logger.error("WARNING: the specified group '%s' does not match the server template '%s'" %
-                         (cmd.model_compendium_group, ml))
+    if cmd.model_map is not None and ml is not None:
+        if cmd.model_map != ml:
+            logger.error("WARNING: the specified map '%s' does not match the server template '%s'" %
+                         (cmd.model_map, ml))
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -105,18 +103,17 @@ if __name__ == '__main__':
             cmd.print_help(sys.stderr)
             exit(2)
 
-        if cmd.model_interface is not None and cmd.model_interface not in interfaces:
+        if cmd.model_interface is not None and cmd.model_interface not in GasModelConf.interfaces():
             logger.error("interface '%s' cannot be found." % cmd.model_interface)
             exit(2)
 
-        if cmd.model_compendium_group is not None and cmd.model_compendium_group not in model_templates:
-            logger.error("model group '%s' cannot be found." % cmd.model_compendium_group)
+        if cmd.model_map is not None and cmd.model_map not in ModelMapping.names():
+            logger.error("model map '%s' cannot be found." % cmd.model_map)
             exit(2)
 
         uds_path = cmd.uds_path if cmd.uds_path else conf.uds_path
         model_interface = cmd.model_interface if cmd.model_interface else conf.model_interface
-        model_compendium_group = cmd.model_compendium_group if cmd.model_compendium_group else \
-            conf.model_compendium_group
+        model_map = ModelMapping.map(cmd.model_map) if cmd.model_map else conf.model_map
 
         if uds_path is None:
             logger.error("the UDS path must be set.")
@@ -126,7 +123,11 @@ if __name__ == '__main__':
             logger.error("the interface code must be set.")
             exit(2)
 
-        conf = GasModelConf(uds_path, model_interface, model_compendium_group)
+        if model_map is None:
+            logger.error("the model map must be set.")
+            exit(2)
+
+        conf = GasModelConf(uds_path, model_interface, model_map)
         conf.save(Host)
 
     elif cmd.delete and conf is not None:
