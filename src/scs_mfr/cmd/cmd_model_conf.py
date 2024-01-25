@@ -7,6 +7,8 @@ Created on 22 Dec 2020
 import optparse
 
 from scs_core.aws.greengrass.aws_group_configuration import AWSGroupConfiguration
+from scs_core.model.gas.gas_model_conf import GasModelConf
+
 from scs_mfr import version
 
 
@@ -19,8 +21,8 @@ class CmdModelConf(object):
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    def __init__(self, interface):
-        self.__interface_names = ' | '.join(interface)
+    def __init__(self):
+        self.__interface_names = ' | '.join(GasModelConf.interfaces())
         self.__group_names = ' | '.join(AWSGroupConfiguration.templates())
 
         self.__parser = optparse.OptionParser(usage="%prog [{ -l | [-u UDS_PATH] [-i INTERFACE] [-g GROUP] | -d }] "

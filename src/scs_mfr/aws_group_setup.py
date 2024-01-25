@@ -59,7 +59,9 @@ from scs_core.aws.security.cognito_login_manager import CognitoLoginManager
 from scs_core.data.datetime import LocalizedDatetime
 from scs_core.data.json import JSONify
 
+from scs_core.model.model_conf import ModelConf
 from scs_core.model.gas.gas_model_conf import GasModelConf
+from scs_core.model.pmx.pmx_model_conf import PMxModelConf
 
 from scs_core.sys.logging import Logging
 
@@ -99,11 +101,22 @@ if __name__ == '__main__':
             logger.error("you must have root privileges to set up the group.")
             exit(1)
 
-        model_conf = GasModelConf.load(Host)
 
-        model_compendium_group = "g0" if model_conf is None else model_conf.model_compendium_group
+    # ----------------------------------------------------------------------------------------------------------------
+    # model conf...
+
+    if cmd.set:
+        gas_model_conf = GasModelConf.load(Host)
+        pmx_model_conf = PMxModelConf.load(Host)
+
+        try:
+            model_compendium_group = ModelConf.compendium_group_resolution(gas_model_conf, pmx_model_conf)
+
+        except ValueError as ex:
+            logger.error(ex)
+            exit(1)
+
         logger.info("model_compendium_group: %s" % model_compendium_group)
-
 
     # ----------------------------------------------------------------------------------------------------------------
     # authentication...

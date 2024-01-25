@@ -54,7 +54,7 @@ if __name__ == '__main__':
     # ----------------------------------------------------------------------------------------------------------------
     # cmd...
 
-    cmd = CmdModelConf(interfaces)
+    cmd = CmdModelConf()
 
     if not cmd.is_valid():
         cmd.print_help(sys.stderr)

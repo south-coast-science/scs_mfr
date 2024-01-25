@@ -53,10 +53,13 @@ from scs_mfr.cmd.cmd_model_conf import CmdModelConf
 
 if __name__ == '__main__':
 
+    interfaces = GasModelConf.interfaces()
+    model_templates = AWSGroupConfiguration.templates()
+
     # ----------------------------------------------------------------------------------------------------------------
     # cmd...
 
-    cmd = CmdModelConf(GasModelConf.interfaces())
+    cmd = CmdModelConf()
 
     if not cmd.is_valid():
         cmd.print_help(sys.stderr)
@@ -102,9 +105,12 @@ if __name__ == '__main__':
             cmd.print_help(sys.stderr)
             exit(2)
 
-        if cmd.model_compendium_group is not None and \
-                cmd.model_compendium_group not in ModelCompendiumGroup.list():
-            logger.error("group '%s' cannot be found." % cmd.model_compendium_group)
+        if cmd.model_interface is not None and cmd.model_interface not in interfaces:
+            logger.error("interface '%s' cannot be found." % cmd.model_interface)
+            exit(2)
+
+        if cmd.model_compendium_group is not None and cmd.model_compendium_group not in model_templates:
+            logger.error("model group '%s' cannot be found." % cmd.model_compendium_group)
             exit(2)
 
         uds_path = cmd.uds_path if cmd.uds_path else conf.uds_path
