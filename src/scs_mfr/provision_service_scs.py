@@ -140,13 +140,12 @@ if __name__ == '__main__':
         # Stage 2...
 
         provision.wait_for_root_setup_completed()
+        provision.lower_root_setup_completed()
 
         logger.info("Stage 2...")
 
         provision.aws_deployment()
         provision.test()
-
-        provision.lower_root_setup_completed()
 
 
         # ----------------------------------------------------------------------------------------------------------------
