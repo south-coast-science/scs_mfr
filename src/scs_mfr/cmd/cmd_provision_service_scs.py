@@ -6,7 +6,10 @@ Created on 9 Aug 2023
 
 import optparse
 
+from scs_core.model.model_map import ModelMap
+
 from scs_mfr import version
+from scs_mfr.provision.provision_scs import ProvisionSCS
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -18,9 +21,12 @@ class CmdProvisionServiceSCS(object):
         """
         Constructor
         """
+        map_names = ' | '.join(ModelMap.names())
+        default_map = ProvisionSCS.default_model_map()
+
         self.__parser = optparse.OptionParser(usage="%prog [-p ORG GROUP LOCATION [-f]] [-u] [-s] "
-                                                    "[{ -a AFE | -d DSI DATE }] [-c] [-b] [-t TIMEZONE] [-v]",
-                                              version=version())
+                                                    "[{ -a AFE | -d DSI DATE }] [-c] [-b] [-m MODEL_MAP] "
+                                                    "[-t TIMEZONE] [-v]", version=version())
 
         # identity...
         self.__parser.add_option("--project", "-p", type="string", nargs=3, action="store", dest="project",
@@ -47,6 +53,9 @@ class CmdProvisionServiceSCS(object):
 
         self.__parser.add_option("--barometric", "-b", action="store_true", dest="barometric", default=False,
                                  help="ICP is now present")
+
+        self.__parser.add_option("--model-map", "-m", type="string", action="store", dest="model_map",
+                                 help="model map { %s } (default %s)" % (map_names, default_map))
 
         self.__parser.add_option("--timezone", "-t", type="string", action="store", dest="timezone",
                                  help="timezone name")
@@ -114,11 +123,6 @@ class CmdProvisionServiceSCS(object):
 
 
     @property
-    def upgrade_scs(self):
-        return self.__opts.upgrade_scs
-
-
-    @property
     def afe_serial(self):
         return self.__opts.afe_serial
 
@@ -144,6 +148,11 @@ class CmdProvisionServiceSCS(object):
 
 
     @property
+    def model_map(self):
+        return self.__opts.model_map
+
+
+    @property
     def timezone(self):
         return self.__opts.timezone
 
@@ -160,7 +169,7 @@ class CmdProvisionServiceSCS(object):
 
 
     def __str__(self, *args, **kwargs):
-        return "CmdProvisionServiceSCS:{project:%s, force:%s, upgrade_pips:%s, upgrade_scs:%s, " \
-               "afe_serial:%s, dsi:%s, scd30:%s, barometric:%s, timezone:%s, verbose:%s}" % \
-            (self.__opts.project, self.force, self.upgrade_pips, self.upgrade_scs,
-             self.afe_serial, self.__opts.dsi, self.scd30, self.barometric, self.timezone, self.verbose)
+        return "CmdProvisionServiceSCS:{project:%s, force:%s, upgrade_pips:%s, " \
+               "afe_serial:%s, dsi:%s, scd30:%s, barometric:%s, model_map:%s, timezone:%s, verbose:%s}" % \
+            (self.__opts.project, self.force, self.upgrade_pips,
+             self.afe_serial, self.__opts.dsi, self.scd30, self.barometric, self.model_map, self.timezone, self.verbose)

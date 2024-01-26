@@ -13,7 +13,8 @@ The project location ID may be an integer or an alphanumeric string. Alternative
 character "_", indicating that the project location ID should be set as the device serial number.
 
 SYNOPSIS
-provision_service_scs.py [-p ORG GROUP LOCATION] [-u] [-s] [{ -a AFE | -d DSI DATE }] [-c] [-b] [-t] [-v]
+provision_service_scs.py [-p ORG GROUP LOCATION [-f]] [-u] [-s] [{ -a AFE | -d DSI DATE }] [-c] [-b]
+[-m MODEL_MAP] [-t TIMEZONE] [-v]
 
 EXAMPLES
 ./provision_service_scs.py -v -a 26-000345 -b
@@ -33,6 +34,8 @@ from scs_core.gas.afe_calib import AFECalib
 from scs_core.gas.dsi_calib import DSICalib
 
 from scs_core.location.timezone import Timezone
+
+from scs_core.model.model_map import ModelMap
 
 from scs_core.sys.logging import Logging
 
@@ -63,7 +66,7 @@ if __name__ == '__main__':
     # ----------------------------------------------------------------------------------------------------------------
     # resources...
 
-    provision = ProvisionSCS(cmd.verbose)
+    provision = ProvisionSCS(model_map=cmd.model_map, verbose=cmd.verbose)
     logger.info(provision)
 
 
@@ -88,6 +91,10 @@ if __name__ == '__main__':
         logger.error("invalid ISO date: '%s'." % cmd.dsi_calibration_date)
         exit(2)
 
+    if cmd.model_map is not None and cmd.model_map not in ModelMap.names():
+        logger.error("model map '%s' cannot be found." % cmd.model_map)
+        exit(2)
+
     if cmd.timezone is not None and not Timezone.is_valid(cmd.timezone):
         logger.error("unrecognised timezone: '%s'." % cmd.timezone)
         exit(2)
@@ -109,9 +116,6 @@ if __name__ == '__main__':
 
         if cmd.upgrade_pips:
             provision.upgrade_pips()
-
-        if cmd.upgrade_scs:
-            provision.upgrade_scs()
 
         if cmd.barometric:
             provision.include_pressure()

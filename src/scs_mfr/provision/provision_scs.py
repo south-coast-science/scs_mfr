@@ -26,7 +26,7 @@ class ProvisionSCS(Provision):
     MFR = '~/SCS/scs_mfr/src/scs_mfr/'
     DEV = '~/SCS/scs_dev/src/scs_dev/'
 
-    __MODEL_MAPS = {'scs-bbe-': 'uE.1', 'scs-cube-': 'oM.2'}      # was oE.1
+    __MODEL_MAPS = {'scs-bbe-': 'uE.1', 'scs-cube-': 'oE.1'}      # oE.1 or oM.2
 
     __GAS_PIPE = 'pipes/lambda-gas-model.uds'
     __GAS_MODEL_INTERFACE = 'vE'
@@ -36,15 +36,23 @@ class ProvisionSCS(Provision):
 
     __CLIMATE_INTERVAL = 60                         # seconds
 
+
     # ----------------------------------------------------------------------------------------------------------------
 
-    def __init__(self, verbose=False):
+    @classmethod
+    def default_model_map(cls):
+        return cls.__MODEL_MAPS[Host.hostname_prefix()]
+
+
+    # ----------------------------------------------------------------------------------------------------------------
+
+    def __init__(self, model_map=None, verbose=False):
         """
         Constructor
         """
         super().__init__(verbose=verbose)
 
-        self._model_map = self.__MODEL_MAPS[Host.hostname_prefix()]
+        self._model_map = self.default_model_map() if model_map is None else model_map
 
 
     # ----------------------------------------------------------------------------------------------------------------
