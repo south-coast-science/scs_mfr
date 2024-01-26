@@ -6,7 +6,7 @@ Created on 22 Dec 2020
 
 import optparse
 
-from scs_core.model.model_mapping import ModelMapping
+from scs_core.model.model_map import ModelMap
 
 from scs_mfr import version
 
@@ -22,7 +22,7 @@ class CmdModelConf(object):
 
     def __init__(self, interfaces):
         interface_names = ' | '.join(interfaces)
-        map_names = ' | '.join(ModelMapping.names())
+        map_names = ' | '.join(ModelMap.names())
 
         self.__parser = optparse.OptionParser(usage="%prog [{ [-u UDS_PATH] [-i INTERFACE] [-m MAP] | -d }] [-v]",
                                               version=version())

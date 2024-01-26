@@ -37,7 +37,7 @@ from scs_core.aws.greengrass.aws_group_configuration import AWSGroupConfiguratio
 from scs_core.data.json import JSONify
 
 from scs_core.model.model_conf import ModelConf
-from scs_core.model.model_mapping import ModelMapping
+from scs_core.model.model_map import ModelMap
 from scs_core.model.gas.gas_model_conf import GasModelConf
 from scs_core.model.pmx.pmx_model_conf import PMxModelConf
 
@@ -106,13 +106,13 @@ if __name__ == '__main__':
             logger.error("interface '%s' cannot be found." % cmd.model_interface)
             exit(2)
 
-        if cmd.model_map is not None and cmd.model_map not in ModelMapping.names():
+        if cmd.model_map is not None and cmd.model_map not in ModelMap.names():
             logger.error("model map '%s' cannot be found." % cmd.model_map)
             exit(2)
 
         uds_path = cmd.uds_path if cmd.uds_path else conf.uds_path
         model_interface = cmd.model_interface if cmd.model_interface else conf.model_interface
-        model_map = ModelMapping.map(cmd.model_map) if cmd.model_map else conf.model_map
+        model_map = ModelMap.map(cmd.model_map) if cmd.model_map else conf.model_map
 
         if uds_path is None:
             logger.error("the UDS path must be set.")
