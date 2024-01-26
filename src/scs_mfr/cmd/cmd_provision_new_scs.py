@@ -92,6 +92,10 @@ class CmdProvisionNewSCS(object):
         return self.__opts.afe_serial or self.__opts.dsi or self.scd30
 
 
+    def electrochems_are_being_set(self):
+        return self.__opts.afe_serial or self.__opts.dsi
+
+
     # ----------------------------------------------------------------------------------------------------------------
 
     @property
