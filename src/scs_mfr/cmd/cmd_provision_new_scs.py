@@ -6,7 +6,11 @@ Created on 14 Jul 2023
 
 import optparse
 
+from scs_core.model.model_map import ModelMap
+
 from scs_mfr import version
+from scs_mfr.provision.provision_scs import ProvisionSCS
+
 from scs_psu.psu.psu_conf import PSUConf
 
 
@@ -20,10 +24,12 @@ class CmdProvisionNewSCS(object):
         Constructor
         """
         psu_models = ' | '.join(PSUConf.psu_models())
+        map_names = ' | '.join(ModelMap.names())
+        default_map = ProvisionSCS.default_model_map()
 
-        self.__parser = optparse.OptionParser(usage="%prog -i INVOICE -p ORG GROUP LOCATION [-f] [-u] [-s] "
-                                                    "[{ -a AFE | -d DSI DATE }] [-c] [-m PSU_MODEL] [-t TIMEZONE] [-v]",
-                                              version=version())
+        self.__parser = optparse.OptionParser(usage="%prog -i INVOICE -p ORG GROUP LOCATION [-f] [-u] "
+                                                    "[{ -a AFE | -d DSI DATE }] [-c] [-s PSU_MODEL] [-m MODEL_MAP] "
+                                                    "[-t TIMEZONE] [-v]", version=version())
 
         # identity...
         self.__parser.add_option("--invoice-number", "-i", type="string", action="store", dest="invoice_number",
@@ -39,9 +45,6 @@ class CmdProvisionNewSCS(object):
         self.__parser.add_option("--upgrade-pips", "-u", action="store_true", dest="upgrade_pips",
                                  help="upgrade pip and requests")
 
-        self.__parser.add_option("--upgrade-scs", "-s", action="store_true", dest="upgrade_scs",
-                                 help="upgrade SCS git repos")
-
         self.__parser.add_option("--afe-serial", "-a", type="string", action="store", dest="afe_serial",
                                  help="AFE serial number")
 
@@ -51,8 +54,11 @@ class CmdProvisionNewSCS(object):
         self.__parser.add_option("--co2-scd30", "-c", action="store_true", dest="scd30", default=False,
                                  help="SCD30 is present")
 
-        self.__parser.add_option("--psu-model", "-m", type="string", action="store", dest="psu_model",
+        self.__parser.add_option("--psu-model", "-s", type="string", action="store", dest="psu_model",
                                  help="PSU model { %s }" % psu_models)
+
+        self.__parser.add_option("--model-map", "-m", type="string", action="store", dest="model_map",
+                                 help="model map { %s } (default %s)" % (map_names, default_map))
 
         self.__parser.add_option("--timezone", "-t", type="string", action="store", dest="timezone",
                                  help="timezone name")
@@ -119,11 +125,6 @@ class CmdProvisionNewSCS(object):
 
 
     @property
-    def upgrade_scs(self):
-        return self.__opts.upgrade_scs
-
-
-    @property
     def afe_serial(self):
         return self.__opts.afe_serial
 
@@ -149,6 +150,11 @@ class CmdProvisionNewSCS(object):
 
 
     @property
+    def model_map(self):
+        return self.__opts.model_map
+
+
+    @property
     def timezone(self):
         return self.__opts.timezone
 
@@ -165,7 +171,7 @@ class CmdProvisionNewSCS(object):
 
 
     def __str__(self, *args, **kwargs):
-        return "CmdProvisionNewSCS:{invoice_number:%s, project:%s, force:%s, upgrade_pips:%s, upgrade_scs:%s, " \
-               "afe_serial:%s, dsi:%s, scd30:%s, psu_model:%s, timezone:%s, verbose:%s}" % \
-            (self.invoice_number, self.__opts.project, self.force, self.upgrade_pips, self.upgrade_scs,
-             self.afe_serial, self.__opts.dsi, self.scd30, self.psu_model, self.timezone, self.verbose)
+        return "CmdProvisionNewSCS:{invoice_number:%s, project:%s, force:%s, upgrade_pips:%s, " \
+               "afe_serial:%s, dsi:%s, scd30:%s, psu_model:%s, model_map:%s, timezone:%s, verbose:%s}" % \
+            (self.invoice_number, self.__opts.project, self.force, self.upgrade_pips,
+             self.afe_serial, self.__opts.dsi, self.scd30, self.psu_model, self.model_map, self.timezone, self.verbose)

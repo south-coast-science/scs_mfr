@@ -66,7 +66,7 @@ if __name__ == '__main__':
     # ----------------------------------------------------------------------------------------------------------------
     # resources...
 
-    provision = ProvisionRoot(cmd.verbose)
+    provision = ProvisionRoot(verbose=cmd.verbose)
     logger.info(provision)
 
     try:

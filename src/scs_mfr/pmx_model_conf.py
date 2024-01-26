@@ -95,9 +95,9 @@ if __name__ == '__main__':
     # run...
 
     if cmd.set():
-        conf = PMxModelConf.load(Host, skeleton=True)
+        pmx_model_conf = PMxModelConf.load(Host, skeleton=True)
 
-        if conf is None and not cmd.is_complete():
+        if pmx_model_conf is None and not cmd.is_complete():
             logger.error("No configuration is stored - you must therefore set all fields.")
             cmd.print_help(sys.stderr)
             exit(2)
@@ -110,9 +110,9 @@ if __name__ == '__main__':
             logger.error("model map '%s' cannot be found." % cmd.model_map)
             exit(2)
 
-        uds_path = cmd.uds_path if cmd.uds_path else conf.uds_path
-        model_interface = cmd.model_interface if cmd.model_interface else conf.model_interface
-        model_map = ModelMap.map(cmd.model_map) if cmd.model_map else conf.model_map
+        uds_path = cmd.uds_path if cmd.uds_path else pmx_model_conf.uds_path
+        model_interface = cmd.model_interface if cmd.model_interface else pmx_model_conf.model_interface
+        model_map = ModelMap.map(cmd.model_map) if cmd.model_map else pmx_model_conf.model_map
 
         if uds_path is None:
             logger.error("the UDS path must be set.")
@@ -126,8 +126,8 @@ if __name__ == '__main__':
             logger.error("the model map must be set.")
             exit(2)
 
-        conf = PMxModelConf(uds_path, model_interface, model_map)
-        conf.save(Host)
+        pmx_model_conf = PMxModelConf(uds_path, model_interface, model_map)
+        pmx_model_conf.save(Host)
 
     if cmd.delete and pmx_model_conf is not None:
         pmx_model_conf.delete(Host)
