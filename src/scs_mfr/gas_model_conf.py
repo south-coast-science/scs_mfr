@@ -12,7 +12,7 @@ The gas_model_conf utility is used to specify how Greengrass data interpretation
 * INTERFACE - the format of the request and response
 * MODEL - Greengrass ML configuration template
 
-Note that the template name for the AWS group is specified by the group name as set here.
+If present, the gas model (set by gas_model_conf utility) must match the PMx model.
 
 The gases_sampler and Greengrass container must be restarted for changes to take effect.
 

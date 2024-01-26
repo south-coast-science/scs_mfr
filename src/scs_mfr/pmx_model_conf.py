@@ -12,6 +12,8 @@ The pmx_model_conf utility is used to specify how Greengrass data interpretation
 * INTERFACE - the format of the request and response
 * MODEL - Greengrass ML configuration template
 
+If present, the gas model (set by gas_model_conf utility) must match the PMx model.
+
 The particulates_sampler and Greengrass container must be restarted for changes to take effect.
 
 SYNOPSIS
