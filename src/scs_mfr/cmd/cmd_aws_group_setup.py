@@ -54,9 +54,6 @@ class CmdAWSGroupSetup(object):
         if not self.set and (self.aws_group_name is not None or self.force):
             return False
 
-        if self.set and not self.force:
-            return False
-
         if self.__args:
             return False
 

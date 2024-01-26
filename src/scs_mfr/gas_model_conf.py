@@ -9,21 +9,21 @@ DESCRIPTION
 The gas_model_conf utility is used to specify how Greengrass data interpretation models are to be accessed:
 
 * UDS_PATH - the Unix domain socket for communication between the gas sampler and the inference server
-* INTERFACE - the format of the request
-* GROUP - the performance parameters of the model(s) to be used (not required for VB or vB2)
+* INTERFACE - the format of the request and response
+* MODEL - Greengrass ML configuration template
 
-Note that the template name for the AWS group is specified by the group name as set here.
+If present, the gas model (set by gas_model_conf utility) must match the PMx model.
 
 The gases_sampler and Greengrass container must be restarted for changes to take effect.
 
 SYNOPSIS
-gas_model_conf.py [{ -l | [-u UDS_PATH] [-i INTERFACE] [-g GROUP] | -d }] [-v]
+gas_model_conf.py [{ -l | [-u UDS_PATH] [-i INTERFACE] [-m MAP] | -d }] [-v]
 
 EXAMPLES
-./gas_model_conf.py -u pipes/lambda-gas-model.uds -i vE -g oE.1
+./gas_model_conf.py -u pipes/lambda-gas-model.uds -i vE -m oM.2
 
 DOCUMENT EXAMPLE
-{"uds-path": "pipes/lambda-gas-model.uds", "model-interface": "vE", "model-compendium-group": "oE.1"}
+{"uds-path": "pipes/lambda-gas-model.uds", "model-interface": "vE", "model-map": "oM.2"}
 
 FILES
 ~/SCS/conf/gas_model_conf.json
@@ -39,8 +39,10 @@ from scs_core.aws.greengrass.aws_group_configuration import AWSGroupConfiguratio
 
 from scs_core.data.json import JSONify
 
-from scs_core.model.catalogue.model_compendium_group import ModelCompendiumGroup
+from scs_core.model.model_conf import ModelConf
+from scs_core.model.model_map import ModelMap
 from scs_core.model.gas.gas_model_conf import GasModelConf
+from scs_core.model.pmx.pmx_model_conf import PMxModelConf
 
 from scs_core.sys.logging import Logging
 
@@ -70,29 +72,31 @@ if __name__ == '__main__':
 
 
     # ----------------------------------------------------------------------------------------------------------------
-    # validation...
+    # resources...
 
     group_configuration = AWSGroupConfiguration.load(Host)
     ml = None if group_configuration is None else group_configuration.ml
 
-    if cmd.model_compendium_group is not None and ml is not None:
-        if cmd.model_compendium_group != ml:
-            logger.error("WARNING: the specified group '%s' does not match the server template '%s'" %
-                         (cmd.model_compendium_group, ml))
+    gas_model_conf = GasModelConf.load(Host)
+    pmx_model_conf = PMxModelConf.load(Host)
 
 
     # ----------------------------------------------------------------------------------------------------------------
-    # resources...
+    # validation...
 
-    # GasModelConf...
-    conf = GasModelConf.load(Host)
+    try:
+        gg_ml_template = ModelConf.gg_ml_template(gas_model_conf, pmx_model_conf)
+    except ValueError as ex:
+        gg_ml_template = None
+
+    if cmd.model_map is not None and gg_ml_template is not None and ml is not None:
+        if gg_ml_template != ml:
+            logger.error("WARNING: the specified map '%s' does not match the server template '%s'" %
+                         (cmd.model_map, ml))
 
 
     # ----------------------------------------------------------------------------------------------------------------
     # run...
-
-    if cmd.list:
-        print(JSONify.dumps(ModelCompendiumGroup.list()))
 
     elif cmd.set():
         conf = GasModelConf.load(Host, skeleton=True)
@@ -102,15 +106,17 @@ if __name__ == '__main__':
             cmd.print_help(sys.stderr)
             exit(2)
 
-        if cmd.model_compendium_group is not None and \
-                cmd.model_compendium_group not in ModelCompendiumGroup.list():
-            logger.error("group '%s' cannot be found." % cmd.model_compendium_group)
+        if cmd.model_interface is not None and cmd.model_interface not in GasModelConf.interfaces():
+            logger.error("interface '%s' cannot be found." % cmd.model_interface)
+            exit(2)
+
+        if cmd.model_map is not None and cmd.model_map not in ModelMap.names():
+            logger.error("model map '%s' cannot be found." % cmd.model_map)
             exit(2)
 
         uds_path = cmd.uds_path if cmd.uds_path else conf.uds_path
         model_interface = cmd.model_interface if cmd.model_interface else conf.model_interface
-        model_compendium_group = cmd.model_compendium_group if cmd.model_compendium_group else \
-            conf.model_compendium_group
+        model_map = ModelMap.map(cmd.model_map) if cmd.model_map else conf.model_map
 
         if uds_path is None:
             logger.error("the UDS path must be set.")
@@ -120,12 +126,16 @@ if __name__ == '__main__':
             logger.error("the interface code must be set.")
             exit(2)
 
-        conf = GasModelConf(uds_path, model_interface, model_compendium_group)
+        if model_map is None:
+            logger.error("the model map must be set.")
+            exit(2)
+
+        conf = GasModelConf(uds_path, model_interface, model_map)
         conf.save(Host)
 
-    elif cmd.delete and conf is not None:
-        conf.delete(Host)
-        conf = None
+    elif cmd.delete and gas_model_conf is not None:
+        gas_model_conf.delete(Host)
+        gas_model_conf = None
 
-    if conf:
-        print(JSONify.dumps(conf))
+    if gas_model_conf:
+        print(JSONify.dumps(gas_model_conf))
