@@ -90,7 +90,7 @@ class ProvisionSCS(Provision):
                         no_verbose=True)
 
 
-    def upgrade_scs(self):
+    def upgrade_scs(self):                          # now unused - do git pull instead
         self._logger.info("Upgrade scs...")
 
         self._clu.s([self.MFR + 'git_pull.py', '-p', '-t', 60])

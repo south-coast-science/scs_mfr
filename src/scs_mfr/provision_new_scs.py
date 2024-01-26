@@ -146,6 +146,8 @@ if __name__ == '__main__':
         else:
             provision.remove_gases()
 
+        provision.update_models(cmd.electrochems_are_being_set())
+
         if cmd.psu_model:
             provision.psu_model(cmd.psu_model)
 
@@ -163,14 +165,13 @@ if __name__ == '__main__':
         # Stage 2...
 
         provision.wait_for_root_setup_completed()
+        provision.lower_root_setup_completed()
 
         logger.info("Stage 2...")
 
         provision.aws_deployment()
 
         provision.test()
-
-        provision.lower_root_setup_completed()
 
 
         # ----------------------------------------------------------------------------------------------------------------
