@@ -24,7 +24,7 @@ class CmdModelConf(object):
         interface_names = ' | '.join(interfaces)
         map_names = ' | '.join(ModelMap.names())
 
-        self.__parser = optparse.OptionParser(usage="%prog [{ [-u UDS_PATH] [-i INTERFACE] [-m MAP] | -d }] [-v]",
+        self.__parser = optparse.OptionParser(usage="%prog [{ [-u UDS_PATH] [-i INTERFACE] [-m MODEL_MAP] | -d }] [-v]",
                                               version=version())
 
         # fields...

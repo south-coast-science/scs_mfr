@@ -98,10 +98,10 @@ if __name__ == '__main__':
     # ----------------------------------------------------------------------------------------------------------------
     # run...
 
-    elif cmd.set():
-        conf = GasModelConf.load(Host, skeleton=True)
+    if cmd.set():
+        gas_model_conf = GasModelConf.load(Host, skeleton=True)
 
-        if conf is None and not cmd.is_complete():
+        if gas_model_conf is None and not cmd.is_complete():
             logger.error("No configuration is stored - you must therefore set the UDS path and the interface.")
             cmd.print_help(sys.stderr)
             exit(2)
@@ -114,9 +114,9 @@ if __name__ == '__main__':
             logger.error("model map '%s' cannot be found." % cmd.model_map)
             exit(2)
 
-        uds_path = cmd.uds_path if cmd.uds_path else conf.uds_path
-        model_interface = cmd.model_interface if cmd.model_interface else conf.model_interface
-        model_map = ModelMap.map(cmd.model_map) if cmd.model_map else conf.model_map
+        uds_path = cmd.uds_path if cmd.uds_path else gas_model_conf.uds_path
+        model_interface = cmd.model_interface if cmd.model_interface else gas_model_conf.model_interface
+        model_map = ModelMap.map(cmd.model_map) if cmd.model_map else gas_model_conf.model_map
 
         if uds_path is None:
             logger.error("the UDS path must be set.")
@@ -130,8 +130,8 @@ if __name__ == '__main__':
             logger.error("the model map must be set.")
             exit(2)
 
-        conf = GasModelConf(uds_path, model_interface, model_map)
-        conf.save(Host)
+        gas_model_conf = GasModelConf(uds_path, model_interface, model_map)
+        gas_model_conf.save(Host)
 
     elif cmd.delete and gas_model_conf is not None:
         gas_model_conf.delete(Host)
