@@ -103,23 +103,6 @@ if __name__ == '__main__':
 
 
     # ----------------------------------------------------------------------------------------------------------------
-    # model conf...
-
-    if cmd.set:
-        gas_model_conf = GasModelConf.load(Host)
-        pmx_model_conf = PMxModelConf.load(Host)
-
-        try:
-            gg_ml_template = ModelConf.gg_ml_template(gas_model_conf, pmx_model_conf)
-
-        except ValueError as ex:
-            logger.error(ex)
-            exit(1)
-
-        logger.info("gg_ml_template: %s" % gg_ml_template)
-
-
-    # ----------------------------------------------------------------------------------------------------------------
     # authentication...
 
     # AWSGroupConfiguration...
@@ -142,6 +125,23 @@ if __name__ == '__main__':
 
         # client...
         client = Client.construct('greengrass', key)
+
+
+    # ----------------------------------------------------------------------------------------------------------------
+    # resources...
+
+    if cmd.set:
+        gas_model_conf = GasModelConf.load(Host)
+        pmx_model_conf = PMxModelConf.load(Host)
+
+        try:
+            gg_ml_template = ModelConf.gg_ml_template(gas_model_conf, pmx_model_conf)
+
+        except ValueError as ex:
+            logger.error(ex)
+            exit(1)
+
+        logger.info("gg_ml_template: %s" % gg_ml_template)
 
 
     # ----------------------------------------------------------------------------------------------------------------
