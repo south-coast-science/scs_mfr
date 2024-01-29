@@ -147,7 +147,7 @@ if __name__ == '__main__':
         pocs = {} if conf is None else conf.pocs
 
         try:
-            del(pocs[str(cmd.poc_delete)])
+            del pocs[str(cmd.poc_delete)]
         except KeyError:
             pass
 
