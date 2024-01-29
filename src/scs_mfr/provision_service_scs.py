@@ -16,7 +16,7 @@ The provision_service_scs utility should only be used for servicing / update tas
 configured using the provision_service_scs utility.
 
 SYNOPSIS
-Usage: provision_service_scs.py [-p ORG GROUP LOCATION [-f]] [-u] [-s] [{ -a AFE | -d DSI DATE }] [-c] [-b]
+provision_service_scs.py [-p ORG GROUP LOCATION [-f]] [-u] [-s] [{ -a AFE | -d DSI DATE }] [-c] [-b]
 [-m MODEL_MAP] [-t TIMEZONE] [-v]
 
 EXAMPLES
