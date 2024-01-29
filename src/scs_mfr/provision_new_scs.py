@@ -12,9 +12,12 @@ should be run as the scs user, the provision_new_root utility should be run simu
 The project location ID may be an integer or an alphanumeric string. Alternatively, the location may be the underscore
 character "_", indicating that the project location ID should be set as the device serial number.
 
+The provision_new_scs utility should only be used for new device tasks. Servicing / update tasks should be
+configured using the provision_service_scs utility.
+
 SYNOPSIS
-provision_new_scs.py -i INVOICE -p ORG GROUP LOCATION [-f] [-u] [{ -a AFE | -d DSI DATE }] [-c] [-s PSU_MODEL]
-[-m MODEL_MAP] [-t TIMEZONE] [-v]
+Usage: provision_new_scs.py -i INVOICE -p ORG GROUP LOCATION [-f] [-u] [{ -a AFE | -d DSI DATE }] [-c]
+[-s PSU_MODEL] [-m MODEL_MAP] [-t TIMEZONE] [-v]
 
 EXAMPLES
 ./provision_new_scs.py -v -i INV-0000 -p south-coast-science-dev development _ -a 26-000345 -m OPCubeV1

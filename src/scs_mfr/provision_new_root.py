@@ -10,7 +10,9 @@ The provision_new_root utility is used to provide device and AWS Greengrass conf
 superuser privileges. This utility should be run as the root user, the provision_new_scs utility should be run
 simultaneously as the scs user.
 
-Warning: do NOT use the --prep-sd  / -s flag when doing a service or upgrade.
+The provision_new_root utility is used for both new devices and servicing / update tasks.
+
+WARNING: do not use the --prep-sd  / -s flag when doing a service or upgrade.
 
 SYNOPSIS
 provision_new_root.py [-s] [-v]
@@ -20,6 +22,7 @@ provision_new_root -sv
 
 SEE ALSO
 scs_mfr/provision_new_scs
+scs_mfr/provision_service_scs
 """
 
 import os
