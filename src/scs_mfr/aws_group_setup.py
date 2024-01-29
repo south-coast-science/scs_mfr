@@ -141,6 +141,10 @@ if __name__ == '__main__':
             logger.error(ex)
             exit(1)
 
+        if gg_ml_template is None:
+            logger.error("gg_ml_template is not set.")
+            exit(1)
+
         logger.info("gg_ml_template: %s" % gg_ml_template)
 
 
