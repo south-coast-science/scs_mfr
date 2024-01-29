@@ -38,7 +38,6 @@ import sys
 from scs_core.aws.greengrass.aws_group_configuration import AWSGroupConfiguration
 from scs_core.data.json import JSONify
 
-from scs_core.model.model_conf import ModelConf
 from scs_core.model.model_map import ModelMap
 from scs_core.model.gas.gas_model_conf import GasModelConf
 from scs_core.model.pmx.pmx_model_conf import PMxModelConf
@@ -74,24 +73,9 @@ if __name__ == '__main__':
     # resources...
 
     group_configuration = AWSGroupConfiguration.load(Host)
-    ml = None if group_configuration is None else group_configuration.ml
 
     gas_model_conf = GasModelConf.load(Host)
     pmx_model_conf = PMxModelConf.load(Host)
-
-    # ----------------------------------------------------------------------------------------------------------------
-    # validation...
-
-    try:
-        gg_ml_template = ModelConf.gg_ml_template(gas_model_conf, pmx_model_conf)
-    except ValueError as ex:
-        gg_ml_template = None
-
-    if cmd.model_map is not None and gg_ml_template is not None and ml is not None:
-        if gg_ml_template != ml:
-            logger.error("WARNING: the specified map '%s' does not match the server template '%s'" %
-                         (cmd.model_map, ml))
-
 
     # ----------------------------------------------------------------------------------------------------------------
     # run...
@@ -136,4 +120,13 @@ if __name__ == '__main__':
         pmx_model_conf = None
 
     if pmx_model_conf:
+        if group_configuration:
+            try:
+                if group_configuration.configuration_is_mismatched(gas_model_conf, pmx_model_conf):
+                    logger.error("WARNING: the specified map '%s' does not match the server template '%s'" %
+                                 (pmx_model_conf.model_map_name, group_configuration.ml))
+            except ValueError:
+                logger.error("WARNING: the specified map '%s' is different to the gas map '%s'" %
+                             (pmx_model_conf.model_map_name, gas_model_conf.model_map_name))
+
         print(JSONify.dumps(pmx_model_conf))

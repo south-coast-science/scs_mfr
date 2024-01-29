@@ -12,6 +12,9 @@ utility should be run as the scs user, the provision_new_root utility should be 
 The project location ID may be an integer or an alphanumeric string. Alternatively, the location may be the underscore
 character "_", indicating that the project location ID should be set as the device serial number.
 
+The provision_service_scs utility should only be used for servicing / update tasks. New devices should be
+configured using the provision_service_scs utility.
+
 SYNOPSIS
 provision_service_scs.py [-p ORG GROUP LOCATION [-f]] [-u] [-s] [{ -a AFE | -d DSI DATE }] [-c] [-b]
 [-m MODEL_MAP] [-t TIMEZONE] [-v]
