@@ -123,8 +123,8 @@ if __name__ == '__main__':
         if group_configuration:
             try:
                 if group_configuration.configuration_is_mismatched(gas_model_conf, pmx_model_conf):
-                    logger.error("WARNING: the specified map '%s' does not match the server template '%s'" %
-                                 (pmx_model_conf.model_map_name, group_configuration.ml))
+                    logger.error("WARNING: the specified map '%s' does not match the server template" %
+                                 pmx_model_conf.model_map_name)
             except ValueError:
                 logger.error("WARNING: the specified map '%s' is different to the gas map '%s'" %
                              (pmx_model_conf.model_map_name, gas_model_conf.model_map_name))
