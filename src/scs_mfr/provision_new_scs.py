@@ -29,7 +29,6 @@ scs_mfr/provision_service_scs
 
 import sys
 
-from scs_core.aws.security.cognito_device import CognitoDeviceIdentity
 from scs_core.aws.security.cognito_device_creator import CognitoDeviceCreator
 
 from scs_core.client.http_exception import HTTPNotFoundException
@@ -94,9 +93,9 @@ if __name__ == '__main__':
         logger.error("device tag '%s' is not whitelisted." % tag)
         exit(1)
 
-    if not CognitoDeviceIdentity.is_valid_invoice_number(cmd.invoice_number):
-        logger.error("invalid invoice number: '%s'." % cmd.invoice_number)
-        exit(2)
+    # if not CognitoDeviceIdentity.is_valid_invoice_number(cmd.invoice_number):
+    #     logger.error("invalid invoice number: '%s'." % cmd.invoice_number)
+    #     exit(2)
 
     try:
         if cmd.afe_serial is not None:
