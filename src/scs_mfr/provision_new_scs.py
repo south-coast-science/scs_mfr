@@ -160,6 +160,8 @@ if __name__ == '__main__':
         provision.cognito_identity(cmd.invoice_number)
         provision.aws_project(cmd.project_org, cmd.project_group, cmd.project_location, cmd.force)
 
+        provision.clear_opc_errors()
+
         provision.raise_scs_configuration_completed()
 
 

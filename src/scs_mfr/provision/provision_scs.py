@@ -14,6 +14,7 @@ from scs_host.sys.host import Host
 from scs_mfr.provision.provision import Provision
 
 
+# TODO: clear OPC error history?
 # --------------------------------------------------------------------------------------------------------------------
 
 class ProvisionSCS(Provision):
@@ -148,6 +149,12 @@ class ProvisionSCS(Provision):
         if PMxModelConf.load(Host) is not None:
             self._clu.s([self.MFR + 'pmx_model_conf.py', '-u', self.__PMX_PIPE, '-i', self.__PMX_MODEL_INTERFACE,
                          '-m', self._model_map])
+
+
+    def clear_opc_errors(self):
+        self._logger.info("Clear OPC errors...")
+
+        self._clu.s([self.MFR + 'opc_error_log.py', '-d'])
 
 
     def set_schedule(self):

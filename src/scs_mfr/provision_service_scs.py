@@ -134,6 +134,7 @@ if __name__ == '__main__':
         if cmd.project:
             provision.aws_project(cmd.project_org, cmd.project_group, cmd.project_location, cmd.force)
 
+        provision.clear_opc_errors()
         provision.set_schedule()
 
         provision.raise_scs_configuration_completed()
