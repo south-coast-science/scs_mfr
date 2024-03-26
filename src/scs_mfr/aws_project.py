@@ -130,15 +130,15 @@ if __name__ == '__main__':
         # run...
 
         if cmd.set():
-            if not Project.is_valid_string(cmd.organisation):
+            if not Project.is_valid_path_node(cmd.organisation):
                 logger.error("the organisation '%s' is not valid." % cmd.organisation)
                 exit(2)
 
-            if not Project.is_valid_string(cmd.group):
+            if not Project.is_valid_path_node(cmd.group):
                 logger.error("the group '%s' is not valid." % cmd.group)
                 exit(2)
 
-            if not Project.is_valid_string(cmd.location):
+            if not Project.is_valid_path_node(cmd.location):
                 logger.error("the location '%s' is not valid." % cmd.location)
                 exit(2)
 

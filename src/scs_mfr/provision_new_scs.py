@@ -29,6 +29,7 @@ scs_mfr/provision_service_scs
 
 import sys
 
+from scs_core.aws.config.project import Project
 from scs_core.aws.security.cognito_device_creator import CognitoDeviceCreator
 
 from scs_core.client.http_exception import HTTPNotFoundException
@@ -123,6 +124,17 @@ if __name__ == '__main__':
         logger.error("unrecognised timezone: '%s'." % cmd.timezone)
         exit(2)
 
+    if not Project.is_valid_path_node(cmd.project_org):
+        logger.error("the project organisation '%s' is not valid." % cmd.project_org)
+        exit(2)
+
+    if not Project.is_valid_path_node(cmd.project_group):
+        logger.error("the project group '%s' is not valid." % cmd.project_group)
+        exit(2)
+
+    if not Project.is_valid_path_node(cmd.project_location):
+        logger.error("the project location '%s' is not valid." % cmd.project_location)
+        exit(2)
 
     try:
         # ------------------------------------------------------------------------------------------------------------

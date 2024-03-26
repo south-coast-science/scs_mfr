@@ -14,7 +14,6 @@ from scs_host.sys.host import Host
 from scs_mfr.provision.provision import Provision
 
 
-# TODO: clear OPC error history?
 # --------------------------------------------------------------------------------------------------------------------
 
 class ProvisionSCS(Provision):
