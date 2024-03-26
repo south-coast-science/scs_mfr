@@ -94,22 +94,22 @@ class CmdProvisionServiceSCS(object):
 
     @property
     def project(self):
-        return bool(self.__opts.project)
+        return self.__opts.project is not None
 
 
     @property
     def project_org(self):
-        return self.__opts.project[0] if self.__opts.project else None
+        return None if self.__opts.project is None else self.__opts.project[0]
 
 
     @property
     def project_group(self):
-        return self.__opts.project[1] if self.__opts.project else None
+        return None if self.__opts.project is None else self.__opts.project[1]
 
 
     @property
     def project_location(self):
-        return self.__opts.project[2] if self.__opts.project else None
+        return None if self.__opts.project is None else self.__opts.project[2]
 
 
     @property
