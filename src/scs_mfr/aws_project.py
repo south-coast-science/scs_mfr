@@ -130,6 +130,18 @@ if __name__ == '__main__':
         # run...
 
         if cmd.set():
+            if not Project.is_valid_string(cmd.organisation):
+                logger.error("the organisation '%s' is not valid." % cmd.organisation)
+                exit(2)
+
+            if not Project.is_valid_string(cmd.group):
+                logger.error("the group '%s' is not valid." % cmd.group)
+                exit(2)
+
+            if not Project.is_valid_string(cmd.location):
+                logger.error("the location '%s' is not valid." % cmd.location)
+                exit(2)
+
             location = system_id.system_serial_number if cmd.location == '_' else cmd.location
 
             project = Project.construct(cmd.organisation, cmd.group, location)
