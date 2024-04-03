@@ -89,7 +89,8 @@ if __name__ == '__main__':
             #     exit(2)
 
             creator = CognitoDeviceCreator()
-            identity = CognitoDeviceIdentity(credentials.tag, credentials.password, cmd.invoice_number, None, None)
+            identity = CognitoDeviceIdentity(credentials.tag, password=credentials.password,
+                                             invoice_number=cmd.invoice_number)
             report = creator.create(identity)
 
         elif cmd.test:
