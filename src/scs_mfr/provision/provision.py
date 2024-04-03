@@ -45,11 +45,11 @@ class Provision(ABC):
     # ----------------------------------------------------------------------------------------------------------------
     # Check...
 
-    def os_check(self):
-        self._logger.info("OS info...")
+    def kernel_check(self):
+        self._logger.info("Kernel info...")
 
-        current = Host.os_release()
-        required = Host.minimum_required_os_release()
+        current = Host.kernel_release()
+        required = Host.minimum_required_kernel_release()
 
         self._logger.info("current = %s required >= %s" % (current.as_json(), required.as_json()))
 
