@@ -45,11 +45,24 @@ class Provision(ABC):
     # ----------------------------------------------------------------------------------------------------------------
     # Check...
 
+    def os_check(self):
+        self._logger.info("OS info...")
+
+        current = Host.os_version()
+        required = Host.minimum_required_os_version()
+
+        self._logger.info("current = %s required >= %s" % (current.as_json(), required.as_json()))
+
+        if current < required:
+            self._logger.error('unacceptable OS version.')
+            self._clu.abort(1)
+
+
     def kernel_check(self):
         self._logger.info("Kernel info...")
 
-        current = Host.kernel_release()
-        required = Host.minimum_required_kernel_release()
+        current = Host.kernel_version()
+        required = Host.minimum_required_kernel_version()
 
         self._logger.info("current = %s required >= %s" % (current.as_json(), required.as_json()))
 
@@ -61,8 +74,8 @@ class Provision(ABC):
     def greengrass_check(self):
         self._logger.info("Greengrass info...")
 
-        current = Host.greengrass_release()
-        required = Host.minimum_required_greengrass_release()
+        current = Host.greengrass_version()
+        required = Host.minimum_required_greengrass_version()
 
         self._logger.info("current = %s required >= %s" % (current.as_json(), required.as_json()))
 
