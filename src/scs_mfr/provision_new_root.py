@@ -78,6 +78,7 @@ if __name__ == '__main__':
 
         logger.info("Check...")
 
+        provision.os_check()
         provision.kernel_check()
         provision.greengrass_check()
 

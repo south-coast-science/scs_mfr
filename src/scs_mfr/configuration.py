@@ -23,13 +23,14 @@ EXAMPLES
 
 DOCUMENT EXAMPLE
 {
-    "rec": "2024-04-03T12:54:33Z",
+    "rec": "2024-04-04T09:28:16Z",
     "tag": "scs-be2-3",
     "ver": 1.4,
     "val": {
         "hostname": "scs-bbe-003",
-        "kernel": {
-            "rel": "6.1.77-bone30"
+        "platform": {
+            "os": "10.13",
+            "kernel": "6.1.77-bone30"
         },
         "packs": {
             "scs_comms": {
@@ -38,7 +39,7 @@ DOCUMENT EXAMPLE
             },
             "scs_core": {
                 "repo": "scs_core",
-                "version": "3.11.0"
+                "version": "3.11.2"
             },
             "scs_dev": {
                 "repo": "scs_dev",
@@ -58,7 +59,7 @@ DOCUMENT EXAMPLE
             },
             "scs_host": {
                 "repo": "scs_host_bbe_southern",
-                "version": "3.5.0"
+                "version": "3.5.2"
             },
             "scs_inference": {
                 "repo": "scs_inference",
@@ -66,7 +67,7 @@ DOCUMENT EXAMPLE
             },
             "scs_mfr": {
                 "repo": "scs_mfr",
-                "version": "3.8.9"
+                "version": "3.8.11"
             },
             "scs_ndir": {
                 "repo": "scs_ndir",
