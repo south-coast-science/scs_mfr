@@ -91,6 +91,7 @@ class CmdProvisionServiceSCS(object):
 
 
     # ----------------------------------------------------------------------------------------------------------------
+    # properties: identity...
 
     @property
     def project(self):
@@ -116,6 +117,9 @@ class CmdProvisionServiceSCS(object):
     def force(self):
         return self.__opts.force
 
+
+    # ----------------------------------------------------------------------------------------------------------------
+    # properties: operations...
 
     @property
     def upgrade_pips(self):
@@ -156,6 +160,9 @@ class CmdProvisionServiceSCS(object):
     def timezone(self):
         return self.__opts.timezone
 
+
+    # ----------------------------------------------------------------------------------------------------------------
+    # properties: output...
 
     @property
     def verbose(self):

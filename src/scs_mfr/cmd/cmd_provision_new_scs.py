@@ -27,9 +27,9 @@ class CmdProvisionNewSCS(object):
         map_names = ' | '.join(ModelMap.names())
         default_map = ProvisionSCS.default_model_map()
 
-        self.__parser = optparse.OptionParser(usage="%prog -i INVOICE -p ORG GROUP LOCATION [-f] [-u] "
-                                                    "[{ -a AFE | -d DSI DATE }] [-c] [-s PSU_MODEL] [-m MODEL_MAP] "
-                                                    "[-t TIMEZONE] [-v]", version=version())
+        self.__parser = optparse.OptionParser(usage="%prog -i INVOICE -p ORG GROUP LOCATION [-f] [-g DEVICE_GENUS] "
+                                                    "[-u] [{ -a AFE | -d DSI DATE }] [-c] [-s PSU_MODEL] "
+                                                    "[-m MODEL_MAP] [-t TIMEZONE] [-v]", version=version())
 
         # identity...
         self.__parser.add_option("--invoice-number", "-i", type="string", action="store", dest="invoice_number",
@@ -40,6 +40,9 @@ class CmdProvisionNewSCS(object):
 
         self.__parser.add_option("--force", "-f", action="store_true", dest="force", default=False,
                                  help="do not check for pre-existing topics")
+
+        self.__parser.add_option("--device-genus", "-g", type="string", action="store", dest="device_genus",
+                                 help="device group / model")
 
         # operations...
         self.__parser.add_option("--upgrade-pips", "-u", action="store_true", dest="upgrade_pips",
@@ -97,6 +100,7 @@ class CmdProvisionNewSCS(object):
 
 
     # ----------------------------------------------------------------------------------------------------------------
+    # properties: identity...
 
     @property
     def invoice_number(self):
@@ -122,6 +126,14 @@ class CmdProvisionNewSCS(object):
     def force(self):
         return self.__opts.force
 
+
+    @property
+    def device_genus(self):
+        return self.__opts.device_genus
+
+
+    # ----------------------------------------------------------------------------------------------------------------
+    # properties: operations...
 
     @property
     def upgrade_pips(self):
@@ -163,6 +175,9 @@ class CmdProvisionNewSCS(object):
         return self.__opts.timezone
 
 
+    # ----------------------------------------------------------------------------------------------------------------
+    # properties: output...
+
     @property
     def verbose(self):
         return self.__opts.verbose
@@ -175,7 +190,7 @@ class CmdProvisionNewSCS(object):
 
 
     def __str__(self, *args, **kwargs):
-        return "CmdProvisionNewSCS:{invoice_number:%s, project:%s, force:%s, upgrade_pips:%s, " \
+        return "CmdProvisionNewSCS:{invoice_number:%s, project:%s, force:%s, device_genus:%s, upgrade_pips:%s, " \
                "afe_serial:%s, dsi:%s, scd30:%s, psu_model:%s, model_map:%s, timezone:%s, verbose:%s}" % \
-            (self.invoice_number, self.__opts.project, self.force, self.upgrade_pips,
+            (self.invoice_number, self.__opts.project, self.force, self.device_genus, self.upgrade_pips,
              self.afe_serial, self.__opts.dsi, self.scd30, self.psu_model, self.model_map, self.timezone, self.verbose)

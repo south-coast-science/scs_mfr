@@ -16,13 +16,14 @@ When the "verbose" "-v" flag is used, the system_id utility reports all the iden
 its specification.
 
 SYNOPSIS
-system_id.py [-d VENDOR_ID] [-m MODEL_ID] [-n MODEL_NAME] [-c CONFIG] [{-s SYSTEM_SERIAL_NUMBER | -a }] [-v]
+system_id.py [-d VENDOR_ID] [-g MODEL_GROUP] [-i MODEL_ID] [-c CONFIG] [{-s SYSTEM_SERIAL_NUMBER | -a }] [-v]
 
 EXAMPLES
-./system_id.py -v -d SCS -m BGX -n Praxis -c BGX -s 401
+./system_id.py -v -d SCS -g Praxis -i BGX -c BGX -s 401
 
 DOCUMENT EXAMPLE
-{"vendor-id": "SCS", "model-id": "BGX", "model": "Praxis", "config": "BGX", "system-sn": 401}
+{"set-on": "2024-01-09T16:02:09Z",
+"vendor-id": "SCS", "model": "Alpha BB Eng", "model-id": "BE2", "config": "V2", "system-sn": 3}
 
 FILES
 ~/SCS/conf/system_id.json
@@ -94,11 +95,11 @@ if __name__ == '__main__':
             serial_number = system_id.system_serial_number if cmd.serial_number is None else cmd.serial_number
 
         vendor_id = system_id.vendor_id if cmd.vendor_id is None else cmd.vendor_id
+        model_group = system_id.model_group if cmd.model_group is None else cmd.model_group
         model_id = system_id.model_id if cmd.model_id is None else cmd.model_id
-        model_name = system_id.model_name if cmd.model_name is None else cmd.model_name
         configuration = system_id.configuration if cmd.configuration is None else cmd.configuration
 
-        system_id = SystemID(vendor_id, model_id, model_name, configuration, serial_number)
+        system_id = SystemID(vendor_id, model_group, model_id, configuration, serial_number)
         system_id.save(Host)
 
         system_id = SystemID.load(Host)     # update last_modified
