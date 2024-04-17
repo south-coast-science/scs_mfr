@@ -85,9 +85,11 @@ if __name__ == '__main__':
     # ----------------------------------------------------------------------------------------------------------------
     # validation...
 
-    system_id = SystemID.load(Host)
+    logger.info("Validation...")
 
-    system_id.system_serial_number = Host.numeric_component_of_name()
+    provision.system_id(cmd.device_genus)
+
+    system_id = SystemID.load(Host)
     tag = system_id.message_tag()
 
     if not creator.may_create(tag):
@@ -169,7 +171,6 @@ if __name__ == '__main__':
         if cmd.timezone:
             provision.timezone(cmd.timezone)
 
-        provision.system_id(cmd.device_genus)
         provision.cognito_identity(cmd.invoice_number)
         provision.aws_project(cmd.project_org, cmd.project_group, cmd.project_location, cmd.force)
 

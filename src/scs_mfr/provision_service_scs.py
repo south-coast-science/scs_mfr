@@ -78,6 +78,8 @@ if __name__ == '__main__':
     # ----------------------------------------------------------------------------------------------------------------
     # validation...
 
+    logger.info("Validation...")
+
     try:
         if cmd.afe_serial is not None:
             AFECalib.download(cmd.afe_serial, parse=False)
