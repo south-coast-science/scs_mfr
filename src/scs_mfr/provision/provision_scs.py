@@ -183,7 +183,7 @@ class ProvisionSCS(Provision):
     def system_id(self, device_genus):
         self._logger.info("System ID...")
 
-        genus = [] if device_genus is None else ['-g', device_genus, '-i', device_genus]
+        genus = [] if device_genus is None else ['-i', device_genus, '-c', device_genus]
 
         self._clu.s([self.MFR + 'system_id.py', '-a'] + genus)
 
