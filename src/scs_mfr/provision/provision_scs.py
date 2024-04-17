@@ -180,10 +180,12 @@ class ProvisionSCS(Provision):
         self._clu.s([self.MFR + 'timezone.py', '-s', timezone])
 
 
-    def system_id(self):
+    def system_id(self, device_genus):
         self._logger.info("System ID...")
 
-        self._clu.s([self.MFR + 'system_id.py', '-a'])
+        genus = [] if device_genus is None else ['-g', device_genus, '-i', device_genus]
+
+        self._clu.s([self.MFR + 'system_id.py', '-a'] + genus)
 
 
     def aws_project(self, org, group, location, force):
