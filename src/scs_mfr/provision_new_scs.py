@@ -169,7 +169,7 @@ if __name__ == '__main__':
         if cmd.timezone:
             provision.timezone(cmd.timezone)
 
-        provision.system_id()
+        provision.system_id(cmd.device_genus)
         provision.cognito_identity(cmd.invoice_number)
         provision.aws_project(cmd.project_org, cmd.project_group, cmd.project_location, cmd.force)
 
