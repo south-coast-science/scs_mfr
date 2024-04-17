@@ -57,6 +57,8 @@ if __name__ == '__main__':
     # ----------------------------------------------------------------------------------------------------------------
     # validation...
 
+    logger.info("Validation...")
+
     if os.getcwd() != '/etc/systemd/system':
         logger.error("must be run in /etc/systemd/system.")
         exit(1)
