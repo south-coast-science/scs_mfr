@@ -43,7 +43,7 @@ scs_dev/gases_sampler
 scs_mfr/afe_baseline
 
 RESOURCES
-https://www.alphasense-technology.co.uk/
+https://calibration.southcoastscience.com/
 """
 
 import json
