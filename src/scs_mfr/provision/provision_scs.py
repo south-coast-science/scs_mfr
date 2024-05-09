@@ -9,6 +9,8 @@ import spidev
 from scs_core.model.gas.gas_model_conf import GasModelConf
 from scs_core.model.pmx.pmx_model_conf import PMxModelConf
 
+from scs_core.sync.schedule import Schedule
+
 from scs_host.sys.host import Host
 
 from scs_mfr.provision.provision import Provision
@@ -213,10 +215,18 @@ class ProvisionSCS(Provision):
     def test(self):
         self._logger.info("Test...")
 
+        schedule = Schedule.load(Host)
+        schedule_names = schedule.names()
+
         self._clu.s([self.DEV + 'status_sampler.py', '-i', 10, '-c', 2], abort_on_fail=False)
         self._clu.s([self.DEV + 'climate_sampler.py'], abort_on_fail=False)
-        self._clu.s([self.DEV + 'particulates_sampler.py'], abort_on_fail=False)
-        self._clu.s([self.DEV + 'gases_sampler.py'], abort_on_fail=False)
+
+        if 'scs-particulates' in schedule_names:
+            self._clu.s([self.DEV + 'particulates_sampler.py'], abort_on_fail=False)
+
+        if 'scs-gases' in schedule_names:
+            self._clu.s([self.DEV + 'gases_sampler.py'], abort_on_fail=False)
+
         self._clu.s([self.DEV + 'psu_monitor.py'], abort_on_fail=False)
 
 
