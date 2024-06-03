@@ -26,7 +26,7 @@ class CmdProvisionServiceSCS(object):
 
         self.__parser = optparse.OptionParser(usage="%prog [-p ORG GROUP LOCATION [-f]] [-u] [-s] "
                                                     "[{ -a AFE | -d DSI DATE }] [-c] [-b] [-m MODEL_MAP] "
-                                                    "[-t TIMEZONE] [-v]", version=version())
+                                                    "[-t TIMEZONE] [-x] [-v]", version=version())
 
         # identity...
         self.__parser.add_option("--project", "-p", type="string", nargs=3, action="store", dest="project",
@@ -61,6 +61,9 @@ class CmdProvisionServiceSCS(object):
                                  help="timezone name")
 
         # output...
+        self.__parser.add_option("--exclude-tests", "-x", action="store_true", dest="exclude_test", default=False,
+                                 help="do not perform OS checks or hardware tests")
+
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
@@ -165,6 +168,11 @@ class CmdProvisionServiceSCS(object):
     # properties: output...
 
     @property
+    def exclude_test(self):
+        return self.__opts.exclude_test
+
+
+    @property
     def verbose(self):
         return self.__opts.verbose
 
@@ -176,7 +184,7 @@ class CmdProvisionServiceSCS(object):
 
 
     def __str__(self, *args, **kwargs):
-        return "CmdProvisionServiceSCS:{project:%s, force:%s, upgrade_pips:%s, " \
-               "afe_serial:%s, dsi:%s, scd30:%s, barometric:%s, model_map:%s, timezone:%s, verbose:%s}" % \
-            (self.__opts.project, self.force, self.upgrade_pips,
-             self.afe_serial, self.__opts.dsi, self.scd30, self.barometric, self.model_map, self.timezone, self.verbose)
+        return "CmdProvisionServiceSCS:{project:%s, force:%s, upgrade_pips:%s, afe_serial:%s, dsi:%s, " \
+                "scd30:%s, barometric:%s, model_map:%s, timezone:%s, exclude_test:%s, verbose:%s}" % \
+            (self.__opts.project, self.force, self.upgrade_pips, self.afe_serial, self.__opts.dsi,
+             self.scd30, self.barometric, self.model_map, self.timezone, self.exclude_test, self.verbose)
