@@ -82,9 +82,6 @@ class CmdProvisionNewSCS(object):
         if self.invoice_number is None or self.__opts.project is None:
             return False
 
-        if self.__opts.project is None and self.force:
-            return False
-
         if self.afe_serial and self.dsi_serial:
             return False
 
