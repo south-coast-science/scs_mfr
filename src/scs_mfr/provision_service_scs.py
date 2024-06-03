@@ -16,8 +16,8 @@ The provision_service_scs utility should only be used for servicing / update tas
 configured using the provision_service_scs utility.
 
 SYNOPSIS
-provision_service_scs.py [-p ORG GROUP LOCATION [-f]] [-u] [-s] [{ -a AFE | -d DSI DATE }] [-c] [-b]
-[-m MODEL_MAP] [-t TIMEZONE] [-v]
+provision_service_scs.py [-p ORG GROUP LOCATION [-f]] [-u] [-s] [{ -a AFE | -d DSI DATE }] [-c] [-b] [-m MODEL_MAP]
+[-t TIMEZONE] [-x] [-v]
 
 EXAMPLES
 ./provision_service_scs.py -v -a 26-000345 -b
@@ -126,8 +126,9 @@ if __name__ == '__main__':
 
         logger.info("Check...")
 
-        provision.os_check()
-        provision.kernel_check()
+        if not cmd.exclude_test:
+            provision.os_check()
+            provision.kernel_check()
 
 
         # ------------------------------------------------------------------------------------------------------------
@@ -167,7 +168,9 @@ if __name__ == '__main__':
         logger.info("Stage 2...")
 
         provision.aws_deployment()
-        provision.test()
+
+        if not cmd.exclude_test:
+            provision.test()
 
 
         # ----------------------------------------------------------------------------------------------------------------

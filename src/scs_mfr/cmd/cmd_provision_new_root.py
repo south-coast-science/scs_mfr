@@ -18,13 +18,16 @@ class CmdProvisionNewRoot(object):
         """
         Constructor
         """
-        self.__parser = optparse.OptionParser(usage="%prog [-s] [-v]", version=version())
+        self.__parser = optparse.OptionParser(usage="%prog [-s] [-x] [-v]", version=version())
 
         # operations...
         self.__parser.add_option("--prep-sd", "-s", action="store_true", dest="prep_sd", default=False,
                                  help="format the SD card")
 
         # output...
+        self.__parser.add_option("--exclude-tests", "-x", action="store_true", dest="exclude_test", default=False,
+                                 help="do not perform OS checks")
+
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
@@ -48,6 +51,11 @@ class CmdProvisionNewRoot(object):
 
 
     @property
+    def exclude_test(self):
+        return self.__opts.exclude_test
+
+
+    @property
     def verbose(self):
         return self.__opts.verbose
 
@@ -59,4 +67,5 @@ class CmdProvisionNewRoot(object):
 
 
     def __str__(self, *args, **kwargs):
-        return "CmdProvisionNewRoot:{prep_sd:%s, verbose:%s}" % (self.prep_sd, self.verbose)
+        return "CmdProvisionNewRoot:{prep_sd:%s, verbose:%s, verbose:%s}" % \
+                (self.prep_sd, self.exclude_test, self.verbose)

@@ -16,8 +16,8 @@ The provision_new_scs utility should only be used for new device tasks. Servicin
 configured using the provision_service_scs utility.
 
 SYNOPSIS
-provision_new_scs.py -i INVOICE -p ORG GROUP LOCATION [-f] [-u] [{ -a AFE | -d DSI DATE }] [-c] [-s PSU_MODEL]
-[-m MODEL_MAP] [-t TIMEZONE] [-v]
+provision_new_scs.py -i INVOICE -p ORG GROUP LOCATION [-f] [-g DEVICE_GENUS] [-u] [{ -a AFE | -d DSI DATE }] [-c]
+[-s PSU_MODEL] [-m MODEL_MAP] [-t TIMEZONE] [-x] [-v]
 
 EXAMPLES
 ./provision_new_scs.py -v -i INV-0000 -p south-coast-science-dev development _ -a 26-000345 -m OPCubeV1
@@ -144,8 +144,9 @@ if __name__ == '__main__':
 
         logger.info("Check...")
 
-        provision.os_check()
-        provision.kernel_check()
+        if not cmd.exclude_test:
+            provision.os_check()
+            provision.kernel_check()
 
 
         # ------------------------------------------------------------------------------------------------------------
@@ -189,7 +190,8 @@ if __name__ == '__main__':
 
         provision.aws_deployment()
 
-        provision.test()
+        if not cmd.exclude_test:
+            provision.test()
 
 
         # ----------------------------------------------------------------------------------------------------------------

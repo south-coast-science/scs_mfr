@@ -29,7 +29,7 @@ class CmdProvisionNewSCS(object):
 
         self.__parser = optparse.OptionParser(usage="%prog -i INVOICE -p ORG GROUP LOCATION [-f] [-g DEVICE_GENUS] "
                                                     "[-u] [{ -a AFE | -d DSI DATE }] [-c] [-s PSU_MODEL] "
-                                                    "[-m MODEL_MAP] [-t TIMEZONE] [-v]", version=version())
+                                                    "[-m MODEL_MAP] [-t TIMEZONE] [-x] [-v]", version=version())
 
         # identity...
         self.__parser.add_option("--invoice-number", "-i", type="string", action="store", dest="invoice_number",
@@ -67,6 +67,9 @@ class CmdProvisionNewSCS(object):
                                  help="timezone name")
 
         # output...
+        self.__parser.add_option("--exclude-tests", "-x", action="store_true", dest="exclude_test", default=False,
+                                 help="do not perform OS checks or hardware tests")
+
         self.__parser.add_option("--verbose", "-v", action="store_true", dest="verbose", default=False,
                                  help="report narrative to stderr")
 
@@ -77,9 +80,6 @@ class CmdProvisionNewSCS(object):
 
     def is_valid(self):
         if self.invoice_number is None or self.__opts.project is None:
-            return False
-
-        if self.__opts.project is None and self.force:
             return False
 
         if self.afe_serial and self.dsi_serial:
@@ -179,6 +179,11 @@ class CmdProvisionNewSCS(object):
     # properties: output...
 
     @property
+    def exclude_test(self):
+        return self.__opts.exclude_test
+
+
+    @property
     def verbose(self):
         return self.__opts.verbose
 
@@ -191,6 +196,8 @@ class CmdProvisionNewSCS(object):
 
     def __str__(self, *args, **kwargs):
         return "CmdProvisionNewSCS:{invoice_number:%s, project:%s, force:%s, device_genus:%s, upgrade_pips:%s, " \
-               "afe_serial:%s, dsi:%s, scd30:%s, psu_model:%s, model_map:%s, timezone:%s, verbose:%s}" % \
+               "afe_serial:%s, dsi:%s, scd30:%s, psu_model:%s, model_map:%s, timezone:%s, " \
+                "exclude_test:%s, verbose:%s}" % \
             (self.invoice_number, self.__opts.project, self.force, self.device_genus, self.upgrade_pips,
-             self.afe_serial, self.__opts.dsi, self.scd30, self.psu_model, self.model_map, self.timezone, self.verbose)
+             self.afe_serial, self.__opts.dsi, self.scd30, self.psu_model, self.model_map, self.timezone,
+             self.exclude_test, self.verbose)

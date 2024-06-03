@@ -15,7 +15,7 @@ The provision_new_root utility is used for both new devices and servicing / upda
 WARNING: do not use the --prep-sd  / -s flag when doing a service or upgrade.
 
 SYNOPSIS
-provision_new_root.py [-s] [-v]
+provision_new_root.py [-s] [-x] [-v]
 
 EXAMPLES
 provision_new_root -sv
@@ -80,8 +80,10 @@ if __name__ == '__main__':
 
         logger.info("Check...")
 
-        provision.os_check()
-        provision.kernel_check()
+        if not cmd.exclude_test:
+            provision.os_check()
+            provision.kernel_check()
+
         provision.greengrass_check()
 
 
