@@ -196,8 +196,8 @@ class CmdProvisionNewSCS(object):
 
     def __str__(self, *args, **kwargs):
         return "CmdProvisionNewSCS:{invoice_number:%s, project:%s, force:%s, device_genus:%s, upgrade_pips:%s, " \
-               "afe_serial:%s, dsi:%s, scd30:%s, psu_model:%s, model_map:%s, timezone:%s, " \
+                "afe_serial:%s, dsi:%s, scd30:%s, psu_model:%s, model_map:%s, timezone:%s, " \
                 "exclude_test:%s, verbose:%s}" % \
-            (self.invoice_number, self.__opts.project, self.force, self.device_genus, self.upgrade_pips,
-             self.afe_serial, self.__opts.dsi, self.scd30, self.psu_model, self.model_map, self.timezone,
-             self.exclude_test, self.verbose)
+                (self.invoice_number, self.__opts.project, self.force, self.device_genus, self.upgrade_pips,
+                 self.afe_serial, self.__opts.dsi, self.scd30, self.psu_model, self.model_map, self.timezone,
+                 self.exclude_test, self.verbose)
