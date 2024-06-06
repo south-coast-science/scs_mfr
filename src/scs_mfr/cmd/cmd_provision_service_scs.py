@@ -186,5 +186,5 @@ class CmdProvisionServiceSCS(object):
     def __str__(self, *args, **kwargs):
         return "CmdProvisionServiceSCS:{project:%s, force:%s, upgrade_pips:%s, afe_serial:%s, dsi:%s, " \
                 "scd30:%s, barometric:%s, model_map:%s, timezone:%s, exclude_test:%s, verbose:%s}" % \
-            (self.__opts.project, self.force, self.upgrade_pips, self.afe_serial, self.__opts.dsi,
-             self.scd30, self.barometric, self.model_map, self.timezone, self.exclude_test, self.verbose)
+                (self.__opts.project, self.force, self.upgrade_pips, self.afe_serial, self.__opts.dsi,
+                 self.scd30, self.barometric, self.model_map, self.timezone, self.exclude_test, self.verbose)
