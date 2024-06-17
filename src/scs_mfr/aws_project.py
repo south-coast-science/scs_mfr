@@ -148,7 +148,7 @@ if __name__ == '__main__':
             location_path = project.location_path + '/'
 
             if not cmd.force and manager.location_path_in_use(auth.id_token, location_path):
-                logger.error("The location path '%s' is in use." % location_path)
+                logger.error("the location path '%s' is in use." % location_path)
                 exit(1)
 
             project.save(Host)
