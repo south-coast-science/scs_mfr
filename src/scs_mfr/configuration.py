@@ -200,12 +200,11 @@ DOCUMENT EXAMPLE
             "int": "0x45",
             "ext": "0x45"
         },
-        "networks": null,
         "modem": {
             "id": "992c3ac6da0b68d58005d20ea5e957d409001e42",
             "imei": "860425041573914",
             "mfr": "QUALCOMM INCORPORATED",
-            "rev": "EC25ECGAR06A05M1G"
+            "rev": "XXX"
         },
         "sim": {
             "imsi": "234301951432537",
