@@ -23,10 +23,10 @@ SYNOPSIS
 gps_conf.py [{ [-m MODEL] [-i INTERVAL] [-t TALLY] [-f REPORT_FILE] [-l { 0 | 1 }] | -d }] [-v]
 
 EXAMPLES
-./gps_conf.py -m SAM8Q -i 10 -t 60 -f /tmp/southcoastscience/gps_report.json -l 1
+./gps_conf.py -m SAM8Q -i 10 -t 60 -f /dev/shm/southcoastscience/gps_report.json -l 1
 
 DOCUMENT EXAMPLE
-{"model": "PAM7Q", "sample-interval": 10, "tally": 1, "report-file": "/tmp/southcoastscience/gps_report.json",
+{"model": "PAM7Q", "sample-interval": 10, "tally": 1, "report-file": "/dev/shm/southcoastscience/gps_report.json",
 "debug": true}
 
 FILES

@@ -25,11 +25,11 @@ SYNOPSIS
 psu_conf.py { [-p PSU_MODEL] [-b BATT_MODEL] [-t { 0 | 1 }] [-i REPORTING_INTERVAL] [-f REPORT_FILE] | -d } [-v]
 
 EXAMPLES
-./psu_conf.py -m OsloV1 -i 10 -f /tmp/southcoastscience/psu_status_report.json
+./psu_conf.py -m OsloV1 -i 10 -f /dev/shm/southcoastscience/psu_status_report.json
 
 DOCUMENT EXAMPLE
 {"model": "MobileV2", "batt-model": "PackV1", "ignore-threshold": true, "reporting-interval": 10,
-"report-file": "/tmp/southcoastscience/psu_status_report.json"}
+"report-file": "/dev/shm/southcoastscience/psu_status_report.json"}
 
 FILES
 ~/SCS/conf/psu_conf.json

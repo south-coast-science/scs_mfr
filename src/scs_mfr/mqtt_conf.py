@@ -25,10 +25,10 @@ SYNOPSIS
 mqtt_conf.py { [-i { 0 | 1 }] [-f REPORT_FILE]  [-l { 0 | 1 }] | -d } [-v]
 
 EXAMPLES
-./mqtt_conf.py -i 0 -f /tmp/southcoastscience/mqtt_queue_length.json -l 1
+./mqtt_conf.py -i 0 -f /dev/shm/southcoastscience/mqtt_queue_length.json -l 1
 
 DOCUMENT EXAMPLE
-{"inhibit-publishing": false, "report-file": "/tmp/southcoastscience/mqtt_queue_report.json", "debug": true}
+{"inhibit-publishing": false, "report-file": "/dev/shm/southcoastscience/mqtt_queue_report.json", "debug": true}
 
 FILES
 ~/SCS/conf/mqtt_conf.json
