@@ -22,14 +22,13 @@ or if a battery is not specified for one that does.
 Note that the scs_dev/psu_monitor process must be restarted for changes to take effect.
 
 SYNOPSIS
-psu_conf.py { [-p PSU_MODEL] [-b BATT_MODEL] [-t { 0 | 1 }] [-i REPORTING_INTERVAL] [-f REPORT_FILE] | -d } [-v]
+psu_conf.py { [-p PSU_MODEL] [-b BATT_MODEL] [-t { 0 | 1 }] [-i REPORTING_INTERVAL] | -d } [-v]
 
 EXAMPLES
-./psu_conf.py -m OsloV1 -i 10 -f /dev/shm/southcoastscience/psu_status_report.json
+./psu_conf.py -m OsloV1 -i 10
 
 DOCUMENT EXAMPLE
-{"model": "MobileV2", "batt-model": "PackV1", "ignore-threshold": true, "reporting-interval": 10,
-"report-file": "/dev/shm/southcoastscience/psu_status_report.json"}
+{"model": "MobileV2", "batt-model": "PackV1", "ignore-threshold": true, "reporting-interval": 10}
 
 FILES
 ~/SCS/conf/psu_conf.json
@@ -84,10 +83,9 @@ if __name__ == '__main__':
         batt_model = cmd.batt_model if cmd.batt_model is not None else conf.batt_model
         ignore_threshold = cmd.ignore_threshold if cmd.ignore_threshold is not None else conf.ignore_threshold
         reporting_interval = cmd.reporting_interval if cmd.reporting_interval is not None else conf.reporting_interval
-        report_file = cmd.report_file if cmd.report_file is not None else conf.report_file
 
         try:
-            conf = PSUConf(psu_model, batt_model, ignore_threshold, reporting_interval, report_file)
+            conf = PSUConf(psu_model, batt_model, ignore_threshold, reporting_interval)
         except ValueError as ex:
             print("psu_conf: %s" % ex, file=sys.stderr)
 
