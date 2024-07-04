@@ -151,7 +151,6 @@ conf = '''
             "batt-model": "PackV2",
             "ignore-threshold": false,
             "reporting-interval": 10,
-            "report-file": "/tmp/southcoastscience/psu_status_report.json"
         },
         "psu-version": {
             "id": "SCS OPCube Controller type 1 firmware 1",

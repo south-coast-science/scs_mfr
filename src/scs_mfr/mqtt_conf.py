@@ -22,13 +22,13 @@ WARNING: if inhibit publishing is set to true, the MQTT client will still subscr
 receipts or responses.
 
 SYNOPSIS
-mqtt_conf.py { [-i { 0 | 1 }] [-f REPORT_FILE]  [-l { 0 | 1 }] | -d } [-v]
+mqtt_conf.py { [-i { 0 | 1 }] [-l { 0 | 1 }] | -d } [-v]
 
 EXAMPLES
-./mqtt_conf.py -i 0 -f /tmp/southcoastscience/mqtt_queue_length.json -l 1
+./mqtt_conf.py -i 0 -l 1
 
 DOCUMENT EXAMPLE
-{"inhibit-publishing": false, "report-file": "/tmp/southcoastscience/mqtt_queue_report.json", "debug": true}
+{"inhibit-publishing": false, "debug": true}
 
 FILES
 ~/SCS/conf/mqtt_conf.json
@@ -77,10 +77,9 @@ if __name__ == '__main__':
 
     if cmd.set():
         inhibit_publishing = cmd.inhibit_publishing if cmd.inhibit_publishing is not None else conf.inhibit_publishing
-        report_file = cmd.report_file if cmd.report_file is not None else conf.report_file
         debug = cmd.debug if cmd.debug is not None else conf.debug
 
-        conf = MQTTConf(inhibit_publishing, report_file, debug)
+        conf = MQTTConf(inhibit_publishing, debug)
         conf.save(Host)
 
     elif cmd.delete and conf is not None:

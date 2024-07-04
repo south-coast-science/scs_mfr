@@ -23,7 +23,7 @@ class CmdPSUConf(object):
         batt_models = ' | '.join(PSUConf.batt_models())
 
         self.__parser = optparse.OptionParser(usage="%prog { [-p PSU_MODEL] [-b BATT_MODEL] [-t { 0 | 1 }] "
-                                                    "[-i REPORTING_INTERVAL] [-f REPORT_FILE] | -d } [-v]",
+                                                    "[-i REPORTING_INTERVAL] | -d } [-v]",
                                               version=version())
 
         # fields...
@@ -38,9 +38,6 @@ class CmdPSUConf(object):
 
         self.__parser.add_option("--reporting-interval", "-i", type="int", action="store",
                                  dest="reporting_interval", help="PSU monitor reporting interval")
-
-        self.__parser.add_option("--report-file", "-f", type="string", action="store", dest="report_file",
-                                 help="PSU monitor status report file")
 
         # delete...
         self.__parser.add_option("--delete", "-d", action="store_true", dest="delete", default=False,
@@ -58,7 +55,7 @@ class CmdPSUConf(object):
     def is_valid(self):
         if self.delete and \
                 (self.psu_model is not None or self.batt_model is not None or self.ignore_threshold is not None or
-                 self.reporting_interval is not None or self.report_file is not None):
+                 self.reporting_interval is not None):
             return False
 
         if self.psu_model is not None and self.psu_model not in PSUConf.psu_models():
@@ -75,8 +72,7 @@ class CmdPSUConf(object):
 
     def set(self):
         return self.__opts.psu_model is not None or self.__opts.batt_model is not None or \
-               self.__opts.ignore_threshold is not None or self.__opts.reporting_interval is not None or \
-               self.__opts.report_file is not None
+               self.__opts.ignore_threshold is not None or self.__opts.reporting_interval is not None
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -102,11 +98,6 @@ class CmdPSUConf(object):
 
 
     @property
-    def report_file(self):
-        return self.__opts.report_file
-
-
-    @property
     def delete(self):
         return self.__opts.delete
 
@@ -124,6 +115,6 @@ class CmdPSUConf(object):
 
     def __str__(self, *args, **kwargs):
         return "CmdPSUConf:{psu_model:%s, batt_model:%s, ignore_threshold:%s, reporting_interval:%s, " \
-               "report_file:%s, delete:%s, verbose:%s}" % \
+               "delete:%s, verbose:%s}" % \
                (self.psu_model, self.batt_model, self.ignore_threshold, self.reporting_interval,
-                self.report_file, self.delete, self.verbose)
+                self.delete, self.verbose)
