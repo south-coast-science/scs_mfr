@@ -72,8 +72,7 @@ class CmdPSUConf(object):
 
     def set(self):
         return self.__opts.psu_model is not None or self.__opts.batt_model is not None or \
-               self.__opts.ignore_threshold is not None or self.__opts.reporting_interval is not None or \
-               self.__opts.report_file is not None
+               self.__opts.ignore_threshold is not None or self.__opts.reporting_interval is not None
 
 
     # ----------------------------------------------------------------------------------------------------------------
