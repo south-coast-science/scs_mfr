@@ -19,15 +19,12 @@ class CmdMQTTConf(object):
     # ----------------------------------------------------------------------------------------------------------------
 
     def __init__(self):
-        self.__parser = optparse.OptionParser(usage="%prog { [-i { 0 | 1 }] [-f REPORT_FILE] [-l { 0 | 1 }] | "
-                                                    "-d } [-v]", version=version())
+        self.__parser = optparse.OptionParser(usage="%prog { [-i { 0 | 1 }] [-l { 0 | 1 }] | -d } [-v]",
+                                              version=version())
 
         # fields...
         self.__parser.add_option("--inhibit-pub", "-i", type="int", action="store", dest="inhibit_publishing",
                                  default=None, help="inhibit publishing (1) or enable (0)")
-
-        self.__parser.add_option("--report-file", "-f", type="string", action="store", dest="report_file",
-                                 help="file to store latest queue length value")
 
         self.__parser.add_option("--debug", "-l", type="int", action="store", dest="debug",
                                  help="set debug logging (default is 0)")
@@ -62,7 +59,7 @@ class CmdMQTTConf(object):
 
 
     def set(self):
-        return self.inhibit_publishing is not None or self.report_file is not None or self.__opts.debug is not None
+        return self.inhibit_publishing is not None or self.__opts.debug is not None
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -70,11 +67,6 @@ class CmdMQTTConf(object):
     @property
     def inhibit_publishing(self):
         return self.__opts.inhibit_publishing
-
-
-    @property
-    def report_file(self):
-        return self.__opts.report_file
 
 
     @property
@@ -99,5 +91,5 @@ class CmdMQTTConf(object):
 
 
     def __str__(self, *args, **kwargs):
-        return "CmdMQTTConf:{inhibit_publishing:%s, report_file:%s, debug:%s, delete:%s, verbose:%s}" % \
-               (self.inhibit_publishing, self.report_file, self.debug, self.delete, self.verbose)
+        return "CmdMQTTConf:{inhibit_publishing:%s, debug:%s, delete:%s, verbose:%s}" % \
+               (self.inhibit_publishing, self.debug, self.delete, self.verbose)
