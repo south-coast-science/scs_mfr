@@ -57,7 +57,7 @@ if __name__ == '__main__':
     # ----------------------------------------------------------------------------------------------------------------
     # validation...
 
-    logger.info("Validation...")
+    logger.info(">> Validation...")
 
     if os.getcwd() != '/etc/systemd/system':
         logger.error("must be run in /etc/systemd/system.")
@@ -78,7 +78,7 @@ if __name__ == '__main__':
         # ------------------------------------------------------------------------------------------------------------
         # Check...
 
-        logger.info("Check...")
+        logger.info(">> Check...")
 
         if not cmd.exclude_test:
             provision.os_check()
@@ -90,7 +90,7 @@ if __name__ == '__main__':
         # ------------------------------------------------------------------------------------------------------------
         # Stage 1...
 
-        logger.info("Stage 1...")
+        logger.info(">> Stage 1...")
 
         provision.stop()
 
@@ -103,17 +103,29 @@ if __name__ == '__main__':
 
         provision.wait_for_scs_configuration_completed()
 
-        logger.info("Stage 2...")
+        logger.info(">> Stage 2...")
 
         provision.identity()            # TODO: not for service version
         provision.setup()
 
         provision.raise_root_setup_completed()
-        provision.lower_scs_configuration_completed()
+
+
+        # ------------------------------------------------------------------------------------------------------------
+        # Stage 3...
+
+        provision.wait_for_scs_deployment_completed()
+
+        logger.info(">> Stage 3...")
+
+        provision.set_greengrass_log_level(cmd.log_level)
 
 
         # ----------------------------------------------------------------------------------------------------------------
         # end...
+
+        provision.lower_scs_configuration_completed()
+        provision.lower_scs_deployment_completed()
 
     except KeyboardInterrupt:
         print(file=sys.stderr)

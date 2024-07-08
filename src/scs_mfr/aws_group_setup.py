@@ -48,9 +48,9 @@ from botocore.exceptions import ClientError, EndpointConnectionError, NoCredenti
 
 from scs_core.aws.client.client import Client
 from scs_core.aws.config.aws import AWS
-from scs_core.aws.greengrass.aws_group import AWSGroup
-from scs_core.aws.greengrass.aws_group_configuration import AWSGroupConfiguration
-from scs_core.aws.greengrass.gg_errors import ProjectMissingError
+from scs_core.aws.greengrass.v1.aws_group import AWSGroup
+from scs_core.aws.greengrass.v1.aws_group_configuration import AWSGroupConfiguration
+from scs_core.aws.greengrass.v1.gg_errors import ProjectMissingError
 
 from scs_core.aws.security.access_key_manager import AccessKeyManager
 from scs_core.aws.security.cognito_device import CognitoDeviceCredentials

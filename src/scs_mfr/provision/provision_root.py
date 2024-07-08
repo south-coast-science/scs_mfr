@@ -4,7 +4,11 @@ Created on 14 Jul 2023
 @author: Bruno Beloff (bruno.beloff@southcoastscience.com)
 """
 
+from scs_core.aws.greengrass.v1.aws_group_version import AWSGroupVersion
+
 from scs_mfr.provision.provision import Provision
+
+from scs_host.sys.host import Host
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -43,6 +47,14 @@ class ProvisionRoot(Provision):
         self._scs_configuration_completed.lower_flag()
 
 
+    def wait_for_scs_deployment_completed(self):
+        self._scs_deployment_completed.wait_for_raised()
+
+
+    def lower_scs_deployment_completed(self):
+        self._scs_deployment_completed.lower_flag()
+
+
     # ----------------------------------------------------------------------------------------------------------------
     # Stage 1...
 
@@ -78,3 +90,15 @@ class ProvisionRoot(Provision):
         self._clu.s(['systemctl', 'disable', 'scs_mqtt_client.service'], no_verbose=True, abort_on_fail=False)
         self._clu.s(['rm', '-f', 'scs_mqtt_client.service'], no_verbose=True, abort_on_fail=False)
         self._clu.s(['systemctl', 'start', 'scs_greengrass.service'], no_verbose=True)
+
+
+    def set_greengrass_log_level(self, log_level):
+        self._logger.info("Greengrass log level...")
+
+        group_version = AWSGroupVersion.load(Host)
+
+        group_version.greengrass_log_level = log_level
+        group_version.lambda_log_level = log_level
+        group_version.save(Host)
+
+        self._logger.info("level: %s" % log_level)
