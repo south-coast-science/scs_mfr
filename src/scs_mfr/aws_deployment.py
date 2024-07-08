@@ -39,7 +39,7 @@ from botocore.exceptions import ClientError, NoCredentialsError
 
 from scs_core.aws.client.client import Client
 from scs_core.aws.config.aws import AWS
-from scs_core.aws.greengrass.aws_deployer import AWSGroupDeployer
+from scs_core.aws.greengrass.v1.aws_deployer import AWSGroupDeployer
 
 from scs_core.aws.security.access_key_manager import AccessKeyManager
 from scs_core.aws.security.cognito_device import CognitoDeviceCredentials
