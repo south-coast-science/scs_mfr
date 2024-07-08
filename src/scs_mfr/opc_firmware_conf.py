@@ -41,8 +41,6 @@ Currently, the array fields 'bin-boundaries', 'bin-boundaries-diameter', and 'bi
 import json
 import sys
 
-from collections import OrderedDict
-
 from scs_core.data.json import JSONify
 
 from scs_dfe.interface.interface_conf import InterfaceConf
@@ -161,7 +159,7 @@ if __name__ == '__main__':
                    '"pm-concentration-b": 2.5, "pm-concentration-c": 10.0, "pvp": 48, "power-status": 0, ' \
                    '"max-tof": 4095, "laser-dac": 150, "bin-weighting-index": 2}'
 
-            jdict = json.loads(jstr, object_hook=OrderedDict)
+            jdict = json.loads(jstr)
 
             opc.set_firmware_conf(jdict)
 
