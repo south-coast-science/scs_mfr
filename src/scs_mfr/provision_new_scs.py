@@ -85,7 +85,7 @@ if __name__ == '__main__':
     # ----------------------------------------------------------------------------------------------------------------
     # validation...
 
-    logger.info("Validation...")
+    logger.info(">> Validation...")
 
     provision.system_id(cmd.device_genus)
 
@@ -142,7 +142,7 @@ if __name__ == '__main__':
         # ------------------------------------------------------------------------------------------------------------
         # Check...
 
-        logger.info("Check...")
+        logger.info(">> Check...")
 
         if not cmd.exclude_test:
             provision.os_check()
@@ -152,7 +152,7 @@ if __name__ == '__main__':
         # ------------------------------------------------------------------------------------------------------------
         # Stage 1...
 
-        logger.info("Stage 1...")
+        logger.info(">> Stage 1...")
 
         if cmd.upgrade_pips:
             provision.upgrade_pips()
@@ -186,7 +186,7 @@ if __name__ == '__main__':
         provision.wait_for_root_setup_completed()
         provision.lower_root_setup_completed()
 
-        logger.info("Stage 2...")
+        logger.info(">> Stage 2...")
 
         provision.aws_deployment()
 
@@ -196,7 +196,7 @@ if __name__ == '__main__':
         # ------------------------------------------------------------------------------------------------------------
         # Stage 3...
 
-        logger.info("Stage 3...")
+        logger.info(">> Stage 3...")
 
         if not cmd.exclude_test:
             provision.test()
