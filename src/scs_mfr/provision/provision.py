@@ -28,6 +28,7 @@ class Provision(ABC):
         """
         self._scs_configuration_completed = Flag('scs-configuration-completed')
         self._root_setup_completed = Flag('root-setup-completed')
+        self._scs_deployment_completed = Flag('scs-deployment-completed')
 
         self._clu = Command(verbose=verbose, on_abort=self.on_abort)
 

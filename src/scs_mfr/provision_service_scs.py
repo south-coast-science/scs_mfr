@@ -169,6 +169,14 @@ if __name__ == '__main__':
 
         provision.aws_deployment()
 
+        provision.raise_deployment_completed()
+
+
+        # ------------------------------------------------------------------------------------------------------------
+        # Stage 3...
+
+        logger.info("Stage 3...")
+
         if not cmd.exclude_test:
             provision.test()
 

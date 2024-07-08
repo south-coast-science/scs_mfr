@@ -35,7 +35,7 @@ scs_mfr/aws_group_setup
 
 import sys
 
-from scs_core.aws.greengrass.aws_group_configuration import AWSGroupConfiguration
+from scs_core.aws.greengrass.v1.aws_group_configuration import AWSGroupConfiguration
 
 from scs_core.data.json import JSONify
 

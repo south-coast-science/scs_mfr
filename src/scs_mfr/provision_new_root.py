@@ -109,11 +109,23 @@ if __name__ == '__main__':
         provision.setup()
 
         provision.raise_root_setup_completed()
-        provision.lower_scs_configuration_completed()
+
+
+        # ------------------------------------------------------------------------------------------------------------
+        # Stage 3...
+
+        provision.wait_for_scs_deployment_completed()
+
+        logger.info("Stage 3...")
+
+        provision.set_greengrass_log_level(cmd.log_level)
 
 
         # ----------------------------------------------------------------------------------------------------------------
         # end...
+
+        provision.lower_scs_configuration_completed()
+        provision.lower_scs_deployment_completed()
 
     except KeyboardInterrupt:
         print(file=sys.stderr)

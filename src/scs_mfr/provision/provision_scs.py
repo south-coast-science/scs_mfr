@@ -77,6 +77,10 @@ class ProvisionSCS(Provision):
         self._root_setup_completed.lower_flag()
 
 
+    def raise_deployment_completed(self):
+        self._scs_deployment_completed.raise_flag()
+
+
     # ----------------------------------------------------------------------------------------------------------------
     # Stage 1...
 
