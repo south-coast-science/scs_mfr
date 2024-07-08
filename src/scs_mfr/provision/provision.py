@@ -86,7 +86,7 @@ class Provision(ABC):
 
     def __str__(self, *args, **kwargs):
         name = self.__class__.__name__
-        return name + ":{scs_configuration_completed:%s, root_setup_completed:%s, _scs_deployment_completed: %s, " \
+        return name + ":{scs_configuration_completed:%s, root_setup_completed:%s, scs_deployment_completed: %s, " \
                       "clu:%s}" % \
             (self._scs_configuration_completed, self._root_setup_completed, self._scs_deployment_completed,
              self._clu)
